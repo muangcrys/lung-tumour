@@ -1,0 +1,4 @@
+[dataset]
+    metadata = 'G:\LUNA\nodules\luna25_nodule_blocks.zip\luna25_nodule_blocks\metadata'
+    images = 'G:\LUNA\nodules\luna25_nodule_blocks.zip\luna25_nodule_blocks\image'
+    annotations = 'G:\LUNA\annotation\LUNA25_Public_Training_Development_Data.csv'

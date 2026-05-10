@@ -1,0 +1,2 @@
+[configs]
+    location = "../config/windows.toml"
