@@ -1,32 +1,20 @@
-import tomllib
-import pandas as pd
-import numpy as np
-import os
+from utility.paths import PathList
 from pathlib import Path
-
-DEFAULT_CONFIG_PATH = Path(__file__).parent.parent.parent / "config" / "windows.toml"
-
-def resolve_data_path(data_path=None, config_path=None):
-    if data_path is not None:
-        return data_path
-
-    if config_path is None:
-        env_config_path = os.getenv("LUNA_CONFIG_PATH")
-        if env_config_path is None:
-            # default path
-            print(f"env_config_path is not defined -> defaulting to {DEFAULT_CONFIG_PATH}")
-            config_path = DEFAULT_CONFIG_PATH
-        else:
-            config_path = Path(env_config_path)
-    else:
-        config_path = Path(config_path)
+from typing import Union
+import numpy as np
 
 
-    with open(config_path, "rb") as f:
-        config = tomllib.load(f)
+def resolve_file_name(nodule_id: str):
+    extension = ".npy"
+    return nodule_id + extension
 
-    return config["dataset"]["images"], config["dataset"]["annotations"]
+def pull_data_raw(nodule_id: str, image_dir: str|Path = None):
+    if image_dir is None:
+        image_dir = PathList.raw_luna_image_dir
 
-def pull_data(nodule_id:str, data_path=None, config_path=None):
-    if data_path is not None:
-        return data_path
+    image_dir: Path = Path(image_dir)
+
+    target_file = image_dir / resolve_file_name(nodule_id)
+    npy = np.load(target_file)
+    return npy
+

@@ -1,0 +1,30 @@
+from pathlib import Path
+
+class PathList:
+    # project root in reference to this file
+    project_root = Path(__file__).resolve().parent.parent.parent
+
+    # config path
+    config_dir = project_root / "config"
+
+    # data
+    data_dir = project_root / "data"
+
+    # luna data
+    luna_data_dir = data_dir / "LUNA"
+    raw_luna_data_dir = luna_data_dir / "raw"
+    processed_luna_data_dir = luna_data_dir / "processed"
+
+    # raw luna annotation
+    raw_luna_annotation_dir = raw_luna_data_dir / "annotation"
+    raw_luna_annotation_csv = raw_luna_annotation_dir / "LUNA25_Public_Training_Development_Data.csv"
+
+    # raw luna image
+    raw_luna_image_dir = raw_luna_data_dir / "image"
+
+    # intermediate processing
+    intermediate_luna_data_dir = luna_data_dir / "intermediate"
+
+    # patients
+    patients_csv = intermediate_luna_data_dir / "patients.csv"
+
