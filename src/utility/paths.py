@@ -28,3 +28,8 @@ class PathList:
     # patients
     patients_csv = intermediate_luna_data_dir / "patients.csv"
 
+    # annotations (4242)
+    train_annotation_csv = processed_luna_data_dir / "SEED_4242" / "train_annotations.csv"
+    validate_annotation_csv = processed_luna_data_dir / "SEED_4242" / "validate_annotations.csv"
+    test_annotation_csv = processed_luna_data_dir / "SEED_4242" / "test_annotations.csv"
+
