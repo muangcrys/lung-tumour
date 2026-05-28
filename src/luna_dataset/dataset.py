@@ -2,10 +2,11 @@ import pandas as pd
 import numpy as np
 import torch
 from pandas import DataFrame
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, WeightedRandomSampler
 from pathlib import Path
 from typing import cast, Literal, List
 from utility.paths import PathList
+from luna_dataset.transforms import get_transforms
 
 
 class LunaColumns:
@@ -14,6 +15,9 @@ class LunaColumns:
 
 
 class LunaDataset(Dataset):
+    MAX_HU = 400.0
+    MIN_HU = -1000.0
+
     def __init__(self,
                  annotation_file: str | Path = None,
                  image_dir: str | Path = None,
@@ -47,13 +51,21 @@ class LunaDataset(Dataset):
         if len(missing_files) > 0:
             raise FileNotFoundError(f"Missing files: {missing_files}")
 
+    @property
+    def num_positive_class(self):
+        return len(self.annotations[int(self.annotations[LunaColumns.label]) == 1])
+
+    @property
+    def num_negative_class(self):
+        return len(self.annotations[int(self.annotations[LunaColumns.label]) == 0])
+
     def get_missing_files(self) -> List[str]:
         # check that all image in annotation df has a file in image dir
         annotation_ids = self.annotations[LunaColumns.filename]
 
         # map
         target_files = annotation_ids.map(lambda annotation_id: self.get_image_path(annotation_id))
-        missing_files = target_files.filter(lambda file: not Path(file).exists())
+        missing_files = target_files[target_files.map(lambda p: not Path(p).is_file())]
 
         return missing_files.to_list()
 
@@ -88,4 +100,60 @@ class LunaDataset(Dataset):
             image = self.transform(image)
 
         return image, label
+
+    @staticmethod
+    def get_transforms_pipeline(split: Literal["train", "validate", "test"] = "train",
+                                model: Literal[
+                                    "video_pretrained", "medical_pretrained", "random_init"] = "random_init"):
+        assert model in ["video_pretrained", "medical_pretrained", "random_init"]
+        assert split in ["train", "validate", "test"]
+
+        augmenting = split == "train"
+        if model == "video_pretrained":
+            return get_transforms(augmentation=augmenting,
+                                  crop=False,
+                                  minHU=LunaDataset.MIN_HU,
+                                  maxHU=LunaDataset.MAX_HU,
+                                  statistics="kinetics",
+                                  scale=False,
+                                  replicate_channels=True,
+                                  num_channels=3)
+        else:
+            return get_transforms(augmentation=augmenting,
+                                  crop=False,
+                                  minHU=LunaDataset.MIN_HU,
+                                  maxHU=LunaDataset.MAX_HU,
+                                  statistics="0.5",
+                                  scale=False,
+                                  replicate_channels=False,
+                                  num_channels=1)
+
+    @staticmethod
+    def get_dataset_with_transform(annotation_file: str | Path = None,
+                                   image_dir: str | Path = None,
+                                   split: Literal["train", "validate", "test"] = "train",
+                                   seed: int = 4242,
+                                   model: Literal[
+                                       "video_pretrained", "medical_pretrained", "random_init"] = "random_init"):
+        transform = LunaDataset.get_transforms_pipeline(split=split, model=model)
+        dataset = LunaDataset(annotation_file=annotation_file,
+                              image_dir=image_dir,
+                              transform=transform,
+                              split=split,
+                              seed=seed)
+        return dataset
+
+    def get_training_weighted_sampler(self,
+                                      over_sampling_weight: float = 1.0,
+                                      generator: torch.Generator = None):
+        inv_pos = 1 / self.num_positive_class
+        inv_neg = 1 / self.num_negative_class
+
+        weights = [inv_neg, inv_pos]
+        sampler = WeightedRandomSampler(weights=weights,
+                                        num_samples=len(self.annotations),
+                                        replacement=True,
+                                        generator=generator)
+        return sampler
+
 

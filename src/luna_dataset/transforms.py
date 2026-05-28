@@ -53,14 +53,13 @@ def get_monai_clip_scale(maxHU=400.0,
         return compose_list
 
 def get_transforms(augmentation: bool = True,
-                   crop: bool = True,
+                   crop: bool = False,
                    crop_size: int = 112,
                    maxHU=400.0,
                    minHU=-1000.0,
                    mean=None,
                    std=None,
                    statistics: Literal["kinetics", "0.5"] = "kinetics",
-                   channel: int = 1,
                    scale: bool = False,
                    scale_to_size: int = 112,
                    replicate_channels: bool = False,
@@ -69,6 +68,9 @@ def get_transforms(augmentation: bool = True,
 
     compose = []
     # cropping
+    if replicate_channels:
+        compose.append(RepeatChannel(repeats=num_channels))
+
     if crop:
         if augmentation:
             compose.append(RandSpatialCrop(roi_size=(-1, -1, crop_size, crop_size), random_size=False))
@@ -81,27 +83,25 @@ def get_transforms(augmentation: bool = True,
                                                 mean=mean,
                                                 std=std,
                                                 statistics=statistics,
-                                                channel=channel,
+                                                channel=num_channels,
                                                 return_type="list")
     compose.extend(clip_scale_transform)
 
     if augmentation:
         # data is (C, D, H, W)
         aug_transforms = [
-            RandFlip(prob=0.5, spatial_axis=1),    # flip along depth
-            RandFlip(prob=0.5, spatial_axis=2),    # flip along height
-            RandFlip(prob=0.5, spatial_axis=3),    # flip along width
+            RandFlip(prob=0.5, spatial_axis=0),    # flip along depth
+            RandFlip(prob=0.5, spatial_axis=1),    # flip along height
+            RandFlip(prob=0.5, spatial_axis=2),    # flip along width
 
             RandRotate90(prob=0.75, max_k=3,
-                         spatial_axes=(2, 3))      # rotate H and W
+                         spatial_axes=(1, 2))      # rotate H and W
         ]
         compose.extend(aug_transforms)
 
     if scale:
         compose.append(Resize(spatial_size=(-1, -1, scale_to_size, scale_to_size)))
 
-    if replicate_channels:
-        compose.append(RepeatChannel(repeats=num_channels))
 
     return Compose(compose)
 
