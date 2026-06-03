@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="model loading">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/luna_dataset/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/luna_dataset/splitting.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/splitting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pretrains/resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/split_nodules.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/split_nodules.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/paths.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/random.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/reproducibility.py" afterDir="false" />
-    </list>
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="training script" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -274,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780012484206</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="training script">
+      <option name="closed" value="true" />
+      <created>1780524883744</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1780524883744</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +284,8 @@
     <MESSAGE value="c" />
     <MESSAGE value="dataset splitting" />
     <MESSAGE value="model loading" />
-    <option name="LAST_COMMIT_MESSAGE" value="model loading" />
+    <MESSAGE value="training script" />
+    <option name="LAST_COMMIT_MESSAGE" value="training script" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
