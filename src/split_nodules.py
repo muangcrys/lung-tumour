@@ -1,6 +1,6 @@
 import argparse
 from utility.paths import PathList
-from utility.random import DEFAULT_SEED
+from utility.reproducibility import DEFAULT_SEED
 from luna_dataset.splitting import split_image
 from pathlib import Path
 import pandas as pd

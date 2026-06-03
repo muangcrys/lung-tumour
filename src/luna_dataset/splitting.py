@@ -2,7 +2,7 @@ from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from utility.random import DEFAULT_SEED, reset_seed
+from utility.reproducibility import DEFAULT_SEED, reset_seed
 from utility.paths import PathList
 
 

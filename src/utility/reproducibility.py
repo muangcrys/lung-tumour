@@ -16,3 +16,7 @@ def reset_seed(seed: int = DEFAULT_SEED, cuda: bool|None = None):
     if cuda:
         torch.cuda.manual_seed(seed)
 
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2 ** 32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)

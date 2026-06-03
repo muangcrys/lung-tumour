@@ -44,7 +44,7 @@ class LunaDataset(Dataset):
         self.transform = transform
 
         # load annotation df
-        self.annotations: DataFrame = cast(DataFrame, pd.read_csv(self.annotation_file))
+        self.annotations: DataFrame = pd.read_csv(self.annotation_file)
 
         # check that all files are there
         missing_files = self.get_missing_files()
@@ -53,11 +53,11 @@ class LunaDataset(Dataset):
 
     @property
     def num_positive_class(self):
-        return len(self.annotations[int(self.annotations[LunaColumns.label]) == 1])
+        return len(self.annotations[self.annotations[LunaColumns.label].astype(int) == 1])
 
     @property
     def num_negative_class(self):
-        return len(self.annotations[int(self.annotations[LunaColumns.label]) == 0])
+        return len(self.annotations[self.annotations[LunaColumns.label].astype(int) == 0])
 
     def get_missing_files(self) -> List[str]:
         # check that all image in annotation df has a file in image dir
@@ -81,6 +81,10 @@ class LunaDataset(Dataset):
         image_path = self.image_dir / image_file_name
         return image_path
 
+    def get_all_labels(self) -> torch.Tensor:
+        return torch.tensor(self.annotations[LunaColumns.label].astype(int).values)
+
+    @staticmethod
     def get_label(self, row: pd.Series):
         label = row[LunaColumns.label]
         return int(label)

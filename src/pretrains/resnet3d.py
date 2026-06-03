@@ -8,7 +8,8 @@ from luna_dataset.transforms import *
 from torch.utils.data.dataloader import DataLoader
 
 def get_pretrained_r3d(depth: Literal[18, 50],
-                       ckt_path: str|Path|None = None):
+                       ckt_path: str|Path|None = None,
+                       num_classes: int = None,):
     if depth == 18:
         config = R3d18Config
     elif depth == 50:
@@ -21,9 +22,12 @@ def get_pretrained_r3d(depth: Literal[18, 50],
     else:
         ckt_path = Path(ckt_path)
 
+    if num_classes is None:
+        num_classes = config.pretrained_classes
+
     model = generate_model(depth,
                            shortcut_type=config.shortcut,
-                           n_classes=config.pretrained_classes)
+                           n_classes=num_classes)
     ckt = torch.load(ckt_path)
     state_dict = ckt['state_dict']
     model.load_state_dict(state_dict)
