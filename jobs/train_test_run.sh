@@ -4,7 +4,7 @@
 cd "/home/s2882278/Diss/lung-tumour"
 
 # copy files to scratch
-bash scripts/copy_files_to_scratch.sh
+bash scripts/copy_files_to_scratch.sh > /dev/null
 
 # activate conda
 source /opt/conda/bin/activate
@@ -20,7 +20,7 @@ python -u src/train_resnet3d.py \
     --val_image_dir "/disk/scratch/s2882278/lung-tumour/data/LUNA/raw/image" \
     --num_workers 2 \
     --report_frequency 5 \
-    --num_epochs 10 \
+    --epochs 10 \
     --batch_size 16 \
     --device "cuda"
 
