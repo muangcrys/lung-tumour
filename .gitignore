@@ -177,4 +177,7 @@ cython_debug/
 #.idea/
 
 # ignore checkpoint files
-/checkpoints/**/*.pth
+/checkpoints/**
+
+# compressed files
+*.zip
