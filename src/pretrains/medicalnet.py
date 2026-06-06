@@ -37,7 +37,7 @@ def get_pretrained_medicalnet(depth: Literal[18, 50],
                      sample_input_W = 128,
                      num_seg_classes= 2,
                      shortcut_type=config.shortcut,)
-
+    print(f"Loading weights from checkpoint: {ckt_path}")
     if disable_cuda_loading:
         ckt = torch.load(ckt_path, map_location='cpu')
     else:

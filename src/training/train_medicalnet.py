@@ -32,7 +32,7 @@ def train_medicalnet(
         **kwargs
 ):
     if deterministic:
-        reset_seed()
+        reset_seed(seed)
 
     # load pretrained model
     model = get_pretrained_medicalnet(depth=depth, ckt_path=ckt_path)

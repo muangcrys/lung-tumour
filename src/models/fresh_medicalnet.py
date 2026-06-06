@@ -5,7 +5,7 @@ from torch import nn
 
 ### medicalnet-like classifier models
 
-def get_freshnet(depth: Literal[18, 50] = 18,):
+def get_fresh_medicalnet(depth: Literal[18, 50] = 18,):
     if depth == 18:
         model_fn = resnet18
     elif depth == 50:

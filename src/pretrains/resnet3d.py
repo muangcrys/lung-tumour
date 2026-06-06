@@ -28,6 +28,7 @@ def get_pretrained_r3d(depth: Literal[18, 50],
     model = generate_model(depth,
                            shortcut_type=config.shortcut,
                            n_classes=num_classes)
+    print(f"Loading weights from checkpoint: {ckt_path}")
     ckt = torch.load(ckt_path)
     state_dict = ckt['state_dict']
     model.load_state_dict(state_dict)
