@@ -7,7 +7,9 @@ PROJECT_ROOT="/home/s2882278/Diss/lung-tumour"
 DATA_ZIP="$PROJECT_ROOT/data.zip"
 
 # target
-TARGET_DIRECTORY="/disk/scratch/s2882278/lung-tumour"
+UNIQUE_ID="$1"
+TARGET_DIRECTORY="/disk/scratch/s2882278/lung-tumour/$UNIQUE_ID"
+echo "Target directory: $TARGET_DIRECTORY"
 
 # Create target directory if it doesn't exist
 mkdir -p "$TARGET_DIRECTORY"
@@ -19,6 +21,6 @@ echo "Files copied to $TARGET_DIRECTORY"
 
 # unzip
 cd "$TARGET_DIRECTORY"
-unzip data.zip
+unzip -o data.zip
 
 echo "Unzipping done"

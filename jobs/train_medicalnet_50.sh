@@ -9,7 +9,7 @@ cd "/home/s2882278/Diss/lung-tumour"
 echo "Copying files to scratch..."
 # generate unique id for this run
 UNIQUE_ID=$(date +%Y%m%d%H%M%S)
-WORKING_DIR="resnet18-$UNIQUE_ID"
+WORKING_DIR="medicalnet50-$UNIQUE_ID"
 echo "Working directory for this run: $WORKING_DIR"
 bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
@@ -24,8 +24,8 @@ nvidia-smi
 
 # train model
 echo "Running training script..."
-python -u src/train_resnet3d.py \
-    --depth 18 \
+python -u src/train_medicalnet.py \
+    --depth 50 \
     --train_annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/SEED_4242/train_annotations.csv" \
     --train_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --val_annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/SEED_4242/validate_annotations.csv" \

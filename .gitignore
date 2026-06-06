@@ -181,3 +181,9 @@ cython_debug/
 
 # compressed files
 *.zip
+
+# slurm
+slurm-*.out
+
+# everything in weights directory
+/weights/**

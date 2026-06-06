@@ -1,5 +1,5 @@
 from training.training import *
-from pretrains.resnet3d import *
+from pretrains.medicalnet import *
 from luna_dataset.dataset import LunaDataset
 from utility.reproducibility import reset_seed
 from training.dataloader import get_train_val_loaders
@@ -7,10 +7,9 @@ from torch import Generator
 from torch.utils.data import DataLoader
 import json
 
-def train_resnet3d(
+def train_medicalnet(
         depth: Literal[18, 50] = 18,
         ckt_path: str|Path|None = None,
-        ckt_num_classes: int = None,
         replace_classifier: bool = True,
         train_classifier_only: bool = False,
         train_annotation: str|Path|None = None,
@@ -26,7 +25,7 @@ def train_resnet3d(
         num_workers: int = 0,
         seed: int = 4242,
         deterministic: bool = True,
-        report_frequency: int = 10,
+        report_frequency: int = 5,
         save_checkpoints: bool = True,
         base_directory: str|Path|None = None,
         device: torch.device | str | None = None,
@@ -36,14 +35,14 @@ def train_resnet3d(
         reset_seed()
 
     # load pretrained model
-    model = get_pretrained_r3d(depth=depth, num_classes=ckt_num_classes, ckt_path=ckt_path)
+    model = get_pretrained_medicalnet(depth=depth, ckt_path=ckt_path)
     if replace_classifier:
-        replace_resnet3d_classifier(model)
+        replace_medicalnet_classifier(model)
 
     if train_classifier_only:
         for param in model.parameters():
             param.requires_grad = False
-        for param in model.fc.parameters():
+        for param in model.conv_seg.parameters():
             param.requires_grad = True
 
     # loss and optimizer
@@ -76,9 +75,8 @@ def train_resnet3d(
         # save training params
         training_configs_target = save_directory / FileNameResolver.get_training_configs_filename()
         training_configs = {
-            "model": "MedicalNet",
+            "model": "Medicalnet",
             "depth": depth,
-            "ckt_num_classes": ckt_num_classes,
             "replace_classifier": replace_classifier,
             "train_classifier_only": train_classifier_only,
             "epochs": epochs,

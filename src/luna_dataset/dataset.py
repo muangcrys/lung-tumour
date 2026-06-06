@@ -84,7 +84,6 @@ class LunaDataset(Dataset):
     def get_all_labels(self) -> torch.Tensor:
         return torch.tensor(self.annotations[LunaColumns.label].astype(int).values)
 
-    @staticmethod
     def get_label(self, row: pd.Series):
         label = row[LunaColumns.label]
         return int(label)

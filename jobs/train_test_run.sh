@@ -4,14 +4,17 @@
 cd "/home/s2882278/Diss/lung-tumour"
 
 # copy files to scratch
+echo "Copying files to scratch..."
 bash scripts/copy_files_to_scratch.sh > /dev/null
 
 # activate conda
+echo "Activating conda environment..."
 source /opt/conda/bin/activate
 conda activate lung-tumour
 
 
 # train model
+echo "Running training script..."
 python -u src/train_resnet3d.py \
     --depth 18 \
     --train_annotation "/disk/scratch/s2882278/lung-tumour/data/LUNA/processed/SEED_4242/train_annotations.csv" \

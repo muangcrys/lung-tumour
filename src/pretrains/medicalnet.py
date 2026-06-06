@@ -27,6 +27,7 @@ def get_pretrained_medicalnet(depth: Literal[18, 50],
         ckt_path = config.ckt
     else:
         ckt_path = Path(ckt_path)
+        
 
     if disable_cuda_loading is None:
         disable_cuda_loading = not torch.cuda.is_available()

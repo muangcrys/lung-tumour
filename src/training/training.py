@@ -36,9 +36,11 @@ def get_BCE_loss(pos_weight: float = 2.0):
     return nn.BCEWithLogitsLoss(weight=weight)
 
 def resolve_save_directory(model: torch.nn.Module,
-                           base_directory: str|Path = None):
+                           base_directory: str|Path = None,
+                           model_string: str = None):
     time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    model_string = f"{model.__class__.__module__}-{model.__class__.__name__}"
+    if model_string is None:
+        model_string = f"{model.__class__.__module__}-{model.__class__.__name__}"
 
     if base_directory is None:
         base_directory = PathList.saved_weights_dir.resolve()
@@ -86,6 +88,7 @@ def training_loop(model: torch.nn.Module,
 
     # start
     model.to(device)
+    criterion.to(device)
 
     best_model_state_dict = None
     best_optimizer_state_dict = None
@@ -100,13 +103,13 @@ def training_loop(model: torch.nn.Module,
     avg_train_loss = None
     avg_val_loss = None
 
-    for epoch in range(epochs):
+    for epoch in tqdm(range(epochs), desc="Training Progress"):
         model.train()
         train_loss = 0.0
 
         for inputs, labels in train_loader:
             inputs = inputs.to(device)
-            labels = labels.to(device)
+            labels = labels.to(device).float().unsqueeze(1)
 
             optimizer.zero_grad()
 
@@ -123,7 +126,7 @@ def training_loop(model: torch.nn.Module,
 
         with torch.no_grad():
             for inputs, labels in validate_loader:
-                inputs, labels = inputs.to(device), labels.to(device)
+                inputs, labels = inputs.to(device), labels.to(device).float().unsqueeze(1)
                 y_pred = model(inputs, **forward_args)
 
                 loss = criterion(y_pred, labels)
@@ -150,7 +153,7 @@ def training_loop(model: torch.nn.Module,
             best_train_loss = avg_train_loss
             best_epoch = epoch
 
-        if save_checkpoints and epoch + 1 % frequency == 0:
+        if save_checkpoints and (epoch + 1) % frequency == 0:
             checkpoint_target = save_directory / FileNameResolver.get_checkpoint_name(epoch + 1)
             print(f"Saving checkpoint to {checkpoint_target}")
             torch.save({
