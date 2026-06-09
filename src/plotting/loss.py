@@ -32,7 +32,7 @@ def plot_loss_curves_from_df(df: pd.DataFrame,
 
 def plot_loss_curves_from_csv(csv_path: str | Path,
                               figsize: tuple[int, int] = (7, 7),
-                              save_plt: bool = True,
+                              save_plot: bool = True,
                               save_directory: str | Path = None,
                               file_name="loss_curves.pdf"):
 
@@ -42,7 +42,7 @@ def plot_loss_curves_from_csv(csv_path: str | Path,
         raise FileNotFoundError(f"{csv_path} is not a file")
     df = pd.read_csv(csv_path)
     # resolve save
-    if save_plt:
+    if save_plot:
         if save_directory is None:
             save_directory = csv_path.parent.resolve()
         else:
@@ -52,7 +52,7 @@ def plot_loss_curves_from_csv(csv_path: str | Path,
     # plot
     fig, ax = plot_loss_curves_from_df(df, figsize=figsize, show_plt=False)
 
-    if save_plt:
+    if save_plot:
         fig.savefig(save_directory / file_name, bbox_inches = "tight")
     return fig, ax
 
