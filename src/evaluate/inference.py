@@ -18,7 +18,7 @@ class ColumnNames:
 
 def run_inference(model: torch.nn.Module,
                   data_loader: torch.utils.data.DataLoader,
-                  forward_args: Mapping[str, Any],
+                  forward_args: Mapping[str, Any] = None,
                   save_predictions: bool = True,
                   save_directory: str | Path = None,
                   file_name: str = None,
@@ -36,6 +36,9 @@ def run_inference(model: torch.nn.Module,
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Using device {device}")
+
+    if forward_args is None:
+        forward_args = {}
 
     predictions = []
     labels = []
@@ -63,8 +66,8 @@ def run_inference(model: torch.nn.Module,
 
 
 def run_inference_and_metrics(model: torch.nn.Module,
-                              data_loader: torch.utils.data.DataLoader,
-                              forward_args: Mapping[str, Any],
+                              dataloader: torch.utils.data.DataLoader,
+                              forward_args: Mapping[str, Any] = None,
                               threshold: float = 0.5,
                               save_predictions: bool = True,
                               save_metrics: bool = True,
@@ -78,7 +81,7 @@ def run_inference_and_metrics(model: torch.nn.Module,
                               device: str | torch.device = None):
     # run inference
     df = run_inference(model=model,
-                       data_loader=data_loader,
+                       data_loader=dataloader,
                        forward_args=forward_args,
                        save_predictions=save_predictions,
                        save_directory=save_directory,

@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="evaluation scripts">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="evaluate">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/evaluate/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/inference.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/metrics.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -326,7 +320,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780888562764</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="evaluate">
+      <option name="closed" value="true" />
+      <created>1780980285107</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1780980285107</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,7 +342,8 @@
     <MESSAGE value="requirements.txt" />
     <MESSAGE value="slurm scripts" />
     <MESSAGE value="evaluation scripts" />
-    <option name="LAST_COMMIT_MESSAGE" value="evaluation scripts" />
+    <MESSAGE value="evaluate" />
+    <option name="LAST_COMMIT_MESSAGE" value="evaluate" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
