@@ -45,10 +45,11 @@ def run_inference(model: torch.nn.Module,
 
     # run inference
     model.eval()
+    model.to(device)
     with torch.no_grad():
         for x, y in tqdm(data_loader):
             labels.extend(y.cpu().float().reshape(-1).tolist())
-
+            x = x.to(device)
             logits = model(x, **forward_args)  # shape: (batch_size, 1)
 
             if output_logits:
