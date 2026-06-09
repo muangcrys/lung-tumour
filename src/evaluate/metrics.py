@@ -4,7 +4,6 @@ import pandas as pd
 import torch
 from torchmetrics.classification import (BinaryAccuracy, BinaryPrecision, BinaryRecall, BinaryAUROC,
                                          BinaryF1Score, BinaryAveragePrecision, BinaryConfusionMatrix)
-from evaluate.inference import ColumnNames
 from pathlib import Path
 from evaluate.confusion_matrix import run_confusion_matrix
 import json
@@ -49,8 +48,8 @@ def run_metrics_pd(df: pd.DataFrame,
             save_directory.mkdir(parents=True, exist_ok=True)
         if file_name is None:
             file_name = "metrics.json"
-    y_prob = torch.tensor(df[ColumnNames.predictions].values, dtype=torch.float)
-    y_true = torch.tensor(df[ColumnNames.labels].values, dtype=torch.int)
+    y_prob = torch.tensor(df["predictions"].values, dtype=torch.float)
+    y_true = torch.tensor(df["labels"].values, dtype=torch.int)
 
     results = run_metrics(y_prob, y_true, threshold=threshold)
     if save_results:
