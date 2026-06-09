@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="evaluate">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="evaluation pipeline">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/evaluate/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/inference.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/evaluate/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/evaluate/precision_recall.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/precision_recall.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/evaluate/roc.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/roc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -328,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780980285107</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="evaluation pipeline">
+      <option name="closed" value="true" />
+      <created>1780984167444</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1780984167444</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,7 +360,8 @@
     <MESSAGE value="slurm scripts" />
     <MESSAGE value="evaluation scripts" />
     <MESSAGE value="evaluate" />
-    <option name="LAST_COMMIT_MESSAGE" value="evaluate" />
+    <MESSAGE value="evaluation pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="evaluation pipeline" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

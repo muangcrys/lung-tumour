@@ -5,7 +5,8 @@ from torchmetrics.classification import BinaryROC, BinaryAUROC
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
-from evaluate.inference import ColumnNames
+from evaluate.names import ColumnNames
+
 
 def plot_roc(y_prob: torch.Tensor,
              y_true: torch.Tensor,

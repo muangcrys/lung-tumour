@@ -1,10 +1,7 @@
 from training.training import *
 from pretrains.resnet3d import *
-from luna_dataset.dataset import LunaDataset
 from utility.reproducibility import reset_seed
 from training.dataloader import get_train_val_loaders
-from torch import Generator
-from torch.utils.data import DataLoader
 import json
 
 def train_resnet3d(

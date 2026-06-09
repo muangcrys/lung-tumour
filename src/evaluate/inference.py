@@ -2,18 +2,12 @@ from typing import Mapping, Any
 from pathlib import Path
 import pandas as pd
 import torch
-import torch.nn.functional as F
-from torch import nn
 from tqdm.auto import tqdm
 from evaluate.metrics import run_metrics_pd
 from evaluate.precision_recall import plot_pr_curve_from_df
 from evaluate.roc import plot_roc_from_df
 from evaluate.confusion_matrix import plot_confusion_matrix
-
-
-class ColumnNames:
-    labels = "labels"
-    predictions = "predictions"
+from evaluate.names import ColumnNames
 
 
 def run_inference(model: torch.nn.Module,
@@ -58,10 +52,10 @@ def run_inference(model: torch.nn.Module,
                 predictions.extend(torch.sigmoid(logits).cpu().reshape(-1).tolist())
 
     # done
-    df = pd.DataFrame({"labels": labels, "predictions": predictions})
+    df = pd.DataFrame({ColumnNames.labels: labels, ColumnNames.predictions: predictions})
     if save_predictions:
         print(f"Saving predictions to {save_directory}")
-        df.to_csv(Path(save_directory) / "predictions.csv", index=False)
+        df.to_csv(Path(save_directory) / file_name, index=False)
 
     return df
 

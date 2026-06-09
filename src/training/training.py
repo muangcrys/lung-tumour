@@ -4,6 +4,8 @@ from torch.optim import AdamW
 from typing import Literal, Mapping, Any
 from pathlib import Path
 from datetime import datetime
+
+from training.names import FileNameResolver
 from utility.paths import PathList
 from tqdm.auto import tqdm
 from copy import deepcopy
@@ -225,46 +227,5 @@ def training_loop(model: torch.nn.Module,
     print("Done!")
 
     return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_epoch, stats_dataframe
-
-
-class FileNameResolver:
-    @staticmethod
-    def get_checkpoint_name(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return epoch_str + "_" + "ckt.pth"
-
-    @staticmethod
-    def get_stats_filename(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return epoch_str + "_" + "stats.csv"
-
-    @staticmethod
-    def get_best_checkpoint_name(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return "#BEST_" + epoch_str + "_" + "ckt.pth"
-
-    @staticmethod
-    def get_best_json_filename(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return "#BEST_" + epoch_str + "_" + "details.json"
-
-    @staticmethod
-    def get_final_checkpoint_name(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return "#FINAL_" + epoch_str + "_" + "ckt.pth"
-
-    @staticmethod
-    def get_final_json_filename(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return "#FINAL_" + epoch_str + "_" + "details.json"
-
-    @staticmethod
-    def get_final_stats_filename(epoch: int|str) -> str:
-        epoch_str = str(epoch)
-        return "#FINAL_" + epoch_str + "_" + "stats.csv"
-
-    @staticmethod
-    def get_training_configs_filename() -> str:
-        return "###TrainingConfigs.json"
 
 

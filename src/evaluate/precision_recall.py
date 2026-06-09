@@ -4,7 +4,7 @@ from torchmetrics.classification import BinaryPrecisionRecallCurve, BinaryAverag
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
-from evaluate.inference import ColumnNames
+from evaluate.names import ColumnNames
 from typing import Tuple
 
 
