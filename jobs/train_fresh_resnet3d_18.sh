@@ -35,6 +35,6 @@ python -u src/train_fresh_resnet3d.py \
     --epochs 50 \
     --batch_size 2 \
     --learning_rate 5e-5 \
-    --weight_decay 1e-3
+    --weight_decay 1e-3 \
     --device "cuda"
 

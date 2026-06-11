@@ -28,6 +28,7 @@ def run_evaluation_on_model_directory(
         batch_size: int = 8,
         num_workers: int = 0,
         device: str | torch.device = None,
+        **kwargs,
 ):
     # sentinel
     if not final_model and not best_model and not plot_loss:

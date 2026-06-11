@@ -40,7 +40,7 @@ def plot_roc(y_prob: torch.Tensor,
 
     ax.set_xlabel('False Positive Rate')
     ax.set_ylabel('True Positive Rate')
-    ax.set_title(f'ROC Curve (AUC = {auroc: .3f}')
+    ax.set_title(f'ROC Curve (AUC = {auroc: .3f})')
     ax.legend(loc='lower right')
     ax.set_aspect('equal')
     ax.set_xlim([-0.05, 1.05])

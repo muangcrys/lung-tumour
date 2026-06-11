@@ -18,7 +18,7 @@ def plot_loss_curves_from_df(df: pd.DataFrame,
         data=df_long,
         x="epoch",
         y="loss",
-        hue="split",
+        hue="loss_type",
         ax=ax
     )
 

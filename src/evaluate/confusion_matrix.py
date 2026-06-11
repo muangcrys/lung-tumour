@@ -38,7 +38,7 @@ def reconstruct_confusion_matrix_tensor(confusion_matrix_dict: dict, ):
 
 def plot_confusion_matrix(confusion_matrix_tensor: torch.Tensor = None,
                           confusion_matrix_dict: dict = None,
-                          figsize: tuple[int, int] = (5,5),
+                          figsize: tuple[int, int] = (3,3),
                           save_plot: bool = True,
                           save_directory: str | Path = None,
                           file_name: str = None,):
@@ -58,23 +58,25 @@ def plot_confusion_matrix(confusion_matrix_tensor: torch.Tensor = None,
 
     # np
     cm = confusion_matrix_tensor.numpy()
-    cm_pct = cm / cm.sum()
+    row_sums = cm.sum(axis=1, keepdims=True)
+    cm_pct = np.divide(cm, row_sums, out=np.zeros_like(cm, dtype=float), where=row_sums != 0)
+    
     annot = np.array([
-        [f"{count}\n({pct:.1%})" for count, pct in zip(row_count, row_pct)]
+        [f"{pct:.1%}\n({count})" for count, pct in zip(row_count, row_pct)]
         for row_count, row_pct in zip(cm, cm_pct)
     ])
 
     # plot
     fig, ax = plt.subplots(figsize=figsize)
-    sns.heatmap(cm,
-                annot=annot,
-                fmt="",
-                cmap="magma",
-                cbar=False,
-                annot_kws={"size": 10},
-                xticklabels=["-", "+"],
-                yticklabels=["-", "+"],
-                ax=ax)
+    sns.heatmap(cm_pct,
+            annot=annot,
+            fmt="",
+            cmap="magma",
+            cbar=False,
+            annot_kws={"size": 10},
+            xticklabels=["-", "+"],
+            yticklabels=["-", "+"],
+            ax=ax)
 
     ax.set_title("Confusion Matrix")
     ax.set_xlabel("Predicted")
