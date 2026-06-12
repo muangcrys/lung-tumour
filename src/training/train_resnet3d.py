@@ -50,7 +50,7 @@ def train_resnet3d(
 
     # loaders
     train_loader, validate_loader = get_train_val_loaders(
-        model_type="medical_pretrained",
+        model_type="video_pretrained",
         train_annotation=train_annotation,
         train_image_dir=train_image_dir,
         validate_annotation=validate_annotation,
@@ -68,12 +68,12 @@ def train_resnet3d(
 
     # resolve training save
     if save_checkpoints:
-        save_directory = resolve_save_directory(model, base_directory=base_directory, model_string=f"medicalnet-{depth}")
+        save_directory = resolve_save_directory(model, base_directory=base_directory, model_string=f"resnet3d-{depth}")
         save_directory.mkdir(parents=True, exist_ok=True)
         # save training params
         training_configs_target = save_directory / FileNameResolver.get_training_configs_filename()
         training_configs = {
-            "model": "MedicalNet",
+            "model": "Resnet3d",
             "depth": depth,
             "ckt_num_classes": ckt_num_classes,
             "replace_classifier": replace_classifier,

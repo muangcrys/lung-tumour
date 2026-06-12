@@ -8,6 +8,7 @@ from utility.reproducibility import seed_worker
 
 
 def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+                         n_input_channels: int = None,
                          annotation: str | Path | None = None,
                          image_dir: str | Path | None = None,
                          batch_size: int = 16,
@@ -23,6 +24,7 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
             annotation_file=annotation,
             image_dir=image_dir,
             split="train",
+            n_input_channels=n_input_channels,
             seed=seed,
             model=model_type,
         )
@@ -41,6 +43,7 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
             image_dir=image_dir,
             split="train",
             model=model_type,
+            n_input_channels=n_input_channels,
         )
         train_sampler = get_weighted_sampler_luna(train_dataset,
                                                   pos_weight=pos_weight, )
@@ -55,6 +58,7 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
 
 
 def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+                        n_input_channels: int = None,
                         annotation: str | Path | None = None,
                         image_dir: str | Path | None = None,
                         batch_size: int = 16,
@@ -64,6 +68,7 @@ def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrai
         image_dir=image_dir,
         split="validate",
         model=model_type,
+        n_input_channels=n_input_channels
     )
     validate_loader = DataLoader(dataset=validate_dataset,
                                  batch_size=batch_size,
@@ -73,6 +78,7 @@ def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrai
 
 
 def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+                          n_input_channels: int = None,
                           train_annotation: str | Path | None = None,
                           train_image_dir: str | Path | None = None,
                           validate_annotation: str | Path | None = None,
@@ -84,6 +90,7 @@ def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretr
                           deterministic: bool = True
                           ):
     train_loader = get_train_dataloader(model_type=model_type,
+                                        n_input_channels=n_input_channels,
                                         annotation=train_annotation,
                                         image_dir=train_image_dir,
                                         batch_size=batch_size,
@@ -93,6 +100,7 @@ def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretr
                                         deterministic=deterministic)
 
     validate_loader = get_validate_loader(model_type=model_type,
+                                          n_input_channels=n_input_channels,
                                           annotation=validate_annotation,
                                           image_dir=validate_image_dir,
                                           batch_size=batch_size,

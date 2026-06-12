@@ -166,7 +166,7 @@ def resolve_depth(training_configs: dict) -> int:
 
 def resolve_channels(training_configs: dict) -> int:
     model_type: str = training_configs["model_type"].lower()
-    if "resnet-3d" == model_type:
+    if "resnet3d" in model_type:
         return 3
     else:
         return 1

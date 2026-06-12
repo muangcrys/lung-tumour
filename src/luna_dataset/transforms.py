@@ -1,5 +1,7 @@
 from monai.transforms import Compose, ScaleIntensityRange, NormalizeIntensity, CenterSpatialCrop, RandSpatialCrop, \
-    EnsureChannelFirst, RandFlip, RandRotate90, Resize, RepeatChannel
+    EnsureChannelFirst, RandFlip, RandRotate90, Resize, RepeatChannel, RandScaleIntensity, RandShiftIntensity, \
+    RandAdjustContrast, RandGaussianNoise, RandGaussianSmooth
+
 from typing import Literal, List
 
 def get_means_stds(statistics: Literal["kinetics", "0.5"], channel: int = 1):
@@ -53,6 +55,8 @@ def get_monai_clip_scale(maxHU=400.0,
         return compose_list
 
 def get_transforms(augmentation: bool = True,
+                   spatial_augmentation: bool = True,
+                   grey_values_augmentation: bool = True,
                    crop: bool = False,
                    crop_size: int = 112,
                    maxHU=400.0,
@@ -89,15 +93,27 @@ def get_transforms(augmentation: bool = True,
 
     if augmentation:
         # data is (C, D, H, W)
-        aug_transforms = [
-            RandFlip(prob=0.5, spatial_axis=0),    # flip along depth
-            RandFlip(prob=0.5, spatial_axis=1),    # flip along height
-            RandFlip(prob=0.5, spatial_axis=2),    # flip along width
+        if spatial_augmentation:
+            spatial_augs_transforms = [
+                RandFlip(prob=0.5, spatial_axis=0),    # flip along depth
+                RandFlip(prob=0.5, spatial_axis=1),    # flip along height
+                RandFlip(prob=0.5, spatial_axis=2),    # flip along width
 
-            RandRotate90(prob=0.75, max_k=3,
-                         spatial_axes=(1, 2))      # rotate H and W
-        ]
-        compose.extend(aug_transforms)
+                RandRotate90(prob=0.3, max_k=3,
+                             spatial_axes=(1, 2))      # rotate H and W
+            ]
+            compose.extend(spatial_augs_transforms)
+        if grey_values_augmentation:
+            grey_augs_transforms = [
+                RandScaleIntensity(factors=0.1, prob=0.5),
+                RandShiftIntensity(offsets=0.1, prob=0.5),
+                RandAdjustContrast(gamma=(0.8, 1.2), prob=0.3),
+                RandGaussianNoise(mean=0.0, std=0.01, prob=0.3),
+                RandGaussianSmooth(sigma_x=(0.25, 0.75),
+                                   sigma_y=(0.25, 0.75),
+                                   sigma_z=(0, 0),
+                                   prob=0.3)
+            ]
 
     if scale:
         compose.append(Resize(spatial_size=(-1, -1, scale_to_size, scale_to_size)))

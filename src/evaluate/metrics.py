@@ -8,20 +8,24 @@ from pathlib import Path
 from evaluate.confusion_matrix import run_confusion_matrix
 import json
 from evaluate.names import ColumnNames
+from typing import Any
 
 
 def run_metrics(y_prob: torch.Tensor,
                 y_true: torch.Tensor,
-                threshold: float = 0.5):
-    metrics = {
+                threshold: float = 0.5,
+                skip_confusion_matrix: bool = False,):
+    metrics: dict[str, Any] = {
         "accuracy": BinaryAccuracy(threshold=threshold),
         "precision": BinaryPrecision(threshold=threshold),
         "recall": BinaryRecall(threshold=threshold),
         "f1": BinaryF1Score(threshold=threshold),
         "auroc": BinaryAUROC(),
-        "average_precision": BinaryAveragePrecision(),
-        "confusion_matrix": partial(run_confusion_matrix, threshold=threshold, return_type='dict')
+        "average_precision": BinaryAveragePrecision()
     }
+
+    if not skip_confusion_matrix:
+        metrics["confusion_matrix"] = partial(run_confusion_matrix, threshold=threshold, return_type='dict')
 
     results = {}
 

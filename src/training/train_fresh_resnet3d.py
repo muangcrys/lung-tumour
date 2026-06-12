@@ -29,7 +29,7 @@ def train_fresh_resnet3d(
     if deterministic:
         reset_seed(seed)
 
-    model = get_fresh_resnet3d(depth=depth)
+    model = get_fresh_resnet3d(depth=depth, n_input_channels=3)
     
     if ckt_path is not None:
         print(f"Loading weights from checkpoint: {ckt_path}")
@@ -47,6 +47,7 @@ def train_fresh_resnet3d(
     # loaders
     train_loader, validate_loader = get_train_val_loaders(
         model_type="random_init",
+        n_input_channels=3,
         train_annotation=train_annotation,
         train_image_dir=train_image_dir,
         validate_annotation=validate_annotation,

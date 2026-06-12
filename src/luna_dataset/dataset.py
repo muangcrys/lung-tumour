@@ -107,9 +107,14 @@ class LunaDataset(Dataset):
     @staticmethod
     def get_transforms_pipeline(split: Literal["train", "validate", "test"] = "train",
                                 model: Literal[
-                                    "video_pretrained", "medical_pretrained", "random_init"] = "random_init"):
+                                    "video_pretrained", "medical_pretrained", "random_init"] = "random_init",
+                                n_input_channels: int | None = None,):
         assert model in ["video_pretrained", "medical_pretrained", "random_init"]
         assert split in ["train", "validate", "test"]
+
+        if n_input_channels is None:
+            n_input_channels: int = 3 if model == "video_pretrained" else 1
+
 
         augmenting = split == "train"
         if model == "video_pretrained":
@@ -120,7 +125,7 @@ class LunaDataset(Dataset):
                                   statistics="kinetics",
                                   scale=False,
                                   replicate_channels=True,
-                                  num_channels=3)
+                                  num_channels=n_input_channels)
         else:
             return get_transforms(augmentation=augmenting,
                                   crop=False,
@@ -129,21 +134,22 @@ class LunaDataset(Dataset):
                                   statistics="0.5",
                                   scale=False,
                                   replicate_channels=False,
-                                  num_channels=1)
+                                  num_channels=n_input_channels)
 
     @staticmethod
     def get_dataset_with_transform(annotation_file: str | Path = None,
                                    image_dir: str | Path = None,
                                    split: Literal["train", "validate", "test"] = "train",
+                                   n_input_channels: int | None = None,
                                    seed: int = 4242,
                                    model: Literal[
                                        "video_pretrained", "medical_pretrained", "random_init"] = "random_init"):
-        transform = LunaDataset.get_transforms_pipeline(split=split, model=model)
+        transform = LunaDataset.get_transforms_pipeline(split=split, model=model, n_input_channels=n_input_channels)
         dataset = LunaDataset(annotation_file=annotation_file,
                               image_dir=image_dir,
                               transform=transform,
                               split=split,
-                              seed=seed)
+                              seed=seed,)
         return dataset
 
     def get_training_weighted_sampler(self,

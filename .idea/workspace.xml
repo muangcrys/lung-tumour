@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="evaluation pipeline">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="names">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/inference.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/evaluate/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/precision_recall.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/precision_recall.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/roc.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/roc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/luna_dataset/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/luna_dataset/transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/transforms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/dataloader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_medicalnet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
     </list>
@@ -345,7 +343,23 @@
       <option name="project" value="LOCAL" />
       <updated>1780984167444</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="refactoring to avoid circular imports">
+      <option name="closed" value="true" />
+      <created>1781023999710</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1781023999710</updated>
+    </task>
+    <task id="LOCAL-00013" summary="names">
+      <option name="closed" value="true" />
+      <created>1781024011409</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1781024011409</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,7 +375,9 @@
     <MESSAGE value="evaluation scripts" />
     <MESSAGE value="evaluate" />
     <MESSAGE value="evaluation pipeline" />
-    <option name="LAST_COMMIT_MESSAGE" value="evaluation pipeline" />
+    <MESSAGE value="refactoring to avoid circular imports" />
+    <MESSAGE value="names" />
+    <option name="LAST_COMMIT_MESSAGE" value="names" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
