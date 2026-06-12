@@ -141,7 +141,7 @@ def training_loop(model: torch.nn.Module,
 
         model.eval()
         val_loss = 0.0
-        labels_tensor = torch.empty(0).cpu()
+        labels_tensor = torch.empty(0, dtype=torch.int).cpu()
         predictions_tensor = torch.empty(0).cpu()
 
         with torch.no_grad():
@@ -153,8 +153,8 @@ def training_loop(model: torch.nn.Module,
 
                 # append
                 y_prob = torch.sigmoid(y_pred).cpu().reshape(-1)
+                labels_tensor = torch.cat((labels_tensor, labels.cpu().int().reshape(-1)), 0)
                 predictions_tensor = torch.cat((predictions_tensor, y_prob), 0)
-                labels_tensor = torch.cat((labels_tensor, labels.cpu().reshape(-1)), 0)
 
         avg_train_loss = train_loss / len(train_loader)
         avg_val_loss = val_loss / len(validate_loader)

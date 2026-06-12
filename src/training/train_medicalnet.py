@@ -94,7 +94,7 @@ def train_medicalnet(
         save_directory = None
 
     # train loop
-    best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_epoch, stats_dataframe = training_loop(
+    best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe = training_loop(
         model=model,
         optimizer=optimizer,
         criterion=criterion,
@@ -107,4 +107,4 @@ def train_medicalnet(
         device=device,
     )
 
-    return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_epoch, stats_dataframe
+    return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe

@@ -114,7 +114,8 @@ class LunaDataset(Dataset):
 
         if n_input_channels is None:
             n_input_channels: int = 3 if model == "video_pretrained" else 1
-
+            
+        replicate_channels = n_input_channels != 1
 
         augmenting = split == "train"
         if model == "video_pretrained":
@@ -124,7 +125,7 @@ class LunaDataset(Dataset):
                                   maxHU=LunaDataset.MAX_HU,
                                   statistics="kinetics",
                                   scale=False,
-                                  replicate_channels=True,
+                                  replicate_channels=replicate_channels,
                                   num_channels=n_input_channels)
         else:
             return get_transforms(augmentation=augmenting,
@@ -133,7 +134,7 @@ class LunaDataset(Dataset):
                                   maxHU=LunaDataset.MAX_HU,
                                   statistics="0.5",
                                   scale=False,
-                                  replicate_channels=False,
+                                  replicate_channels=replicate_channels,
                                   num_channels=n_input_channels)
 
     @staticmethod
