@@ -5,7 +5,7 @@ from training.dataloader import get_train_val_loaders
 import json
 
 def train_fresh_medicalnet(
-        depth: Literal[18, 50] = 18,
+        depth: Literal[18, 34, 50] = 18,
         ckt_path: str|Path|None = None,
         train_annotation: str|Path|None = None,
         train_image_dir: str|Path|None = None,

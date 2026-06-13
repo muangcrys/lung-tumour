@@ -10,13 +10,16 @@ from luna_dataset.dataset import LunaDataset
 from luna_dataset.transforms import *
 from torch.utils.data.dataloader import DataLoader
 
-def get_pretrained_medicalnet(depth: Literal[18, 50],
+def get_pretrained_medicalnet(depth: Literal[18, 34, 50],
                               ckt_path: str|Path|None = None,
                               disable_cuda_loading: bool = None,
                               remove_module_prefix: bool = True) -> nn.Module:
     if depth == 18:
         config = MedicalNet18Config
         model_fn = resnet18
+    elif depth == 34:
+        config = MedicalNet34Config
+        model_fn = resnet34
     elif depth == 50:
         config = MedicalNet50Config
         model_fn = resnet50
@@ -78,6 +81,14 @@ def main():
     print("Successfully replaced Medicalnet-18 fully connected layer.")
     print(medicalnet18)
     print("=" * 20)
+    print("Testing Medicalnet-34")
+    medicalnet34 = get_pretrained_medicalnet(depth=34)
+    print("Successfully loaded Medicalnet-34 with pretrained weights.")
+    print("Replacing final layer.")
+    replace_medicalnet_classifier(medicalnet34)
+    print("Successfully replaced Medicalnet-34 fully connected layer.")
+    print(medicalnet34)
+    print("=" * 20)
     print("Testing Medicalnet-50")
     medicalnet50 = get_pretrained_medicalnet(depth=50)
     print("Successfully loaded Medicalnet-50 with pretrained weights.")
@@ -98,11 +109,14 @@ def main():
     print("=" * 20)
     print("Testing forward pass...")
     medicalnet18.eval()
+    medicalnet34.eval()
     medicalnet50.eval()
 
     with torch.no_grad():
         medicalnet18(next_batch)
         print("Medicalnet-18 forward pass OK")
+        medicalnet34(next_batch)
+        print("Medicalnet-34 forward pass OK")
         medicalnet50(next_batch)
         print("Medicalnet-50 forward pass OK")
 

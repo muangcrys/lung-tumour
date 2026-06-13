@@ -4,16 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="names">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="track metrics during training, additional augmentations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/luna_dataset/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/luna_dataset/transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/transforms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pretrains/configs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/configs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pretrains/medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pretrains/resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_medicalnet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +88,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/jobs",
+    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/checkpoints/resnet3d",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -99,9 +100,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/jobs" />
-      <recent name="$PROJECT_DIR$/checkpoints/medicalnet" />
       <recent name="$PROJECT_DIR$/checkpoints/resnet3d" />
+      <recent name="$PROJECT_DIR$/checkpoints/medicalnet" />
+      <recent name="$PROJECT_DIR$/jobs" />
       <recent name="$PROJECT_DIR$/data/LUNA/processed/SEED_4242" />
       <recent name="$PROJECT_DIR$/data/LUNA/raw" />
     </key>
@@ -109,7 +110,7 @@
       <recent name="F:\UoEd\Diss\lung-tumour" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.downloads">
+  <component name="RunManager" selected="Python.resnet3d (1)">
     <configuration name="downloads" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="lung-tumour" />
       <option name="ENV_FILES" value="" />
@@ -232,9 +233,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.downloads" />
         <item itemvalue="Python.resnet3d (1)" />
         <item itemvalue="Python.medicalnet" />
+        <item itemvalue="Python.downloads" />
         <item itemvalue="Python.resnet3d" />
         <item itemvalue="Python.split_nodules" />
       </list>
@@ -359,7 +360,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781024011409</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="track metrics during training, additional augmentations">
+      <option name="closed" value="true" />
+      <created>1781228647806</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1781228647806</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,7 +386,8 @@
     <MESSAGE value="evaluation pipeline" />
     <MESSAGE value="refactoring to avoid circular imports" />
     <MESSAGE value="names" />
-    <option name="LAST_COMMIT_MESSAGE" value="names" />
+    <MESSAGE value="track metrics during training, additional augmentations" />
+    <option name="LAST_COMMIT_MESSAGE" value="track metrics during training, additional augmentations" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

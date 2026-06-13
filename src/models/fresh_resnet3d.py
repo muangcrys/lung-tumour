@@ -3,11 +3,13 @@ from models.resnet3d import *
 from typing import Literal
 from torch import nn
 
-def get_fresh_resnet3d(depth: Literal[18, 50] = 18,
+def get_fresh_resnet3d(depth: Literal[18, 34, 50] = 18,
                        n_input_channels: int = 1):
     
     if depth == 18:
         config = R3d18Config
+    elif depth == 34:
+        config = R3d34Config
     elif depth == 50:
         config = R3d50Config
     else:

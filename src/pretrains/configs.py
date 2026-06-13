@@ -14,8 +14,17 @@ class R3d50Config:
     shortcut = 'B'
     ckt = _r3d_dir / "r3d50_KMS_200ep.pth"
 
+class R3d34Config:
+    pretrained_classes = 1039
+    shortcut = 'B'
+    ckt = _r3d_dir / "r3d34_KM_200ep.pth"
+
 class MedicalNet18Config:
     ckt = _medicalnet_dir / "resnet_18_23dataset.pth"
+    shortcut = 'A'
+
+class MedicalNet34Config:
+    ckt = _medicalnet_dir / "resnet_34_23dataset.pth"
     shortcut = 'A'
 
 class MedicalNet50Config:

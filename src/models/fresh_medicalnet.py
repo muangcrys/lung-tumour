@@ -5,7 +5,7 @@ from torch import nn
 
 ### medicalnet-like classifier models
 
-def get_fresh_medicalnet(depth: Literal[18, 50] = 18,):
+def get_fresh_medicalnet(depth: Literal[18, 34, 50] = 18,):
 
     if depth == 18:
         model_fn = resnet18
@@ -15,7 +15,7 @@ def get_fresh_medicalnet(depth: Literal[18, 50] = 18,):
         config = MedicalNet50Config
     elif depth == 34:
         model_fn = resnet34
-        config = MedicalNet18Config  #TODO
+        config = MedicalNet34Config
     else:
         raise ValueError(f"Unsupported depth: {depth}")
 

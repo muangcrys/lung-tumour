@@ -7,11 +7,13 @@ from luna_dataset.dataset import LunaDataset
 from luna_dataset.transforms import *
 from torch.utils.data.dataloader import DataLoader
 
-def get_pretrained_r3d(depth: Literal[18, 50],
+def get_pretrained_r3d(depth: Literal[18, 34, 50],
                        ckt_path: str|Path|None = None,
                        num_classes: int = None,):
     if depth == 18:
         config = R3d18Config
+    elif depth == 34:
+        config = R3d34Config
     elif depth == 50:
         config = R3d50Config
     else:
@@ -53,6 +55,14 @@ def main():
     print("Successfully replaced ResNet3D-18 fully connected layer.")
     print(r3d18)
     print("=" * 20)
+    print("Testing ResNet3D-34")
+    r3d34 = get_pretrained_r3d(depth=34)
+    print("Successfully loaded ResNet3D-34 with pretrained weights.")
+    print(r3d34)
+    print("Replacing final layer.")
+    replace_resnet3d_classifier(r3d34)
+    print("Successfully replaced ResNet3D-34 fully connected layer.")
+    print("=" * 20)
     print("Testing ResNet3D-50")
     r3d50 = get_pretrained_r3d(depth=50)
     print("Successfully loaded ResNet3D-50 with pretrained weights.")
@@ -74,11 +84,14 @@ def main():
     print("=" * 20)
     print("Testing forward pass...")
     r3d18.eval()
+    r3d34.eval()
     r3d50.eval()
 
     with torch.no_grad():
         r3d18(next_batch)
         print("Resnet3D-18 forward pass OK")
+        r3d34(next_batch)
+        print("Resnet3D-34 forward pass OK")
         r3d50(next_batch)
         print("Resnet3D-50 forward pass OK")
 
