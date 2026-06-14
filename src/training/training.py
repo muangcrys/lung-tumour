@@ -197,7 +197,7 @@ def training_loop(model: torch.nn.Module,
             # lower is better
             improvement = this_epoch_metric < best_metric
         if improvement:
-            print("Validation loss improved from best validation loss!")
+            print(f"Model improved on validation metric: {metric}, saving best model state dict and optimizer state dict")
             best_val_loss = avg_val_loss
             best_model_state_dict = deepcopy(model.state_dict())
             best_optimizer_state_dict = deepcopy(optimizer.state_dict())
