@@ -114,6 +114,7 @@ def get_transforms(augmentation: bool = True,
                                    sigma_z=(0, 0),
                                    prob=0.3)
             ]
+            compose.extend(grey_augs_transforms)
 
     if scale:
         compose.append(Resize(spatial_size=(-1, -1, scale_to_size, scale_to_size)))

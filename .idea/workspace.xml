@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="track metrics during training, additional augmentations">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="resnet34 models">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/fresh_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pretrains/configs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/configs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pretrains/medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pretrains/resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pretrains/vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/vivit.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -368,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781228647806</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="resnet34 models">
+      <option name="closed" value="true" />
+      <created>1781320438601</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1781320438601</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,7 +388,8 @@
     <MESSAGE value="refactoring to avoid circular imports" />
     <MESSAGE value="names" />
     <MESSAGE value="track metrics during training, additional augmentations" />
-    <option name="LAST_COMMIT_MESSAGE" value="track metrics during training, additional augmentations" />
+    <MESSAGE value="resnet34 models" />
+    <option name="LAST_COMMIT_MESSAGE" value="resnet34 models" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

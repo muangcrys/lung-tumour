@@ -21,3 +21,5 @@ def get_vivit(config = None):
 
     model = VivitForVideoClassification(config)
     return model
+
+
