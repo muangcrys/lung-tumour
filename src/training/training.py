@@ -66,7 +66,8 @@ def training_loop(model: torch.nn.Module,
                   epochs: int = 100,
                   save_checkpoints: bool = True,
                   save_directory: str | Path = None,
-                  device: torch.device | str = None):
+                  device: torch.device | str = None,
+                  vivit: bool = False,):
 
 
     print(f"Model Name: {model.__class__.__module__} -> {model.__class__.__name__}")
@@ -132,6 +133,8 @@ def training_loop(model: torch.nn.Module,
             optimizer.zero_grad()
 
             y_pred = model(inputs, **forward_args)
+            if vivit:
+                y_pred = y_pred.logits
 
             loss = criterion(y_pred, labels)
             loss.backward()
@@ -148,6 +151,8 @@ def training_loop(model: torch.nn.Module,
             for inputs, labels in validate_loader:
                 inputs, labels = inputs.to(device), labels.to(device).float().unsqueeze(1)
                 y_pred = model(inputs, **forward_args)
+                if vivit:
+                    y_pred = y_pred.logits
                 loss = criterion(y_pred, labels)
                 val_loss += loss.item()
 

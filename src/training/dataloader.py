@@ -7,7 +7,7 @@ from training.sampler import get_weighted_sampler_luna
 from utility.reproducibility import seed_worker
 
 
-def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random"],
                          n_input_channels: int = None,
                          annotation: str | Path | None = None,
                          image_dir: str | Path | None = None,
@@ -57,7 +57,7 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
     return train_loader
 
 
-def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random"],
                         n_input_channels: int = None,
                         annotation: str | Path | None = None,
                         image_dir: str | Path | None = None,
@@ -77,7 +77,7 @@ def get_validate_loader(model_type: Literal["video_pretrained", "medical_pretrai
     return validate_loader
 
 
-def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretrained", "random_init"],
+def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random"],
                           n_input_channels: int = None,
                           train_annotation: str | Path | None = None,
                           train_image_dir: str | Path | None = None,

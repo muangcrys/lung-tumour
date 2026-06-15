@@ -1,10 +1,10 @@
 from monai.transforms import Compose, ScaleIntensityRange, NormalizeIntensity, CenterSpatialCrop, RandSpatialCrop, \
     EnsureChannelFirst, RandFlip, RandRotate90, Resize, RepeatChannel, RandScaleIntensity, RandShiftIntensity, \
-    RandAdjustContrast, RandGaussianNoise, RandGaussianSmooth
+    RandAdjustContrast, RandGaussianNoise, RandGaussianSmooth, Transpose
 
 from typing import Literal, List
 
-def get_means_stds(statistics: Literal["kinetics", "0.5"], channel: int = 1):
+def get_means_stds(statistics: Literal["kinetics", "0.5", "activitynet", "imagenet"], channel: int = 1):
     # from ResNet3D PyTorch
     if statistics == 'activitynet':
         mean = [0.4477, 0.4209, 0.3906]
@@ -15,6 +15,9 @@ def get_means_stds(statistics: Literal["kinetics", "0.5"], channel: int = 1):
     elif statistics == '0.5':
         mean = [0.5] * channel
         std = [0.5] * channel
+    elif statistics == 'imagenet':
+        mean = [0.485, 0.456, 0.406]
+        std = [0.229, 0.224, 0.225]
     else:
         raise ValueError(f"Unknown statistics: {statistics}")
 
@@ -31,7 +34,7 @@ def get_monai_clip_scale(maxHU=400.0,
                          minHU=-1000.0,
                          mean=None,
                          std=None,
-                         statistics: Literal["kinetics", "0.5"] = "0.5",
+                         statistics: Literal["kinetics", "0.5", "imagenet"] = "0.5",
                          channel: int = 1,
                          return_type: Literal["list", "compose"] = "list"):
     if mean is None or std is None:
@@ -63,11 +66,12 @@ def get_transforms(augmentation: bool = True,
                    minHU=-1000.0,
                    mean=None,
                    std=None,
-                   statistics: Literal["kinetics", "0.5"] = "kinetics",
+                   statistics: Literal["kinetics", "0.5", "imagenet"] = "kinetics",
                    scale: bool = False,
                    scale_to_size: int = 112,
                    replicate_channels: bool = False,
-                   num_channels: int = 3):
+                   num_channels: int = 3,
+                   output_depth_first: bool = False):
     ### EXPECTING: (1, D, H ,W)
 
     compose = []
@@ -118,6 +122,9 @@ def get_transforms(augmentation: bool = True,
 
     if scale:
         compose.append(Resize(spatial_size=(-1, -1, scale_to_size, scale_to_size)))
+
+    if output_depth_first:
+        compose.append(Transpose(indices=(1, 0, 2, 3)))  # (C, D, H, W) -> (D, C, H, W)
 
 
     return Compose(compose)

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="resnet34 models">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="bug fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/luna_dataset/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/luna_dataset/transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/transforms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pretrains/vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pretrains/vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +75,7 @@
     "Python.resnet3d.executor": "Run",
     "Python.split_nodules.executor": "Debug",
     "Python.split_patients.executor": "Run",
+    "Python.vivit.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -81,7 +86,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/checkpoints/resnet3d",
+    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/jobs",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -93,17 +98,17 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/jobs" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/checkpoints/resnet3d" />
       <recent name="$PROJECT_DIR$/checkpoints/medicalnet" />
-      <recent name="$PROJECT_DIR$/jobs" />
       <recent name="$PROJECT_DIR$/data/LUNA/processed/SEED_4242" />
-      <recent name="$PROJECT_DIR$/data/LUNA/raw" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\UoEd\Diss\lung-tumour" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.resnet3d (1)">
+  <component name="RunManager" selected="Python.vivit">
     <configuration name="downloads" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="lung-tumour" />
       <option name="ENV_FILES" value="" />
@@ -200,7 +205,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="split_nodules" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="vivit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="lung-tumour" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -209,13 +214,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/pretrains" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="DEBUG_JUST_MY_CODE" value="false" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/split_nodules.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/pretrains/vivit.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -226,11 +231,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.vivit" />
         <item itemvalue="Python.resnet3d (1)" />
         <item itemvalue="Python.medicalnet" />
         <item itemvalue="Python.downloads" />
         <item itemvalue="Python.resnet3d" />
-        <item itemvalue="Python.split_nodules" />
       </list>
     </recent_temporary>
   </component>
@@ -369,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781320438601</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="bug fixes">
+      <option name="closed" value="true" />
+      <created>1781397249598</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1781397249598</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,7 +402,8 @@
     <MESSAGE value="names" />
     <MESSAGE value="track metrics during training, additional augmentations" />
     <MESSAGE value="resnet34 models" />
-    <option name="LAST_COMMIT_MESSAGE" value="resnet34 models" />
+    <MESSAGE value="bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixes" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
