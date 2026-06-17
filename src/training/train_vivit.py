@@ -9,6 +9,7 @@ from transformers import VivitConfig
 
 def train_vivit(
         model_config: VivitConfig = None,
+        num_channels: int = None,
         ckt_path: str|Path|None = None,
         pretrained: bool = True,
         train_classifier_only: bool = False,
@@ -40,7 +41,7 @@ def train_vivit(
         model = pretrains.vivit.get_model_pretrained(model_config)
     else:
         print("Loading fresh vivit model")
-        model = models.vivit.get_vivit(model_config)
+        model = models.vivit.get_vivit(model_config, num_channels)
 
     # load checkpoint if specified
     if ckt_path is None:
@@ -69,8 +70,12 @@ def train_vivit(
 
     # dataloaders
     model_type = "vivit_pretrained" if pretrained else "vivit_random"
+    if model_type == "vivit_random":
+        if num_channels is not None and num_channels == 3:
+            model_type = "vivit_random_3ch"
     train_loader, validate_loader = get_train_val_loaders(
         model_type=model_type,
+        n_input_channels=num_channels,
         train_annotation=train_annotation,
         train_image_dir=train_image_dir,
         validate_annotation=validate_annotation,

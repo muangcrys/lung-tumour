@@ -213,6 +213,8 @@ def resolve_channels(training_configs: dict) -> int:
         return 3
     elif "vivit_pretrained" == model_type:
         return 3
+    elif "3ch" in model_type:
+        return 3
     else:
         return 1
 
@@ -227,6 +229,8 @@ def resolve_preprocessing_methods(training_configs: dict,) -> str:
         return "vivit_pretrained"
     elif "vivit_random" == model_string:
         return "vivit_random"
+    elif "vivit_random_3ch" == model_string:
+        return "vivit_random_3ch"
     # otherwise
     return "medical_pretrained"
 

@@ -15,9 +15,12 @@ def get_config(num_channels = 1):
 
     return config
 
-def get_vivit(config = None):
+def get_vivit(config = None, num_channels: int = None):
     if config is None:
         config = get_config()
+
+    if num_channels is not None:
+        config.num_channels = num_channels
 
     model = VivitForVideoClassification(config)
     return model

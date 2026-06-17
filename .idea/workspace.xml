@@ -4,20 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="vivit-based models">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_fresh_medicalnet_18.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_fresh_medicalnet_18.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_fresh_medicalnet_50.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_fresh_medicalnet_50.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_fresh_resnet3d_18.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_fresh_resnet3d_18.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_fresh_resnet3d_50.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_fresh_resnet3d_50.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_medicalnet_18.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_medicalnet_18.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_medicalnet_50.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_medicalnet_50.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_resnet3d_18.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_resnet3d_18.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jobs/evaluate_resnet3d_50.sh" beforeDir="false" afterPath="$PROJECT_DIR$/jobs/evaluate_resnet3d_50.sh" afterDir="false" />
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="second round evaluations">
       <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/names.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/names.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/vivit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/loss.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/train_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_vivit.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -397,7 +386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781483143477</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="second round evaluations">
+      <option name="closed" value="true" />
+      <created>1781654836570</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1781654836570</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -419,7 +416,8 @@
     <MESSAGE value="resnet34 models" />
     <MESSAGE value="bug fixes" />
     <MESSAGE value="vivit-based models" />
-    <option name="LAST_COMMIT_MESSAGE" value="vivit-based models" />
+    <MESSAGE value="second round evaluations" />
+    <option name="LAST_COMMIT_MESSAGE" value="second round evaluations" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
