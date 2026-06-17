@@ -1,6 +1,6 @@
 #!/bin/bash
 
-model="medicalnet-18"
+model="resnet3d-34"
 
 # cd to project root
 cd "/home/s2882278/Diss/lung-tumour"
@@ -10,7 +10,7 @@ echo "###################################"
 
 echo "Finding latest model directory for $model ..."
 parent="/home/s2882278/Diss/lung-tumour/weights/$model"
-latest_dir=$(find "$parent" -mindepth 1 -maxdepth 1 -type d \
+latest_dir=$(find "$parent" -mindepth 1 z 1 -type d \
     -printf '%p\n' \
     | sort \
     | tail -n1)
@@ -38,10 +38,10 @@ python -u src/evaluate_model_dir.py \
     --model_directory "$latest_dir" \
     --annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/SEED_4242/validate_annotations.csv" \
     --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
-    --preprocessing "medical_pretrained" \
+    --preprocessing "video_pretrained" \
     --model_type "medicalnet" \
     --depth 18 \
-    --channels 1 \
+    --channels 3 \
     --batch_size 8 \
     --num_workers 2 \
     --device "cuda"

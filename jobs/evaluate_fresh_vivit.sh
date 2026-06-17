@@ -1,6 +1,6 @@
 #!/bin/bash
 
-model="medicalnet-18"
+model="vivit_random"
 
 # cd to project root
 cd "/home/s2882278/Diss/lung-tumour"
@@ -38,9 +38,8 @@ python -u src/evaluate_model_dir.py \
     --model_directory "$latest_dir" \
     --annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/SEED_4242/validate_annotations.csv" \
     --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
-    --preprocessing "medical_pretrained" \
-    --model_type "medicalnet" \
-    --depth 18 \
+    --preprocessing "vivit_random" \
+    --model_type "vivit" \
     --channels 1 \
     --batch_size 8 \
     --num_workers 2 \

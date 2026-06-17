@@ -1,6 +1,6 @@
 #!/bin/bash
 
-model="medicalnet-18"
+model="medicalnet-34"
 
 # cd to project root
 cd "/home/s2882278/Diss/lung-tumour"
@@ -40,7 +40,7 @@ python -u src/evaluate_model_dir.py \
     --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --preprocessing "medical_pretrained" \
     --model_type "medicalnet" \
-    --depth 18 \
+    --depth 34 \
     --channels 1 \
     --batch_size 8 \
     --num_workers 2 \

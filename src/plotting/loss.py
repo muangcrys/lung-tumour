@@ -6,6 +6,7 @@ from pathlib import Path
 
 def plot_loss_curves_from_df(df: pd.DataFrame,
                              figsize: tuple[int, int] = (7, 7),
+                             best_epoch: int = None,
                              show_plt: bool = False):
     # melt df into long format
     df_long = df.melt(id_vars=["epoch"],
@@ -21,6 +22,10 @@ def plot_loss_curves_from_df(df: pd.DataFrame,
         hue="loss_type",
         ax=ax
     )
+
+    if best_epoch is not None:
+        # plot a vertical line at the best epoch
+        ax.axvline(x=best_epoch, color="red", linestyle="--")
 
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")

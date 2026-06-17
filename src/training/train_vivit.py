@@ -108,6 +108,8 @@ def train_vivit(
             "device": str(device),
             "model_config": model.config.to_dict()
         }
+        with open(training_configs_target, "w") as f:
+            json.dump(training_configs, f, indent=4)
     else:
         save_directory = None
 

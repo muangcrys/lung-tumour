@@ -1,13 +1,17 @@
 from pathlib import Path
+from typing import Literal
+
 from matplotlib import pyplot as plt
 import torch
 
 from evaluate.names import MetricFiles
+from plotting.metrics import plot_all_metrics_from_csv
 from training.names import FileNameResolver
 import json
 from plotting.loss import plot_loss_curves_from_csv
 from models.fresh_resnet3d import get_fresh_resnet3d
 from models.fresh_medicalnet import get_fresh_medicalnet
+from models.vivit import get_config, get_vivit
 from evaluate.inference import run_inference_and_metrics
 from training.dataloader import get_validate_loader
 
@@ -21,8 +25,9 @@ def run_evaluation_on_model_directory(
         final_model: bool = True,
         best_model: bool = True,
         plot_loss: bool = True,
+        plot_metrics: bool = True,
         threshold: float = 0.5,
-        model_type: str = None,
+        model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
         depth: int = None,
         channels: int = None,
         batch_size: int = 8,
@@ -49,20 +54,29 @@ def run_evaluation_on_model_directory(
                                                          save_directory=metrics_directory, )
         plt.close(loss_fig)
 
+    # plot metrics
+    if plot_metrics:
+        metrics_fig, metrics_ax = plot_metrics_on_model_directory(model_directory=model_directory,
+                                                                  save_directory=metrics_directory,)
+        plt.close(metrics_fig)
+
     # resolve model
     # get training configs
     training_configs = get_training_configs_from_directory(model_directory)
     # resolve model type
     if model_type is None:
         model_type = resolve_model_type(training_configs)
-    if depth is None:
-        depth = resolve_depth(training_configs)
+    if model_type == "resnet3d" or model_type == "medicalnet":
+        if depth is None:
+            depth = resolve_depth(training_configs)
     if channels is None:
         channels = resolve_channels(training_configs)
     if preprocessing is None:
-        preprocessing = resolve_preprocessing_methods(training_configs, channels)
+        preprocessing = resolve_preprocessing_methods(training_configs)
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 
     if best_model:
         best_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
@@ -149,6 +163,33 @@ def plot_loss_on_model_directory(
                                         figsize=figsize)
     return fig, ax
 
+def plot_metrics_on_model_directory(
+        model_directory: Path,
+        save_directory: str | Path = None,
+        figsize: tuple[int, int] = (7, 7),
+):
+    model_directory: Path = Path(model_directory)
+    if save_directory is None:
+        save_directory: Path = model_directory
+    else:
+        save_directory: Path = Path(save_directory)
+        save_directory.mkdir(parents=True, exist_ok=True)
+
+    # find location of final loss file
+    training_configs = get_training_configs_from_directory(model_directory)
+    final_epoch = training_configs["epochs"]
+
+    metrics_file_name = FileNameResolver.get_final_stats_filename(final_epoch)
+    metrics_file = model_directory / metrics_file_name
+
+    # plot
+    fig, ax = plot_all_metrics_from_csv(csv_path=metrics_file,
+                                        figsize=figsize,
+                                        save_plot=True,
+                                        save_directory=save_directory,
+                                        file_name=MetricFiles.get_final_metrics_plot_filename(final_epoch),)
+    return fig, ax
+
 
 def resolve_model_type(training_configs: dict) -> str:
     model_type: str = training_configs["model_type"].lower()
@@ -156,6 +197,8 @@ def resolve_model_type(training_configs: dict) -> str:
         return "resnet3d"
     elif "medicalnet" in model_type:
         return "medicalnet"
+    elif "vivit" in model_type:
+        return "vivit"
     else:
         raise ValueError(f"Could not resolve model type from training configs: {training_configs}")
 
@@ -168,32 +211,38 @@ def resolve_channels(training_configs: dict) -> int:
     model_type: str = training_configs["model_type"].lower()
     if "resnet3d" in model_type:
         return 3
+    elif "vivit_pretrained" == model_type:
+        return 3
     else:
         return 1
 
 
-def resolve_preprocessing_methods(training_configs: dict,
-                                  channels: int) -> str:
-    if channels == 3:
-        return "video_pretrained"
-
+def resolve_preprocessing_methods(training_configs: dict,) -> str:
     model_string = training_configs["model_type"].lower()
     if "fresh" in model_string:
         return "random_init"
-
+    elif model_string == "resnet3d":
+        return "video_pretrained"
+    elif "vivit_pretrained" == model_string:
+        return "vivit_pretrained"
+    elif "vivit_random" == model_string:
+        return "vivit_random"
     # otherwise
     return "medical_pretrained"
 
 
 def get_model_for_evaluation(
         model_type: str,
-        depth: int,
+        depth: Literal[18, 34, 50],
         channels: int,
 ):
     if model_type == "resnet3d":
         model = get_fresh_resnet3d(depth, channels)
     elif model_type == "medicalnet":
         model = get_fresh_medicalnet(depth)
+    elif model_type == "vivit":
+        config = get_config(num_channels=channels)
+        model = get_vivit(config)
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
     return model

@@ -4,10 +4,6 @@ class ColumnNames:
 
 
 class MetricFiles:
-    @staticmethod
-    def get_final_loss_curve_filename(final_epoch: int | str) -> str:
-        final_epoch_str = str(final_epoch)
-        return "#FINAL_" + final_epoch_str + "_" + "loss_curve.pdf"
 
     ################################## BEST ##################################
 
@@ -62,3 +58,13 @@ class MetricFiles:
     def get_final_confmat_filename(final_epoch: int | str) -> str:
         final_epoch_str = str(final_epoch)
         return "#FINAL_" + final_epoch_str + "_" + "confmat.pdf"
+
+    @staticmethod
+    def get_final_loss_curve_filename(final_epoch: int | str) -> str:
+        final_epoch_str = str(final_epoch)
+        return "#FINAL_" + final_epoch_str + "_" + "loss_curve.pdf"
+
+    @staticmethod
+    def get_final_metrics_plot_filename(final_epoch: int | str) -> str:
+        final_epoch_str = str(final_epoch)
+        return "#FINAL_" + final_epoch_str + "_" + "metrics.pdf"
