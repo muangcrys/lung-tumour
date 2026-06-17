@@ -59,7 +59,6 @@ def plot_all_metrics_from_df(df: pd.DataFrame,
         hue="metric",
         ax=ax,
         legend=True,
-        label=[m.capitalize() for m in metrics]
     )
 
     if best_epoch is not None:

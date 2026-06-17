@@ -31,7 +31,7 @@ python -u src/train_fresh_vivit_3ch.py \
     --val_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --num_workers 2 \
     --report_frequency 5 \
-    --epochs 50 \
+    --epochs 100 \
     --batch_size 2 \
     --learning_rate 5e-5 \
     --weight_decay 1e-3 \
