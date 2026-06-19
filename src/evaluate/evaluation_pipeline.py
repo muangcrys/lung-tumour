@@ -14,6 +14,7 @@ from models.fresh_medicalnet import get_fresh_medicalnet
 from models.vivit import get_config, get_vivit
 from evaluate.inference import run_inference_and_metrics
 from training.dataloader import get_validate_loader
+import seaborn as sns
 
 
 def run_evaluation_on_model_directory(
@@ -49,6 +50,8 @@ def run_evaluation_on_model_directory(
         metrics_directory.mkdir(parents=True, exist_ok=True)
 
     # plot loss first
+    sns.set_style("darkgrid")
+
     if plot_loss:
         _ , best_epoch = find_best_model_ckt(model_directory=model_directory)
         loss_fig, loss_ax = plot_loss_on_model_directory(model_directory=model_directory,

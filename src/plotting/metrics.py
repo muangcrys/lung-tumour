@@ -38,7 +38,7 @@ def plot_metric_from_df(df: pd.DataFrame,
 
 
 def plot_all_metrics_from_df(df: pd.DataFrame,
-                             metrics: Sequence[str] = ("accuracy", "precision", "recall", "f1", "auroc"),
+                             metrics: Sequence[str] = ("accuracy", "precision", "recall", "f1", "auroc", "average_precision"),
                              figsize: tuple[int, int] = (7, 7),
                              y_min: float = -0.05,
                              y_max: float = 1.05,
