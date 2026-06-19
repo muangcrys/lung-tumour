@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/data/LUNA/intermediate/SEED_4242/k_fold_annotations/fold_4_validate.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/data/LUNA/intermediate/SEED_4242/test_annotations.csv">
           <value>
             <Attribute>
