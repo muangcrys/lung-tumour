@@ -35,5 +35,6 @@ class PathList:
 
     # trained checkpoints
     saved_weights_dir = project_root / "weights"
+    saved_2stage_weights_dir = project_root / "weights_2stage"
 
     

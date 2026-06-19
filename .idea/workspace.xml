@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kfold validation data">
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="added AP to plot">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/luna_dataset/k_fold_splitting.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/luna_dataset/k_fold_splitting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/args_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/names.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/names.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utility/paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/paths.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +86,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/data/LUNA/processed",
+    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/src/training",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -96,11 +98,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/training" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/data/LUNA/processed" />
       <recent name="$PROJECT_DIR$/jobs" />
-      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/checkpoints/resnet3d" />
-      <recent name="$PROJECT_DIR$/checkpoints/medicalnet" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\UoEd\Diss\lung-tumour" />
@@ -428,7 +430,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781831917034</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="added AP to plot">
+      <option name="closed" value="true" />
+      <created>1781902018629</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1781902018629</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,7 +463,8 @@
     <MESSAGE value="second round evaluations" />
     <MESSAGE value="3ch variant for fresh vivit" />
     <MESSAGE value="kfold validation data" />
-    <option name="LAST_COMMIT_MESSAGE" value="kfold validation data" />
+    <MESSAGE value="added AP to plot" />
+    <option name="LAST_COMMIT_MESSAGE" value="added AP to plot" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
