@@ -50,14 +50,17 @@ def run_evaluation_on_model_directory(
 
     # plot loss first
     if plot_loss:
+        _ , best_epoch = find_best_model_ckt(model_directory=model_directory)
         loss_fig, loss_ax = plot_loss_on_model_directory(model_directory=model_directory,
-                                                         save_directory=metrics_directory, )
+                                                         save_directory=metrics_directory, 
+                                                         best_epoch=best_epoch)
         plt.close(loss_fig)
 
     # plot metrics
     if plot_metrics:
         metrics_fig, metrics_ax = plot_metrics_on_model_directory(model_directory=model_directory,
-                                                                  save_directory=metrics_directory,)
+                                                                  save_directory=metrics_directory,
+                                                                  best_epoch=best_epoch)
         plt.close(metrics_fig)
 
     # resolve model
@@ -83,6 +86,7 @@ def run_evaluation_on_model_directory(
         best_ckt_path, best_epoch = find_best_model_ckt(model_directory=model_directory)
         load_model_from_ckt(best_m, best_ckt_path)
         b_dataloader = get_validate_loader(model_type=preprocessing,
+                                           n_input_channels=channels,
                                            annotation=annotation,
                                            image_dir=image_dir,
                                            batch_size=batch_size,
@@ -90,6 +94,7 @@ def run_evaluation_on_model_directory(
         _ = run_inference_and_metrics(
             model=best_m,
             dataloader=b_dataloader,
+            model_type=model_type,
             threshold=threshold,
             prediction_file_name=MetricFiles.get_best_prediction_filename(best_epoch),
             metrics_file_name=MetricFiles.get_best_metrics_filename(best_epoch),
@@ -105,6 +110,7 @@ def run_evaluation_on_model_directory(
         final_ckt_path, final_epoch = find_final_model_ckt(model_directory=model_directory)
         load_model_from_ckt(final_m, final_ckt_path)
         f_dataloader = get_validate_loader(model_type=preprocessing,
+                                           n_input_channels=channels,
                                            annotation=annotation,
                                            image_dir=image_dir,
                                            batch_size=batch_size,
@@ -112,6 +118,7 @@ def run_evaluation_on_model_directory(
         _ = run_inference_and_metrics(
             model=final_m,
             dataloader=f_dataloader,
+            model_type=model_type,
             threshold=threshold,
             prediction_file_name=MetricFiles.get_final_prediction_filename(final_epoch),
             metrics_file_name=MetricFiles.get_final_metrics_filename(final_epoch),
@@ -140,6 +147,7 @@ def plot_loss_on_model_directory(
         model_directory: Path,
         save_directory: str | Path = None,
         figsize: tuple[int, int] = (7, 7),
+        best_epoch: int = None,
 ):
     model_directory: Path = Path(model_directory)
     if save_directory is None:
@@ -160,13 +168,15 @@ def plot_loss_on_model_directory(
                                         save_plot=True,
                                         save_directory=model_directory,
                                         file_name=MetricFiles.get_final_loss_curve_filename(final_epoch),
-                                        figsize=figsize)
+                                        figsize=figsize,
+                                        best_epoch=best_epoch)
     return fig, ax
 
 def plot_metrics_on_model_directory(
         model_directory: Path,
         save_directory: str | Path = None,
         figsize: tuple[int, int] = (7, 7),
+        best_epoch: int = None,
 ):
     model_directory: Path = Path(model_directory)
     if save_directory is None:
@@ -187,7 +197,8 @@ def plot_metrics_on_model_directory(
                                         figsize=figsize,
                                         save_plot=True,
                                         save_directory=save_directory,
-                                        file_name=MetricFiles.get_final_metrics_plot_filename(final_epoch),)
+                                        file_name=MetricFiles.get_final_metrics_plot_filename(final_epoch),
+                                        best_epoch=best_epoch)
     return fig, ax
 
 

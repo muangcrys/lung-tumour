@@ -107,7 +107,7 @@ class LunaDataset(Dataset):
     @staticmethod
     def get_transforms_pipeline(split: Literal["train", "validate", "test"] = "train",
                                 model: Literal[
-                                    "video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random"] = "random_init",
+                                    "video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random", "vivit_random_3ch"] = "random_init",
                                 n_input_channels: int | None = None,):
 
         if n_input_channels is None:
@@ -135,7 +135,7 @@ class LunaDataset(Dataset):
                                   replicate_channels=replicate_channels,
                                   num_channels=n_input_channels,
                                   output_depth_first=True)
-        elif model == "vivit_random":
+        elif model == "vivit_random" or model == "vivit_random_3ch":
             return get_transforms(augmentation=augmenting,
                                   crop=False,
                                   minHU=LunaDataset.MIN_HU,
@@ -163,7 +163,7 @@ class LunaDataset(Dataset):
                                    n_input_channels: int | None = None,
                                    seed: int = 4242,
                                    model: Literal[
-                                       "video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random"] = "random_init"):
+                                       "video_pretrained", "medical_pretrained", "random_init", "vivit_pretrained", "vivit_random", "vivit_random_3ch"] = "random_init"):
         transform = LunaDataset.get_transforms_pipeline(split=split, model=model, n_input_channels=n_input_channels)
         dataset = LunaDataset(annotation_file=annotation_file,
                               image_dir=image_dir,

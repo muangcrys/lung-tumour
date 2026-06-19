@@ -100,6 +100,7 @@ def train_vivit(
         training_configs_target = save_directory / FileNameResolver.get_training_configs_filename()
         training_configs = {
             "model": model_type,
+            "num_channels": num_channels,
             "train_classifier_only": train_classifier_only,
             "epochs": epochs,
             "optim_type": optim_type,

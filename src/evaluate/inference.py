@@ -12,6 +12,7 @@ from evaluate.names import ColumnNames
 
 def run_inference(model: torch.nn.Module,
                   data_loader: torch.utils.data.DataLoader,
+                  model_type: str = None,
                   forward_args: Mapping[str, Any] = None,
                   save_predictions: bool = True,
                   save_directory: str | Path = None,
@@ -44,7 +45,11 @@ def run_inference(model: torch.nn.Module,
         for x, y in tqdm(data_loader):
             labels.extend(y.cpu().reshape(-1).tolist())
             x = x.to(device)
-            logits = model(x, **forward_args)  # shape: (batch_size, 1)
+            outputs = model(x, **forward_args)  # shape: (batch_size, 1)
+            if model_type is not None and "vivit" in model_type.lower():
+                logits = outputs.logits
+            else:
+                logits = outputs
 
             if output_logits:
                 predictions.extend(logits.cpu().reshape(-1).tolist())
@@ -62,6 +67,7 @@ def run_inference(model: torch.nn.Module,
 
 def run_inference_and_metrics(model: torch.nn.Module,
                               dataloader: torch.utils.data.DataLoader,
+                              model_type: str = None,
                               forward_args: Mapping[str, Any] = None,
                               threshold: float = 0.5,
                               save_predictions: bool = True,
@@ -77,6 +83,7 @@ def run_inference_and_metrics(model: torch.nn.Module,
     # run inference
     df = run_inference(model=model,
                        data_loader=dataloader,
+                       model_type=model_type,
                        forward_args=forward_args,
                        save_predictions=save_predictions,
                        save_directory=save_directory,

@@ -10,7 +10,7 @@ echo "###################################"
 
 echo "Finding latest model directory for $model ..."
 parent="/home/s2882278/Diss/lung-tumour/weights/$model"
-latest_dir=$(find "$parent" -mindepth 1 z 1 -type d \
+latest_dir=$(find "$parent" -mindepth 1 -maxdepth 1 -type d \
     -printf '%p\n' \
     | sort \
     | tail -n1)

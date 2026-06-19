@@ -76,6 +76,7 @@ def plot_all_metrics_from_csv(csv_path: str | Path,
                               figsize: tuple[int, int] = (7, 7),
                               save_plot: bool = True,
                               save_directory: str | Path = None,
+                              best_epoch: int = None,
                               file_name="metrics.pdf"):
     # check that csv exists and can be loaded
     csv_path: Path = Path(csv_path)
@@ -91,7 +92,7 @@ def plot_all_metrics_from_csv(csv_path: str | Path,
         save_directory.mkdir(parents=True, exist_ok=True)
 
     # plot
-    fig, ax = plot_all_metrics_from_df(df, figsize=figsize, show_plt=False)
+    fig, ax = plot_all_metrics_from_df(df, figsize=figsize, show_plt=False, best_epoch=best_epoch)
 
     if save_plot:
         fig.savefig(save_directory / file_name, bbox_inches="tight")
