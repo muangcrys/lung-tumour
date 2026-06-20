@@ -362,7 +362,7 @@ def training_2_stage(model: torch.nn.Module,
         for param in model.classifier.parameters():
             # vivit classifier head
             param.requires_grad = True
-        model.vivit.embeddings.positional_embeddings.requires_grad = True
+        model.vivit.embeddings.position_embeddings.requires_grad = True
         first_stage_optimizer = AdamW([
             {"params": model.classifier.parameters(), "lr": lr1},
             {"params": [model.vivit.embeddings.position_embeddings], "lr": lr2},
@@ -399,6 +399,8 @@ def training_2_stage(model: torch.nn.Module,
     first_avg_train_loss = None
     first_avg_val_loss = None
     first_epoch_metrics = None
+    
+    model.to(device)
 
     for epoch in tqdm(range(first_stage_epochs), desc="First Stage Progress"):
         model.train()
@@ -613,6 +615,8 @@ def training_2_stage(model: torch.nn.Module,
     second_avg_train_loss = None
     second_avg_val_loss = None
     second_epoch_metrics = None
+    
+    model.to(device)
 
     for epoch in tqdm(range(second_stage_epochs), desc="Second Stage Progress"):
         model.train()

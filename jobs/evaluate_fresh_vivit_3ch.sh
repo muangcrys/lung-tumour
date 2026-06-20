@@ -40,7 +40,7 @@ python -u src/evaluate_model_dir.py \
     --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --preprocessing "vivit_random" \
     --model_type "vivit" \
-    --channels 1 \
+    --channels 3 \
     --batch_size 8 \
     --num_workers 2 \
     --device "cuda"
