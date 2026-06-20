@@ -678,12 +678,12 @@ def training_2_stage(model: torch.nn.Module,
         print(f"Average Precision: {second_epoch_metrics['average_precision']}")
 
         # update pd
-        first_stats_dataframe.loc[len(first_stats_dataframe)] = [epoch + 1,
-                                                                 second_avg_train_loss,
-                                                                 second_avg_val_loss,
-                                                                 second_epoch_metrics['accuracy'],
-                                                                 second_epoch_metrics['precision'],
-                                                                 second_epoch_metrics['recall'],
+        second_stats_dataframe.loc[len(second_stats_dataframe)] = [epoch + 1,
+                                                                   second_avg_train_loss,
+                                                                   second_avg_val_loss,
+                                                                   second_epoch_metrics['accuracy'],
+                                                                   second_epoch_metrics['precision'],
+                                                                   second_epoch_metrics['recall'],
                                                                  second_epoch_metrics['f1'],
                                                                  second_epoch_metrics['auroc'],
                                                                  second_epoch_metrics['average_precision']]

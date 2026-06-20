@@ -1,6 +1,3 @@
-from functools import wraps
-
-
 class FileNameResolver:
     @staticmethod
     def get_checkpoint_name(epoch: int | str) -> str:
@@ -51,22 +48,56 @@ class ClassifierOnlyFileNameResolver(FileNameResolver):
     def add_prefix(filename: str) -> str:
         return "~ClassifierOnly~" + filename
 
-    def __getattribute__(self, name):
-        attr = super().__getattribute__(name)
+    @staticmethod
+    def get_checkpoint_name(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_checkpoint_name(epoch)
+        )
 
-        if name.startswith("_") or name in {"add_prefix", "__class__"}:
-            return attr
+    @staticmethod
+    def get_stats_filename(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_stats_filename(epoch)
+        )
 
-        if callable(attr):
-            @wraps(attr)
-            def wrapper(*args, **kwargs):
-                result = attr(*args, **kwargs)
+    @staticmethod
+    def get_best_checkpoint_name(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_best_checkpoint_name(epoch)
+        )
 
-                if isinstance(result, str):
-                    return ClassifierOnlyFileNameResolver.add_prefix(result)
+    @staticmethod
+    def get_best_json_filename(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_best_json_filename(epoch)
+        )
 
-                return result
+    @staticmethod
+    def get_final_checkpoint_name(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_final_checkpoint_name(epoch)
+        )
 
-            return wrapper
+    @staticmethod
+    def get_final_json_filename(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_final_json_filename(epoch)
+        )
 
-        return attr
+    @staticmethod
+    def get_final_stats_filename(epoch: int | str) -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_final_stats_filename(epoch)
+        )
+
+    @staticmethod
+    def get_training_configs_filename() -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_training_configs_filename()
+        )
+
+    @staticmethod
+    def get_2stage_training_configs_filename() -> str:
+        return ClassifierOnlyFileNameResolver.add_prefix(
+            FileNameResolver.get_2stage_training_configs_filename()
+        )
