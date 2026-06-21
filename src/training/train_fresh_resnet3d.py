@@ -71,7 +71,7 @@ def train_fresh_resnet3d(
     if save_checkpoints:
         save_directory = resolve_save_directory(model,
                                                 base_directory=base_directory,
-                                                model_string=f"fresh-resnet3d-{depth}",
+                                                model_string=f"fresh-resnet3d-{depth}-{num_channels}ch",
                                                 k=kwargs.get("k", -1),
                                                 time_stamp=kwargs.get("time_stamp", None), )
         save_directory.mkdir(parents=True, exist_ok=True)
