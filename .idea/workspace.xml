@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kfold training">
-      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="parser for kfold">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/train_fresh_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/train_fresh_vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/args_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -457,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782016681544</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="parser for kfold">
+      <option name="closed" value="true" />
+      <created>1782017451096</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1782017451096</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,7 +496,8 @@
     <MESSAGE value="added AP to plot" />
     <MESSAGE value="2 stage training for pretrained resnet, vivit" />
     <MESSAGE value="kfold training" />
-    <option name="LAST_COMMIT_MESSAGE" value="kfold training" />
+    <MESSAGE value="parser for kfold" />
+    <option name="LAST_COMMIT_MESSAGE" value="parser for kfold" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

@@ -6,6 +6,7 @@ import json
 
 def train_fresh_resnet3d(
         depth: Literal[18, 34, 50] = 18,
+        num_channels: int = None,
         ckt_path: str|Path|None = None,
         train_annotation: str|Path|None = None,
         train_image_dir: str|Path|None = None,
@@ -29,7 +30,10 @@ def train_fresh_resnet3d(
     if deterministic:
         reset_seed(seed)
 
-    model = get_fresh_resnet3d(depth=depth, n_input_channels=3)
+    if num_channels is None:
+        num_channels = 3
+
+    model = get_fresh_resnet3d(depth=depth, n_input_channels=num_channels)
     
     if ckt_path is not None:
         print(f"Loading weights from checkpoint: {ckt_path}")
@@ -47,7 +51,7 @@ def train_fresh_resnet3d(
     # loaders
     train_loader, validate_loader = get_train_val_loaders(
         model_type="random_init",
-        n_input_channels=3,
+        n_input_channels=num_channels,
         train_annotation=train_annotation,
         train_image_dir=train_image_dir,
         validate_annotation=validate_annotation,

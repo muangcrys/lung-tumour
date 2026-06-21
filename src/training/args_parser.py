@@ -6,6 +6,7 @@ def get_resnet_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--depth', type=int, default=18,
                         help='depth of resnet (default: 18)', required=False)
+    parser.add_argument('--num_channels', type=int, default=3,)
     parser.add_argument('--ckt_path', type=str, default=None,
                         help='path to checkpoint', required=False)
     parser.add_argument('--ckt_num_classes', type=int, default=None,
