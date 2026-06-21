@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="2 stage training for pretrained resnet, vivit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/training.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/paths.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/reproducibility.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/reproducibility.py" afterDir="false" />
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kfold training">
+      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -456,7 +449,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781909847821</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="kfold training">
+      <option name="closed" value="true" />
+      <created>1782016681544</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1782016681544</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +484,8 @@
     <MESSAGE value="kfold validation data" />
     <MESSAGE value="added AP to plot" />
     <MESSAGE value="2 stage training for pretrained resnet, vivit" />
-    <option name="LAST_COMMIT_MESSAGE" value="2 stage training for pretrained resnet, vivit" />
+    <MESSAGE value="kfold training" />
+    <option name="LAST_COMMIT_MESSAGE" value="kfold training" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

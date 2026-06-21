@@ -29,7 +29,7 @@ def k_fold_train_wrapper(
     # resolve annotation directory first
     if fold_annotation_dir is None:
         fold_annotation_dir = PathList.k_fold_annotation_dir.resolve()
-
+    model_string = model_string.lower()
     # resolve model training function
     if model_string == "resnet3d":
         training_fn = train_resnet3d
