@@ -65,7 +65,11 @@ def train_fresh_resnet3d(
 
     # resolve training save
     if save_checkpoints:
-        save_directory = resolve_save_directory(model, base_directory=base_directory, model_string=f"fresh-resnet3d-{depth}")
+        save_directory = resolve_save_directory(model,
+                                                base_directory=base_directory,
+                                                model_string=f"fresh-resnet3d-{depth}",
+                                                k=kwargs.get("k", -1),
+                                                time_stamp=kwargs.get("time_stamp", None), )
         save_directory.mkdir(parents=True, exist_ok=True)
         # save training params
         training_configs_target = save_directory / FileNameResolver.get_training_configs_filename()

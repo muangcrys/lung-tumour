@@ -33,8 +33,15 @@ class PathList:
     validate_annotation_csv = processed_luna_data_dir / "SEED_4242" / "validate_annotations.csv"
     test_annotation_csv = processed_luna_data_dir / "SEED_4242" / "test_annotations.csv"
 
+    # kfold annotations
+    k_fold_annotation_dir = processed_luna_data_dir / "k_fold_annotations"
+
     # trained checkpoints
     saved_weights_dir = project_root / "weights"
     saved_2stage_weights_dir = project_root / "weights_2stage"
+    saved_kfold_weights_dir = project_root / "weights_kfold"
+    saved_kfold_2stage_weights_dir = project_root / "weights_kfold_2stage"
+
+
 
     

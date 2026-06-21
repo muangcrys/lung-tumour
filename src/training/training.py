@@ -7,10 +7,12 @@ from datetime import datetime
 from evaluate.metrics import run_metrics
 from training.names import FileNameResolver, ClassifierOnlyFileNameResolver
 from utility.paths import PathList
+from utility.utils import get_timestamp_now
 from tqdm.auto import tqdm
 from copy import deepcopy
 import pandas as pd
 import json
+
 
 
 def get_vivit_forward_args():
@@ -41,22 +43,30 @@ def get_BCE_loss(pos_weight: float = 2.0):
 def resolve_save_directory(model: torch.nn.Module,
                            base_directory: str | Path = None,
                            model_string: str = None,
-                           training: Literal["normal", "2stage", "4fold", "2stage4fold"] = "normal"):
-    time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+                           training: Literal["normal", "2stage"] = "normal",
+                           time_stamp: str = None,
+                           k:int = -1):
+    if time_stamp is None:
+        # time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        time_stamp = get_timestamp_now()
     if model_string is None:
         model_string = f"{model.__class__.__module__}-{model.__class__.__name__}"
 
+    is_k_fold: bool = k is not None and k > 0
+
     if base_directory is None:
         if training == "normal":
-            base_directory = PathList.saved_weights_dir.resolve()
+            base_directory = PathList.saved_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_weights_dir.resolve()
         elif training == "2stage":
-            base_directory = PathList.saved_2stage_weights_dir.resolve()
+            base_directory = PathList.saved_2stage_weights_dir.resolve() if not is_k_fold else PathList.saved_2stage_weights_dir.resolve()
         else:
             raise NotImplementedError(f"Unknown training type: {training}")
     else:
         base_directory = Path(base_directory).resolve()
-
-    return base_directory / model_string / time_stamp
+    if is_k_fold:
+        return base_directory / model_string / time_stamp / f"fold_{k}"
+    else:
+        return base_directory / model_string / time_stamp
 
 
 def training_loop(model: torch.nn.Module,
