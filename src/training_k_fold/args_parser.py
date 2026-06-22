@@ -2,10 +2,10 @@ from training.args_parser import get_resnet_parser, add_args_resnet_parser
 
 def get_kf_parser():
     parser = get_resnet_parser()
-    parser.add_arguement("--model_string", type=str, required=True)
-    parser.add_arguement("--k", type=int, required=False, default=4)
-    # parser.add_arguement("--seed", type=int, required=False, default=4242)
-    parser.add_arguement("--fold_annotation_dir", type=str, required=False, default=None)
+    parser.add_argument("--model_string", type=str, required=True)
+    parser.add_argument("--folds", type=int, required=False, default=4)
+    # parser.add_argument("--seed", type=int, required=False, default=4242)
+    parser.add_argument("--fold_annotation_dir", type=str, required=False, default=None)
     return parser
 
 def get_kf_args():

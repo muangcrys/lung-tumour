@@ -188,3 +188,4 @@ slurm-*.out
 # everything in weights directory
 /weights/**
 /weights_2stage/**
+/weights_kfold/**

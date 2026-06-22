@@ -12,6 +12,7 @@ def train_fresh_resnet3d(
         train_image_dir: str|Path|None = None,
         validate_annotation: str|Path|None = None,
         validate_image_dir: str|Path|None = None,
+        metric: Literal["loss", "accuracy", "precision", "recall", "f1", "auroc", "average_precision"] = "f1",
         epochs: int = 50,
         optim_type: Literal["AdamW"] = "AdamW",
         learning_rate: float = 1e-4,
@@ -81,6 +82,7 @@ def train_fresh_resnet3d(
             "model": "Fresh_ResNet3D" if ckt_path is None else f"ResNet3D(from checkpoint: {ckt_path})",
             "depth": depth,
             "epochs": epochs,
+            "metric": metric,
             "optim_type": optim_type,
             "learning_rate": learning_rate,
             "decay": decay,
@@ -109,6 +111,7 @@ def train_fresh_resnet3d(
         save_checkpoints=save_checkpoints,
         save_directory=save_directory,
         device=device,
+        metric=metric
     )
 
     return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe

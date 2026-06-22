@@ -16,11 +16,18 @@ def k_fold_validate_annotation_csv(k: int) -> str:
 def k_fold_train_annotation_csv(k: int) -> str:
     return f"fold_{k}_train.csv"
 
+
+
 def k_fold_train_wrapper(
         model_string: Literal["resnet3d", "medicalnet", "fresh_resnet3d", "fresh_medicalnet"],
         folds: int = 4,
         seed: int = DEFAULT_SEED,
         fold_annotation_dir: str | Path | None = None,
+        
+        # intercepting arguments
+        train_annotation: str | Path | None = None,
+        validate_annotation: str | Path | None = None,
+        
         **kwargs
 ):
     # timestamp for this run
@@ -29,6 +36,8 @@ def k_fold_train_wrapper(
     # resolve annotation directory first
     if fold_annotation_dir is None:
         fold_annotation_dir = PathList.k_fold_annotation_dir.resolve()
+    else:
+        fold_annotation_dir = Path(fold_annotation_dir).resolve()
     model_string = model_string.lower()
     # resolve model training function
     if model_string == "resnet3d":

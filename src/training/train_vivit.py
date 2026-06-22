@@ -17,6 +17,7 @@ def train_vivit(
         train_image_dir: str|Path|None = None,
         validate_annotation: str|Path|None = None,
         validate_image_dir: str|Path|None = None,
+        metric: Literal["loss", "accuracy", "precision", "recall", "f1", "auroc", "average_precision"] = "f1",
         epochs: int = 50,
         optim_type: Literal["AdamW"] = "AdamW",
         learning_rate: float = 1e-4,
@@ -112,6 +113,7 @@ def train_vivit(
             "seed": seed,
             "deterministic": deterministic,
             "device": str(device),
+            "metric": metric,
             "model_config": model.config.to_dict()
         }
         with open(training_configs_target, "w") as f:
@@ -132,6 +134,7 @@ def train_vivit(
         save_directory=save_directory,
         device=device,
         vivit=True
+        metric=metric
     )
 
     return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe

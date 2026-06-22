@@ -45,6 +45,7 @@ def get_resnet_parser():
                         help='base directory (default: None)')
     parser.add_argument('--device', type=str, default=None, required=False,
                         help='device (default: None) (agnostic)')
+    parser.add_argument('--metric', type=str, default='auroc', required=False,)
 
     return parser
 
