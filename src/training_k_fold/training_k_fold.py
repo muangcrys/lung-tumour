@@ -59,6 +59,10 @@ def k_fold_train_wrapper(
         # get train and validate annotation paths
         train_annotation = fold_annotation_dir / k_fold_train_annotation_csv(k=k)
         validate_annotation = fold_annotation_dir / k_fold_validate_annotation_csv(k=k)
+        
+        print("###################################################################################################################################")
+        print(f"###                                                      FOLD {k}                                                                 ###")
+        print("###################################################################################################################################")
 
         # pass to model function
         training_fn(
