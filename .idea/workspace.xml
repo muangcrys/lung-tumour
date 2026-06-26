@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="parser for kfold">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="including # of channels in save name">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/train_fresh_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/train_fresh_vivit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/args_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_fresh_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +18,9 @@
     <persistenceIdMap>
       <entry key="_/Users/muang/Edinburgh/Diss/lung-tumour" value="3CsOvaYyFNG4mPOjmnRZ0OxIku9" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Ask" />
   </component>
   <component name="EmbeddingIndexingInfo">
     <option name="cachedIndexableFilesCount" value="12394" />
@@ -84,7 +86,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/src/training",
+    "last_opened_file_path": "/Users/muang/Edinburgh/Diss/lung-tumour/jobs/k_fold",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -96,11 +98,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/jobs/k_fold" />
       <recent name="$PROJECT_DIR$/src/training" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/data/LUNA/processed" />
       <recent name="$PROJECT_DIR$/jobs" />
-      <recent name="$PROJECT_DIR$/checkpoints/resnet3d" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\UoEd\Diss\lung-tumour" />
@@ -468,7 +470,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782017451096</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="support num_channels for vivit and resnet">
+      <option name="closed" value="true" />
+      <created>1782018142655</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1782018142655</updated>
+    </task>
+    <task id="LOCAL-00029" summary="including # of channels in save name">
+      <option name="closed" value="true" />
+      <created>1782018379537</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1782018379537</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +515,9 @@
     <MESSAGE value="2 stage training for pretrained resnet, vivit" />
     <MESSAGE value="kfold training" />
     <MESSAGE value="parser for kfold" />
-    <option name="LAST_COMMIT_MESSAGE" value="parser for kfold" />
+    <MESSAGE value="support num_channels for vivit and resnet" />
+    <MESSAGE value="including # of channels in save name" />
+    <option name="LAST_COMMIT_MESSAGE" value="including # of channels in save name" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
