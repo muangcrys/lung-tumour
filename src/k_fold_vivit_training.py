@@ -1,8 +1,8 @@
 from training_k_fold.training_k_fold import *
-from training_k_fold.args_parser import get_kf_args
+from training_k_fold.args_parser import get_kf_args, get_kf_vivit_args
 
 def main():
-    args = get_kf_args()
+    args = get_kf_vivit_args()
     _ = k_fold_vivit_wrapper(**vars(args))
 
 if __name__ == "__main__":

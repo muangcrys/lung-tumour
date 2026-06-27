@@ -97,6 +97,7 @@ def train_vivit(
     if save_checkpoints:
         save_directory = resolve_save_directory(model,
                                                 base_directory,
+                                                model_string=model_type,
                                                 k=kwargs.get("k", -1),
                                                 time_stamp=kwargs.get("time_stamp", None), )
         save_directory.mkdir(parents=True, exist_ok=True)
@@ -136,7 +137,7 @@ def train_vivit(
         save_checkpoints=save_checkpoints,
         save_directory=save_directory,
         device=device,
-        vivit=True
+        vivit=True,
         metric=metric
     )
 

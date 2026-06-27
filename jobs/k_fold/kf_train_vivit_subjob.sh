@@ -1,15 +1,13 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # cd to project root
 cd "/home/s2882278/Diss/lung-tumour"
 
 # copy files to scratch
 echo "Copying files to scratch..."
 # generate unique id for this run
-UNIQUE_ID=$(date +%Y%m%d%H%M%S)
-WORKING_DIR="pretrained-vivit-$UNIQUE_ID"
+UNIQUE_ID=$2
+WORKING_DIR="pretrained-vivit-$UNIQUE_ID-fold-$1"
 echo "Working directory for this run: $WORKING_DIR"
 bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
@@ -25,8 +23,8 @@ nvidia-smi
 # train model
 echo "Running training script..."
 python -u src/k_fold_vivit_training.py \
-    --folds "$1" \
-    --pretrained True \
+    --k $1 \
+    --model_string "pretrained_vivit" \
     --seed 4242 \
     --fold_annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/k_fold_annotations" \
     --train_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
