@@ -42,6 +42,12 @@ class PathList:
     saved_kfold_weights_dir = project_root / "weights_kfold"
     saved_kfold_2stage_weights_dir = project_root / "weights_kfold_2stage"
 
+    # outputs
+    output_dir = project_root / "output"
+
+    # kfold metric
+    k_fold_output_dir = output_dir / "k_fold_output.csv"
+
 
 
     

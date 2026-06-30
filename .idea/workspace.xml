@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="including # of channels in save name">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kfold vivit training">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train_vivit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utility/paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/paths.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +22,7 @@
     <option name="chatModeId" value="Ask" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="12394" />
+    <option name="cachedIndexableFilesCount" value="12551" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -486,7 +485,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782018379537</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="kfold vivit training">
+      <option name="closed" value="true" />
+      <created>1782434569487</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1782434569487</updated>
+    </task>
+    <task id="LOCAL-00031" summary="kfold vivit training">
+      <option name="closed" value="true" />
+      <created>1782434652137</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1782434652137</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,7 +532,8 @@
     <MESSAGE value="parser for kfold" />
     <MESSAGE value="support num_channels for vivit and resnet" />
     <MESSAGE value="including # of channels in save name" />
-    <option name="LAST_COMMIT_MESSAGE" value="including # of channels in save name" />
+    <MESSAGE value="kfold vivit training" />
+    <option name="LAST_COMMIT_MESSAGE" value="kfold vivit training" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
