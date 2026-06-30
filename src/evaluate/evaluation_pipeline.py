@@ -16,6 +16,210 @@ from evaluate.inference import run_inference_and_metrics
 from training.dataloader import get_validate_loader
 import seaborn as sns
 
+def run_validate_test_kfold_validation(
+    fold_directory: str | Path,
+    annotation_dir: str | Path,
+    test_annotation: str | Path = None,
+    image_dir: str | Path | None = None,
+    preprocessing: str = None,
+    final_model: bool = True,
+    best_model: bool = True,
+    threshold: float = 0.5,
+    model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
+    metrics_directory: str | Path = None,
+    depth: int = None,
+    channels: int = None,
+    batch_size: int = 8,
+    num_workers: int = 0,
+    device: str | torch.device = None,
+    **kwargs,
+):
+    # get all folds in the directory
+    fold_directory: Path = Path(fold_directory)
+    
+    # glob
+    fold_paths = list(fold_directory.glob("fold_*"))
+    
+    for fold_path in fold_paths:
+        fold_number = int(fold_path.name.split("_")[1])
+        validate_annotation = Path(annotation_dir) / f"fold_{fold_number}_validate.csv"
+        test_annotation = (Path(annotation_dir) / f"fold_{fold_number}_test.csv") if test_annotation is None else test_annotation
+        
+        print()
+        print("=" * 20)
+        print()
+        print(f"Processing fold: {fold_number}, at {fold_path}")
+        print(f"Validate annotation: {validate_annotation}")
+        print(f"Test annotation: {test_annotation}")
+        
+        run_validate_test_evaluation_on_model_directory(
+            model_directory=fold_path,
+            validate_annotation=validate_annotation,
+            test_annotation=test_annotation,
+            image_dir=image_dir,
+            preprocessing=preprocessing,
+            metrics_directory = None,
+            final_model=final_model,
+            best_model=best_model,
+            threshold=threshold,
+            model_type=model_type,
+            depth=depth,
+            channels=channels,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            device=device,
+            **kwargs
+        )
+
+def run_validate_test_evaluation_on_model_directory(
+    model_directory: str | Path,
+    validate_annotation: str | Path,
+    test_annotation: str | Path,
+    image_dir: str | Path | None = None,
+    preprocessing: str = None,
+    metrics_directory: str | Path = None,
+    final_model: bool = True,
+    best_model: bool = True,
+    threshold: float = 0.5,
+    model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
+    depth: int = None,
+    channels: int = None,
+    batch_size: int = 8,
+    num_workers: int = 0,
+    device: str | torch.device = None,
+    **kwargs,
+):
+    model_directory: Path = Path(model_directory)
+    
+    if metrics_directory is None:
+        metrics_directory: Path = model_directory
+    else:
+        metrics_directory: Path = Path(metrics_directory)
+        metrics_directory.mkdir(parents=True, exist_ok=True)
+        
+    sns.set_style("darkgrid")
+    
+    #plot loss
+    _, best_epoch = find_best_model_ckt(model_directory=model_directory)
+    loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
+                                                     save_directory=metrics_directory, 
+                                                     best_epoch=best_epoch)
+    plt.close(loss_fig)
+    
+    # plot metrics
+    metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
+                                                    save_directory=metrics_directory,
+                                                    best_epoch=best_epoch)
+    plt.close(metrics_fig)
+    
+    # resolve model
+    # get training configs
+    training_configs = get_training_configs_from_directory(model_directory)
+    # resolve model type
+    if model_type is None:
+        model_type = resolve_model_type(training_configs)
+    if model_type == "resnet3d" or model_type == "medicalnet":
+        if depth is None:
+            depth = resolve_depth(training_configs)
+    if channels is None:
+        channels = resolve_channels(training_configs)
+    if preprocessing is None:
+        preprocessing = resolve_preprocessing_methods(training_configs)
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+    if best_model:
+        best_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
+        best_ckt_path, best_epoch = find_best_model_ckt(model_directory=model_directory)
+        load_model_from_ckt(best_m, best_ckt_path)
+        best_validate_dataloader = get_validate_loader(model_type=preprocessing,
+                                             n_input_channels=channels,
+                                             image_dir=image_dir,
+                                             annotation=validate_annotation,
+                                             batch_size=batch_size,
+                                             num_workers=num_workers)
+        
+        best_test_dataloader = get_validate_loader(model_type=preprocessing,
+                                                n_input_channels=channels,
+                                                image_dir=image_dir,
+                                                annotation=test_annotation,
+                                                batch_size=batch_size,
+                                                num_workers=num_workers)
+        
+        _ = run_inference_and_metrics(
+            model=best_m,
+            dataloader=best_validate_dataloader,
+            model_type=model_type,
+            threshold=threshold,
+            prediction_file_name=MetricFiles.get_best_prediction_filename(best_epoch, split_name="validate"),
+            metrics_file_name=MetricFiles.get_best_metrics_filename(best_epoch, split_name="validate"),
+            roc_file_name=MetricFiles.get_best_roc_filename(best_epoch, split_name="validate"),
+            pr_file_name=MetricFiles.get_best_pr_filename(best_epoch, split_name="validate"),
+            conf_mat_file_name=MetricFiles.get_best_confmat_filename(best_epoch, split_name="validate"),
+            save_directory=metrics_directory,
+            device=device,
+        )
+        
+        _ = run_inference_and_metrics(
+            model=best_m,
+            dataloader=best_test_dataloader,
+            model_type=model_type,
+            threshold=threshold,
+            prediction_file_name=MetricFiles.get_best_prediction_filename(best_epoch, split_name="test"),
+            metrics_file_name=MetricFiles.get_best_metrics_filename(best_epoch, split_name="test"),
+            roc_file_name=MetricFiles.get_best_roc_filename(best_epoch, split_name="test"),
+            pr_file_name=MetricFiles.get_best_pr_filename(best_epoch, split_name="test"),
+            conf_mat_file_name=MetricFiles.get_best_confmat_filename(best_epoch, split_name="test"),
+            save_directory=metrics_directory,
+            device=device,
+        )
+        
+    if final_model:
+        final_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
+        final_ckt_path, final_epoch = find_final_model_ckt(model_directory=model_directory)
+        load_model_from_ckt(final_m, final_ckt_path)
+        final_validate_dataloader = get_validate_loader(model_type=preprocessing,
+                                             n_input_channels=channels,
+                                             image_dir=image_dir,
+                                             annotation=validate_annotation,
+                                             batch_size=batch_size,
+                                             num_workers=num_workers)
+        
+        final_test_dataloader = get_validate_loader(model_type=preprocessing,
+                                                n_input_channels=channels,
+                                                image_dir=image_dir,
+                                                annotation=test_annotation,
+                                                batch_size=batch_size,
+                                                num_workers=num_workers)
+        
+        _ = run_inference_and_metrics(
+            model=final_m,
+            dataloader=final_validate_dataloader,
+            model_type=model_type,
+            threshold=threshold,
+            prediction_file_name=MetricFiles.get_final_prediction_filename(final_epoch, split_name="validate"),
+            metrics_file_name=MetricFiles.get_final_metrics_filename(final_epoch, split_name="validate"),
+            roc_file_name=MetricFiles.get_final_roc_filename(final_epoch, split_name="validate"),
+            pr_file_name=MetricFiles.get_final_pr_filename(final_epoch, split_name="validate"),
+            conf_mat_file_name=MetricFiles.get_final_confmat_filename(final_epoch, split_name="validate"),
+            save_directory=metrics_directory,
+            device=device,
+        )
+        
+        _ = run_inference_and_metrics(
+            model=final_m,
+            dataloader=final_test_dataloader,
+            model_type=model_type,
+            threshold=threshold,
+            prediction_file_name=MetricFiles.get_final_prediction_filename(final_epoch, split_name="test"),
+            metrics_file_name=MetricFiles.get_final_metrics_filename(final_epoch, split_name="test"),
+            roc_file_name=MetricFiles.get_final_roc_filename(final_epoch, split_name="test"),
+            pr_file_name=MetricFiles.get_final_pr_filename(final_epoch, split_name="test"),
+            conf_mat_file_name=MetricFiles.get_final_confmat_filename(final_epoch, split_name="test"),
+            save_directory=metrics_directory,
+            device=device,
+        )
+
 
 def run_evaluation_on_model_directory(
         model_directory: str | Path,

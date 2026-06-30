@@ -11,6 +11,7 @@ def get_kf_parser():
 def get_kf_vivit_parser():
     parser = get_kf_parser()
     parser.add_argument("--k", type=int, required=True, help="Fold number to train on (1-4)")
+    parser.add_argument("--time_stamp", type=str, required=False, default=None, help="Timestamp for the run")
     return parser
 
 def get_kf_args():

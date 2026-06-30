@@ -7,7 +7,7 @@ cd "/home/s2882278/Diss/lung-tumour"
 echo "Copying files to scratch..."
 # generate unique id for this run
 UNIQUE_ID=$2
-WORKING_DIR="pretrained-vivit-$UNIQUE_ID-fold-$1"
+WORKING_DIR="vivit-random-3ch-$UNIQUE_ID-fold-$1"
 echo "Working directory for this run: $WORKING_DIR"
 bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
@@ -24,7 +24,7 @@ nvidia-smi
 echo "Running training script..."
 python -u src/k_fold_vivit_training.py \
     --k "$1" \
-    --model_string "vivit_pretrained" \
+    --model_string "vivit_random" \
     --num_channels 3 \
     --seed 4242 \
     --fold_annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/k_fold_annotations" \

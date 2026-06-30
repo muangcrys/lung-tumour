@@ -85,18 +85,19 @@ def k_fold_vivit_wrapper(
         k: int = 1,
         seed: int = DEFAULT_SEED,
         fold_annotation_dir: str | Path | None = None,
-        model_string: Literal["vivit_random", "vivit_pretrained"] = "vivit_pretrained",
+        model_string: str = "vivit_pretrained",
 
         # intercepting arguments
         train_annotation: str | Path | None = None,
         validate_annotation: str | Path | None = None,
+        time_stamp: str | None = None,
 
         **kwargs
 ):
     # since we only have 4 folds of data for now just assert it
     assert 0 < k <= 4
 
-    run_timestamp = get_timestamp_now()
+    run_timestamp = time_stamp if time_stamp is not None else get_timestamp_now()
 
     if fold_annotation_dir is None:
         fold_annotation_dir = PathList.k_fold_annotation_dir.resolve()
@@ -120,7 +121,7 @@ def k_fold_vivit_wrapper(
 
     # pass
     print(f"You are training a ViVit model which was {model_string}")
-    pretrained = model_string == "vivit_pretrained"
+    pretrained = "vivit_pretrained" in model_string.lower()
     train_vivit(
         train_annotation=train_annotation,
         validate_annotation=validate_annotation,

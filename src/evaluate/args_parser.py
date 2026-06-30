@@ -1,13 +1,12 @@
 import argparse
 
-def get_evaluate_parser():
+def get_evaluate_base_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_directory', required=True, type=str)
-    parser.add_argument('--annotation', default=None, type=str, required=False)
     parser.add_argument('--image_dir', default=None, type=str, required=False)
     parser.add_argument('--preprocessing', default=None, type=str, required=False)
     parser.add_argument('--metrics-directory', default=None, type=str, required=False)
     parser.add_argument('--skip_plot_loss', action='store_true', required=False)
+    parser.add_argument('--skip_plot_metrics', action='store_true', required=False)
     parser.add_argument('--skip_final_model', action='store_true', required=False)
     parser.add_argument('--skip_best_model', action='store_true', required=False)
     parser.add_argument('--threshold', default=0.5, type=float, required=False)
@@ -19,13 +18,34 @@ def get_evaluate_parser():
     parser.add_argument('--device', default=None, type=str, required=False)
     return parser
 
+def get_evaluate_parser():
+    parser = get_evaluate_base_parser()
+    parser.add_argument('--model_directory', required=True, type=str)
+    parser.add_argument('--annotation', default=None, type=str, required=False)
+    return parser
+
 def add_args_evaluate_parser(args: argparse.Namespace):
     args.plot_loss = not args.skip_plot_loss
     args.final_model = not args.skip_final_model
     args.best_model = not args.skip_best_model
+    args.plot_metrics = not args.skip_plot_metrics
 
 def get_evaluate_args():
     parser = get_evaluate_parser()
+    args = parser.parse_args()
+    add_args_evaluate_parser(args)
+    return args
+
+
+def get_kfold_evaluate_parser():
+    parser = get_evaluate_base_parser()
+    parser.add_argument('--fold_directory', required=True, type=str)
+    parser.add_argument('--annotation_dir', required=True, type=str)
+    parser.add_argument('--test_annotation', default=None, type=str, required=False)
+    return parser
+
+def get_kfold_evaluate_args():
+    parser = get_kfold_evaluate_parser()
     args = parser.parse_args()
     add_args_evaluate_parser(args)
     return args
