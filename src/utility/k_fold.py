@@ -26,15 +26,22 @@ def get_results_from_kfold(kfold_directory: Path = None,
         kfold_directory = Path(kfold_directory)
 
     dir_glob = kfold_directory.glob("*")
-    dirs = [p for p in dir_glob if p.is_dir()]
+    dirs = sorted([p for p in dir_glob if p.is_dir()], key=lambda p: p.stem)  # sort by model name
     rows = []
 
     for model in dirs:
         model_name = model.stem
         print("=" * 40)
         print(f"Processing {model_name}")
-        folds_glob = model.glob("fold_*")
-        folds = [p for p in folds_glob if p.is_dir()]
+        # find latest fold directory
+        latest_dir = max(
+            (p for p in model.iterdir() if p.is_dir()),
+            key=lambda p: p.name,
+        )
+        print(f"Using latest fold directory: {latest_dir}")
+        
+        folds_glob = latest_dir.glob("fold_*")
+        folds = sorted([p for p in folds_glob if p.is_dir()], key=lambda p: int(p.stem.split("_")[-1]))
         for fold in folds:
             fold_num = fold.stem.split("_")[-1]
 
