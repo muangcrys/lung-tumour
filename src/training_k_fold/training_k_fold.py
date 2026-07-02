@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from matplotlib.testing.jpl_units import km
-
 from utility.reproducibility import k_fold_seed, DEFAULT_SEED
 from typing import Literal
 from utility.utils import get_timestamp_now

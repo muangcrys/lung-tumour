@@ -25,3 +25,31 @@ def get_kf_vivit_args():
     args = parser.parse_args()
     add_args_resnet_parser(args)
     return args
+
+def get_kf_2stage_parser():
+    parser = get_kf_parser()
+    parser.add_argument("--lr1", type=float, required=False, default=1e-4)
+    parser.add_argument("--lr2", type=float, required=False, default=5e-5)
+    parser.add_argument("--decay1", type=float, required=False, default=1e-3)
+    parser.add_argument("--decay2", type=float, required=False, default=1e-3)
+    parser.add_argument("--first_stage_epochs", type=int, required=False, default=20)
+    parser.add_argument("--second_stage_epochs", type=int, required=False, default=50)
+    return parser
+
+def get_kf_2stage_args():
+    parser = get_kf_2stage_parser()
+    args = parser.parse_args()
+    add_args_resnet_parser(args)
+    return args
+
+def get_kf_vivit_2stage_parser():
+    parser = get_kf_2stage_parser()
+    parser.add_argument("--k", type=int, required=True, help="Fold number to train on (1-4)")
+    parser.add_argument("--time_stamp", type=str, required=False, default=None, help="Timestamp for the run")
+    return parser
+
+def get_kf_vivit_2stage_args():
+    parser = get_kf_vivit_2stage_parser()
+    args = parser.parse_args()
+    add_args_resnet_parser(args)
+    return args

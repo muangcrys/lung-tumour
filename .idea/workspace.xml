@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kfold vivit training">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="additional reporting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/paths.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/paths.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train2stage_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_medicalnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train2stage_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_resnet3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/train2stage_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_vivit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training_k_fold/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/args_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_2stages_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_2stages_k_fold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -501,15 +506,29 @@
       <option name="project" value="LOCAL" />
       <updated>1782434652137</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="extract metric">
+      <option name="closed" value="true" />
+      <created>1782780897302</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1782780897302</updated>
+    </task>
+    <task id="LOCAL-00033" summary="additional reporting">
+      <option name="closed" value="true" />
+      <created>1782780981855</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1782780981855</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="c" />
-    <MESSAGE value="dataset splitting" />
     <MESSAGE value="model loading" />
     <MESSAGE value="training script" />
     <MESSAGE value="requirements.txt" />
@@ -533,7 +552,9 @@
     <MESSAGE value="support num_channels for vivit and resnet" />
     <MESSAGE value="including # of channels in save name" />
     <MESSAGE value="kfold vivit training" />
-    <option name="LAST_COMMIT_MESSAGE" value="kfold vivit training" />
+    <MESSAGE value="extract metric" />
+    <MESSAGE value="additional reporting" />
+    <option name="LAST_COMMIT_MESSAGE" value="additional reporting" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
