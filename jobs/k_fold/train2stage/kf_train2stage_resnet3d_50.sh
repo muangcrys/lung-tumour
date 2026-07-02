@@ -9,7 +9,7 @@ cd "/home/s2882278/Diss/lung-tumour"
 echo "Copying files to scratch..."
 # generate unique id for this run
 UNIQUE_ID=$(date +%Y%m%d%H%M%S)
-WORKING_DIR="kf-resnet3d-18-2stage-$UNIQUE_ID"
+WORKING_DIR="kf-resnet3d-50-2stage-$UNIQUE_ID"
 echo "Working directory for this run: $WORKING_DIR"
 bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
@@ -25,8 +25,8 @@ nvidia-smi
 # train model
 echo "Running training script..."
 python -u src/k_fold_2stage_training.py \
-    --model_string "resnet3d_stage" \
-    --depth 18 \
+    --model_string "resnet3d_2stage" \
+    --depth 50 \
     --folds 4 \
     --seed 4242 \
     --fold_annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/k_fold_annotations" \

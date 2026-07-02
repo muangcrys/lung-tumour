@@ -58,7 +58,7 @@ def resolve_save_directory(model: torch.nn.Module,
         if training == "normal":
             base_directory = PathList.saved_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_weights_dir.resolve()
         elif training == "2stage":
-            base_directory = PathList.saved_2stage_weights_dir.resolve() if not is_k_fold else PathList.saved_2stage_weights_dir.resolve()
+            base_directory = PathList.saved_2stage_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_2stage_weights_dir.resolve()
         else:
             raise NotImplementedError(f"Unknown training type: {training}")
     else:

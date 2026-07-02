@@ -23,12 +23,14 @@ nvidia-smi
 # train model
 echo "Running training script..."
 python -u src/k_fold_2stage_vivit_training.py \
+    --model_string "pretrained_vivit" \
     --k "$1" \
     --num_channels 3 \
     --seed 4242 \
     --fold_annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/k_fold_annotations" \
     --train_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --val_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
+    --time_stamp "$UNIQUE_ID" \
     --num_workers 2 \
     --report_frequency 5 \
     --first_stage_epochs 20 \
