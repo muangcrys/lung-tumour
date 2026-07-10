@@ -109,7 +109,7 @@ def train2stage_vivit(
         save_directory = None
 
     # train loop
-    best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe = training_2_stage(
+    best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_metrics, best_epoch, stats_dataframe = training_2_stage(
         model=model,
         train_loader=train_loader,
         validate_loader=validate_loader,
@@ -129,4 +129,4 @@ def train2stage_vivit(
         device=device,
     )
 
-    return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_val_loss, best_metrics, best_epoch, stats_dataframe
+    return best_model_state_dict, best_optimizer_state_dict, best_train_loss, best_metrics, best_epoch, stats_dataframe

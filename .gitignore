@@ -189,3 +189,4 @@ slurm-*.out
 /weights/**
 /weights_2stage/**
 /weights_kfold/**
+/weights_kfold_2stage/**

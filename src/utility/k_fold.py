@@ -19,9 +19,15 @@ def flatten_results(result_dict):
 
 def get_results_from_kfold(kfold_directory: Path = None,
                            save_file: bool = True,
-                           save_target: str | Path = None,):
+                           save_target: str | Path = None,
+                           source: str = "kfold"):
     if kfold_directory is None:
-        kfold_directory = PathList.saved_kfold_weights_dir
+        if source == "kfold":
+            kfold_directory = PathList.saved_kfold_weights_dir
+        elif source == "kfold_2stage":
+            kfold_directory = PathList.saved_kfold_2stage_weights_dir
+        else:
+            raise ValueError(f"Unknown source: {source}")
     else:
         kfold_directory = Path(kfold_directory)
 
@@ -109,8 +115,15 @@ def get_results_from_kfold(kfold_directory: Path = None,
     df = pd.DataFrame(rows)
 
     if save_file:
-        save_target = Path(save_target) if save_target else PathList.k_fold_output_dir
-
+        if save_target is None:
+            if source == "kfold":
+                save_target = PathList.k_fold_output_dir
+            elif source == "kfold_2stage":
+                save_target = PathList.k_fold_2stage_output_dir
+            else:
+                raise ValueError(f"Unknown source: {source}")
+        else:
+            save_target = Path(save_target)
     save_target.parent.mkdir(exist_ok=True, parents=True)
     df.to_csv(save_target, index=False)
 
