@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="additional reporting">
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kf 2 stage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train2stage_medicalnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_medicalnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train2stage_resnet3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_resnet3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/train2stage_vivit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/train2stage_vivit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training_k_fold/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/args_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_2stages_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_2stages_k_fold.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training_k_fold/training_k_fold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plotting/loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/loss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plotting/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/metrics.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +24,7 @@
     <option name="chatModeId" value="Ask" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="12551" />
+    <option name="cachedIndexableFilesCount" value="12564" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -522,14 +519,29 @@
       <option name="project" value="LOCAL" />
       <updated>1782780981855</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="kf 2 stage">
+      <option name="closed" value="true" />
+      <created>1782955724398</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1782955724398</updated>
+    </task>
+    <task id="LOCAL-00035" summary="kf 2 stage">
+      <option name="closed" value="true" />
+      <created>1782955730345</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1782955730345</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="model loading" />
     <MESSAGE value="training script" />
     <MESSAGE value="requirements.txt" />
     <MESSAGE value="slurm scripts" />
@@ -554,7 +566,8 @@
     <MESSAGE value="kfold vivit training" />
     <MESSAGE value="extract metric" />
     <MESSAGE value="additional reporting" />
-    <option name="LAST_COMMIT_MESSAGE" value="additional reporting" />
+    <MESSAGE value="kf 2 stage" />
+    <option name="LAST_COMMIT_MESSAGE" value="kf 2 stage" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
