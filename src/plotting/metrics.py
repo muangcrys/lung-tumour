@@ -68,6 +68,7 @@ def plot_all_metrics_from_df(df: pd.DataFrame,
     ax.set_xlabel("Epoch")
     ax.set_ylim(y_min, y_max)
     ax.set_title("Metrics Per Epoch")
+    ax.legend()
     if show_plt:
         plt.show()
     return fig, ax
@@ -147,11 +148,12 @@ def plot_2_stage_metrics_from_df(df1: pd.DataFrame,
     if best_epoch is not None:
         ax.axvline(x=best_epoch + max_stage1, color="red", linestyle="--", label="Best Epoch")
 
-    ax.axvline(x=max_stage1, color="red", linestyle="--", label=f"FT Starts (epoch: {max_stage1})")
+    ax.axvline(x=max_stage1, color="black", linestyle="--", label=f"FT Starts (epoch: {max_stage1})")
 
     ax.set_xlabel("Epoch")
     ax.set_ylim(y_min, y_max)
     ax.set_title("Metrics Per Epoch")
+    ax.legend()
     if show_plt:
         plt.show()
     return fig, ax

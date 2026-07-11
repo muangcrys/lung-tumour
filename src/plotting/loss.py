@@ -30,6 +30,7 @@ def plot_loss_curves_from_df(df: pd.DataFrame,
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")
     ax.set_title("Training and Validation Loss Curves")
+    ax.legend()
     if show_plt:
         plt.show()
     return fig, ax
@@ -107,6 +108,7 @@ def plot_2_stage_loss_curves_from_df(df1: pd.DataFrame,
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")
     ax.set_title("Training and Validation Loss Curves")
+    ax.legend()
 
     if show_plt:
         plt.show()

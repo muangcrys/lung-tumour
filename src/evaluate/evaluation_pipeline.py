@@ -443,7 +443,7 @@ def plot_2_stage_loss_on_model_directory(
     epoch1 = training_configs["first_stage_epochs"]
     epoch2 = training_configs["second_stage_epochs"]
     metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
-    metrics_file_name2 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch2)
+    metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
     metrics_file1 = model_directory / metrics_file_name1
     metrics_file2 = model_directory / metrics_file_name2
 
@@ -481,7 +481,7 @@ def plot_2_stage_metrics_on_model_directory(
     epoch1 = training_configs["first_stage_epochs"]
     epoch2 = training_configs["second_stage_epochs"]
     metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
-    metrics_file_name2 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch2)
+    metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
     metrics_file1 = model_directory / metrics_file_name1
     metrics_file2 = model_directory / metrics_file_name2
 
@@ -576,6 +576,7 @@ def find_best_model_ckt(model_directory: Path | str, ):
         print(f"Picking the last file: {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
     else:
+        print(f"Found best ckt file at {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
 
     best_epoch = get_epoch_number_from_file_name(best_ckt_file.stem)
@@ -593,6 +594,7 @@ def find_classifer_only_best_model_ckt(model_directory: Path | str, ):
         print(f"Picking the last file: {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
     else:
+        print(f"Found best ckt file at {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
 
     best_epoch = get_epoch_number_from_file_name(best_ckt_file.stem)
@@ -622,5 +624,6 @@ def get_epoch_number_from_file_name(file_name: str):
 
 def load_model_from_ckt(model: torch.nn.Module,
                         ckt_path: Path, ):
+    print(f"Loading model from checkpoint: {ckt_path}")
     ckt = torch.load(ckt_path)
     model.load_state_dict(ckt["model_state_dict"], strict=True)
