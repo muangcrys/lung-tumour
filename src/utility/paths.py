@@ -48,6 +48,20 @@ class PathList:
     # kfold metric
     k_fold_output_dir = output_dir / "k_fold_output.csv"
 
+    # luna16 paths
+    luna16_data_dir = data_dir / "LUNA16"
+    luna16_niigz_dir = luna16_data_dir / "niigz"
+    luna16_img_npy_dir = luna16_data_dir / "images"
+    luna16_metadata_npy_dir = luna16_data_dir / "metadata"
+
+    luna16_raw_data_dir = luna16_data_dir / "raw"
+    luna16_raw_annotation_npy = luna16_raw_data_dir / "annotation.npy"
+
+    luna16_processed_data_dir = luna16_data_dir / "processed"
+    luna16_annotation_csv = luna16_processed_data_dir / "annotation.csv"
+    luna16_kfold_annotation_dir = luna16_processed_data_dir / "k_fold_annotations"
+
+
 
 
     

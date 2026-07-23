@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold
 import pandas as pd
 from utility.reproducibility import DEFAULT_SEED, reset_seed
 from utility.paths import PathList
@@ -85,4 +85,45 @@ def k_fold_split_image(annotations_csv: str | Path,
     return trains, vals
 
 
+def k_fold_split_luna16(annotations_csv: str | Path = PathList.luna16_annotation_csv,
+                        k: int = 4,
+                        seed: int = DEFAULT_SEED,
+                        save_file: bool = True,
+                        output_dir: str | Path = None):
+    luna16_annotation_df = pd.read_csv(annotations_csv)
+    sgkf = StratifiedGroupKFold(n_splits=k, shuffle=True, random_state=seed)
+    trains = []
+    vals = []
 
+    labels = luna16_annotation_df["label"].copy()
+    groups = luna16_annotation_df["PatientID"].copy()
+
+
+    for fold, (train_idx, val_idx) in enumerate(sgkf.split(X=luna16_annotation_df,
+                                                           y=labels,
+                                                           groups=groups,)):
+
+        train_df = luna16_annotation_df.iloc[train_idx]
+        val_df = luna16_annotation_df.iloc[val_idx]
+
+        trains.append(train_df)
+        vals.append(val_df)
+
+    if not save_file:
+        return trains, vals
+
+    if output_dir is None:
+        output_dir = PathList.luna16_kfold_annotation_dir
+
+    output_dir: Path = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for fold, train_df in enumerate(trains, start=1):
+        target = output_dir / f"fold_{fold}_train.csv"
+        train_df.to_csv(target, index=False)
+
+    for fold, val_df in enumerate(vals, start=1):
+        target = output_dir / f"fold_{fold}_validate.csv"
+        val_df.to_csv(target, index=False)
+
+    return trains, vals

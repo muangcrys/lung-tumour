@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # cd to project root
 cd "/home/s2882278/Diss/lung-tumour"
 
