@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="kf 2 stage">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/args_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/args_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/confusion_matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/confusion_matrix.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluation_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/inference.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/precision_recall.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/precision_recall.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/roc.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/roc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plotting/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/plotting/metrics.py" afterDir="false" />
-    </list>
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="luna16 evaluation (generalisation)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,61 +50,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000002129773156" />
-      <entry key="S2" value="1.0350814806747999" />
-      <entry key="S5" value="1.4890938463395118" />
-      <entry key="S10" value="2.3547419796673656" />
-      <entry key="S30" value="4.278201881792298" />
-      <entry key="S60" value="5.76810084141908" />
-      <entry key="M2" value="9.798674950975686" />
-      <entry key="M5" value="29.298767529611357" />
-      <entry key="M10" value="54.35263257058654" />
-      <entry key="M15" value="68.70140037257022" />
-      <entry key="M30" value="87.9679861482604" />
-      <entry key="H1" value="99.99715138162395" />
-      <entry key="H2" value="106.73151991221995" />
-      <entry key="H4" value="110.2962613896877" />
-      <entry key="D1" value="113.37281603136937" />
-      <entry key="W1" value="113.91015676629287" />
+      <entry key="MS100" value="1.0651709275499903" />
+      <entry key="MS500" value="1.7288772531421663" />
+      <entry key="S2" value="3.6051362435665975" />
+      <entry key="S5" value="5.162218385758036" />
+      <entry key="S10" value="5.970741007035882" />
+      <entry key="S30" value="6.701729347472505" />
+      <entry key="S60" value="7.564869348401709" />
+      <entry key="M2" value="10.447943280645648" />
+      <entry key="M5" value="26.46731020916055" />
+      <entry key="M10" value="51.32912846139009" />
+      <entry key="M15" value="66.9759976070626" />
+      <entry key="M30" value="89.19457888873083" />
+      <entry key="H1" value="103.66058822130942" />
+      <entry key="H2" value="111.93591809131719" />
+      <entry key="H4" value="116.36457330399992" />
+      <entry key="D1" value="120.21264335532356" />
+      <entry key="W1" value="120.88715268670119" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.6526378282670602E-204" />
-      <entry key="S2" value="1.790686111223116E-51" />
-      <entry key="S5" value="7.579651697488081E-21" />
-      <entry key="S10" value="1.2792043778609654E-10" />
-      <entry key="S30" value="0.001415717164355551" />
-      <entry key="S60" value="0.11816793435165697" />
-      <entry key="M2" value="1.337318194764397" />
-      <entry key="M5" value="6.916196166047513" />
-      <entry key="M10" value="12.644428193217584" />
-      <entry key="M15" value="15.585818953784974" />
-      <entry key="M30" value="19.296039208470713" />
-      <entry key="H1" value="21.507169307942817" />
-      <entry key="H2" value="22.71602897774377" />
-      <entry key="H4" value="23.34831427887481" />
-      <entry key="D1" value="23.89001113400522" />
-      <entry key="W1" value="23.984253279063665" />
+      <entry key="MS500" value="1.61233178772206E-310" />
+      <entry key="S2" value="5.627799893600848E-78" />
+      <entry key="S5" value="1.8992272021842587E-31" />
+      <entry key="S10" value="6.403298879823565E-16" />
+      <entry key="S30" value="2.4217600443034766E-5" />
+      <entry key="S60" value="0.01545528257747396" />
+      <entry key="M2" value="0.48364132959356165" />
+      <entry key="M5" value="4.60450303967554" />
+      <entry key="M10" value="10.317083015065574" />
+      <entry key="M15" value="13.609268450592607" />
+      <entry key="M30" value="18.031038877891735" />
+      <entry key="H1" value="20.790241895098905" />
+      <entry key="H2" value="22.334208092695835" />
+      <entry key="H4" value="23.15125841405853" />
+      <entry key="D1" value="23.856287731010514" />
+      <entry key="W1" value="23.97941371670676" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9592641193252643" />
-      <entry key="MS500" value="0.9917168056966232" />
-      <entry key="S2" value="1.026708604560618" />
-      <entry key="S5" value="1.4580098976172047" />
-      <entry key="S10" value="2.319218807490346" />
-      <entry key="S30" value="4.258442255579453" />
-      <entry key="S60" value="5.86920277038573" />
-      <entry key="M2" value="11.108325931598825" />
-      <entry key="M5" value="36.16835137713719" />
-      <entry key="M10" value="66.95320718901846" />
-      <entry key="M15" value="84.2504512378829" />
-      <entry key="M30" value="107.24068620811684" />
-      <entry key="H1" value="121.49112563593066" />
-      <entry key="H2" value="129.4405271940819" />
-      <entry key="H4" value="133.6409529220256" />
-      <entry key="D1" value="137.2622073102296" />
-      <entry key="W1" value="137.89432109422285" />
+      <entry key="MS100" value="1.0284364612269838" />
+      <entry key="MS500" value="1.6477927809607331" />
+      <entry key="S2" value="3.474391369416927" />
+      <entry key="S5" value="5.084152114489181" />
+      <entry key="S10" value="5.926048567471627" />
+      <entry key="S30" value="6.685077646171346" />
+      <entry key="S60" value="7.569747792094923" />
+      <entry key="M2" value="10.917358542055828" />
+      <entry key="M5" value="31.03908111348457" />
+      <entry key="M10" value="61.60957785100798" />
+      <entry key="M15" value="80.55259251096396" />
+      <entry key="M30" value="107.2035243155018" />
+      <entry key="H1" value="124.43793267764565" />
+      <entry key="H2" value="134.26315138151867" />
+      <entry key="H4" value="139.51220397835004" />
+      <entry key="D1" value="144.06830617762273" />
+      <entry key="W1" value="144.86647662327408" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -600,14 +589,21 @@
       <option name="project" value="LOCAL" />
       <updated>1782955730345</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="luna16 evaluation (generalisation)">
+      <option name="closed" value="true" />
+      <created>1784776707023</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1784776707023</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="training script" />
     <MESSAGE value="requirements.txt" />
     <MESSAGE value="slurm scripts" />
     <MESSAGE value="evaluation scripts" />
@@ -632,7 +628,8 @@
     <MESSAGE value="extract metric" />
     <MESSAGE value="additional reporting" />
     <MESSAGE value="kf 2 stage" />
-    <option name="LAST_COMMIT_MESSAGE" value="kf 2 stage" />
+    <MESSAGE value="luna16 evaluation (generalisation)" />
+    <option name="LAST_COMMIT_MESSAGE" value="luna16 evaluation (generalisation)" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

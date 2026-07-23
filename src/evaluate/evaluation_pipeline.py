@@ -25,6 +25,8 @@ def run_validate_test_kfold_validation(
         preprocessing: str = None,
         final_model: bool = True,
         best_model: bool = True,
+        plot_loss: bool = True,
+        plot_metrics: bool = True,
         threshold: float = 0.5,
         model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
         metrics_directory: str | Path = None,
@@ -66,6 +68,8 @@ def run_validate_test_kfold_validation(
             save_prefix=save_prefix,
             final_model=final_model,
             best_model=best_model,
+            plot_loss=plot_loss,
+            plot_metrics=plot_metrics,
             threshold=threshold,
             model_type=model_type,
             depth=depth,
@@ -88,6 +92,8 @@ def run_validate_test_evaluation_on_model_directory(
         save_prefix: str | None = None,
         final_model: bool = True,
         best_model: bool = True,
+        plot_loss: bool = True,
+        plot_metrics: bool = True,
         threshold: float = 0.5,
         model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
         depth: int = None,
@@ -112,27 +118,30 @@ def run_validate_test_evaluation_on_model_directory(
     _, best_epoch = find_best_model_ckt(model_directory=model_directory)
 
     if plot_2_stage:
-        loss_fig, _ = plot_2_stage_loss_on_model_directory(model_directory=model_directory,
-                                                           save_directory=metrics_directory,
-                                                           best_epoch=best_epoch,)
-        plt.close(loss_fig)
-        metrics_fig, _ = plot_2_stage_metrics_on_model_directory(model_directory=model_directory,
-                                                                 save_directory=metrics_directory,
-                                                                 best_epoch=best_epoch,)
-        plt.close(metrics_fig)
+        if plot_loss:
+            loss_fig, _ = plot_2_stage_loss_on_model_directory(model_directory=model_directory,
+                                                               save_directory=metrics_directory,
+                                                               best_epoch=best_epoch,)
+            plt.close(loss_fig)
+        if plot_metrics:
+            metrics_fig, _ = plot_2_stage_metrics_on_model_directory(model_directory=model_directory,
+                                                                     save_directory=metrics_directory,
+                                                                     best_epoch=best_epoch,)
+            plt.close(metrics_fig)
     else:
-        loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
-                                                   save_directory=metrics_directory,
-                                                   save_prefix=save_prefix,
-                                                   best_epoch=best_epoch)
-        plt.close(loss_fig)
+        if plot_loss:
+            loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
+                                                       save_directory=metrics_directory,
+                                                       save_prefix=save_prefix,
+                                                       best_epoch=best_epoch)
+            plt.close(loss_fig)
 
-        # plot metrics
-        metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
-                                                         save_directory=metrics_directory,
-                                                         save_prefix=save_prefix,
-                                                         best_epoch=best_epoch)
-        plt.close(metrics_fig)
+        if plot_metrics:
+            metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
+                                                             save_directory=metrics_directory,
+                                                             save_prefix=save_prefix,
+                                                             best_epoch=best_epoch)
+            plt.close(metrics_fig)
 
     # resolve model
     # get training configs

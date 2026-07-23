@@ -42,6 +42,8 @@ python -u src/k_fold_evaluate_model_dir.py \
     --test_annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA16/processed/annotation.csv" \
     --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA16/images" \
     --save_prefix "luna16" \
+    --skip_plot_loss \
+    --skip_plot_metrics \
     --preprocessing "vivit_random" \
     --model_type "$mtype" \
     --channels 3 \
