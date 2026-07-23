@@ -22,9 +22,9 @@ echo "Latest model directory: $latest_dir"
 echo "Copying files to scratch..."
 # generate unique id for this run
 UNIQUE_ID=$(date +%Y%m%d%H%M%S)
-WORKING_DIR="evalkf-luna16-$model-$UNIQUE_ID"
-echo "Working directory for this run: $WORKING_DIR"
-bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
+# WORKING_DIR="evalkf-luna16-$model-$UNIQUE_ID"
+# echo "Working directory for this run: $WORKING_DIR"
+# bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
 # activate conda
 echo "Activating conda environment..."
@@ -37,9 +37,9 @@ nvidia-smi
 # run evaluation script
 python -u src/k_fold_evaluate_model_dir.py \
     --fold_directory "$latest_dir" \
-    --annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA16/processed/k_fold_annotations" \
-    --test_annotation "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA16/processed/annotation.csv" \
-    --image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA16/images" \
+    --annotation_dir "/home/s2882278/Diss/lung-tumour/data/LUNA16/processed/k_fold_annotations" \
+    --test_annotation "/home/s2882278/Diss/lung-tumour/data/LUNA16/processed/annotation.csv" \
+    --image_dir "/home/s2882278/Diss/lung-tumour/data/LUNA16/images" \
     --save_prefix "luna16" \
     --skip_plot_loss \
     --skip_plot_metrics \

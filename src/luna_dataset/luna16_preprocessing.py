@@ -114,7 +114,11 @@ def transform_npy_annotation_to_csv(annotation_npy: Path = PathList.luna16_raw_a
     annotation_df["AnnotationID"] = [d["Filename"].replace(".nii.gz", "") for d in raw_annotation]
     annotation_df["AnnotationCount"] = [len(d["Malignancy"]) for d in raw_annotation]
     annotation_df["MeanMalignancyScore"] = [np.mean(d["Malignancy"]) for d in raw_annotation]
-    annotation_df["label"] = annotation_df["MeanMalignancyScore"].apply(malignancy_designation)
+    annotation_df["RoundedMalignancyScore"] = [int(round(np.mean(d["Malignancy"]))) for d in raw_annotation]
+
+    # exclude annotations with rounded score = 3
+    annotation_df = annotation_df[annotation_df["RoundedMalignancyScore"] != 3].copy()
+    annotation_df["label"] = annotation_df["RoundedMalignancyScore"].apply(malignancy_designation)
 
     # save to output
     annotation_df.to_csv(output_npy, index=False)
