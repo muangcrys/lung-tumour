@@ -16,6 +16,7 @@ def run_inference(model: torch.nn.Module,
                   forward_args: Mapping[str, Any] = None,
                   save_predictions: bool = True,
                   save_directory: str | Path = None,
+                  save_prefix: str = None,
                   file_name: str = None,
                   output_logits: bool = False,
                   device: str | torch.device = None):
@@ -27,6 +28,8 @@ def run_inference(model: torch.nn.Module,
         Path(save_directory).mkdir(parents=True, exist_ok=True)
         if file_name is None:
             file_name = "predictions.csv"
+        if save_prefix is not None:
+            file_name = f"{save_prefix}_{file_name}"
 
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -79,6 +82,7 @@ def run_inference_and_metrics(model: torch.nn.Module,
                               pr_file_name: str = None,
                               conf_mat_file_name: str = None,
                               save_directory: str | Path = None,
+                              save_prefix: str | None = None,
                               device: str | torch.device = None):
     # run inference
     df = run_inference(model=model,
@@ -87,6 +91,7 @@ def run_inference_and_metrics(model: torch.nn.Module,
                        forward_args=forward_args,
                        save_predictions=save_predictions,
                        save_directory=save_directory,
+                       save_prefix=save_prefix,
                        file_name=prediction_file_name,
                        device=device,
                        output_logits=False)
@@ -96,6 +101,7 @@ def run_inference_and_metrics(model: torch.nn.Module,
                              threshold=threshold,
                              save_results=save_metrics,
                              save_directory=save_directory,
+                             save_prefix=save_prefix,
                              file_name=metrics_file_name)
 
     # auroc plot, pr curve plot, conf mat
@@ -107,15 +113,18 @@ def run_inference_and_metrics(model: torch.nn.Module,
                                        auroc=auroc,
                                        save_plot = save_plots,
                                        save_directory = save_directory,
+                                       save_prefix = save_prefix,
                                        file_name = roc_file_name)
     pr_fig, pr_ax = plot_pr_curve_from_df(df=df,
                                           average_precision=average_precision,
                                           save_plot = save_plots,
                                           save_directory = save_directory,
+                                          save_prefix=save_prefix,
                                           file_name = pr_file_name)
     conf_fig, conf_ax = plot_confusion_matrix(confusion_matrix_dict=conf_dict,
                                               save_plot = save_plots,
                                               save_directory = save_directory,
+                                              save_prefix=save_prefix,
                                               file_name=conf_mat_file_name)
 
     return metrics, df, (roc_fig, roc_ax), (pr_fig, pr_ax), (conf_fig, conf_ax)

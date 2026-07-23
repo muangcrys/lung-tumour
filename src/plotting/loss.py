@@ -40,6 +40,7 @@ def plot_loss_curves_from_csv(csv_path: str | Path,
                               figsize: tuple[int, int] = (7, 7),
                               save_plot: bool = True,
                               save_directory: str | Path = None,
+                              save_prefix: str | None = None,
                               best_epoch: int = None,
                               file_name="loss_curves.pdf"):
     # check that csv exists and can be loaded
@@ -54,6 +55,8 @@ def plot_loss_curves_from_csv(csv_path: str | Path,
         else:
             save_directory = Path(save_directory)
         save_directory.mkdir(parents=True, exist_ok=True)
+        if save_prefix is not None:
+            file_name = f"{save_prefix}_{file_name}"
 
     # plot
     fig, ax = plot_loss_curves_from_df(df, figsize=figsize, show_plt=False, best_epoch=best_epoch)

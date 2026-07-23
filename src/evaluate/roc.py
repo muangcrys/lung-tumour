@@ -60,6 +60,7 @@ def plot_roc_from_df(df: pd.DataFrame,
                      figsize: tuple[int, int] = (7, 7),
                      save_plot: bool = True,
                      save_directory: str | Path = None,
+                     save_prefix: str | None = None,
                      file_name: str = None):
 
     # resolve
@@ -71,6 +72,8 @@ def plot_roc_from_df(df: pd.DataFrame,
             save_directory.mkdir(parents=True, exist_ok=True)
         if file_name is None:
             file_name = "roc.pdf"
+        if save_prefix is not None:
+            file_name = f"{save_prefix}_{file_name}"
 
     y_prob = torch.tensor(df[predictions_column].values, dtype=torch.float)
     y_true = torch.tensor(df[labels_column].values, dtype=torch.int)

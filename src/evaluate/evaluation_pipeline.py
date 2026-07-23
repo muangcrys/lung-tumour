@@ -28,6 +28,7 @@ def run_validate_test_kfold_validation(
         threshold: float = 0.5,
         model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
         metrics_directory: str | Path = None,
+        save_prefix: str | None = None,
         depth: int = None,
         channels: int = None,
         batch_size: int = 8,
@@ -62,6 +63,7 @@ def run_validate_test_kfold_validation(
             image_dir=image_dir,
             preprocessing=preprocessing,
             metrics_directory=None,
+            save_prefix=save_prefix,
             final_model=final_model,
             best_model=best_model,
             threshold=threshold,
@@ -83,6 +85,7 @@ def run_validate_test_evaluation_on_model_directory(
         image_dir: str | Path | None = None,
         preprocessing: str = None,
         metrics_directory: str | Path = None,
+        save_prefix: str | None = None,
         final_model: bool = True,
         best_model: bool = True,
         threshold: float = 0.5,
@@ -120,12 +123,14 @@ def run_validate_test_evaluation_on_model_directory(
     else:
         loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
                                                    save_directory=metrics_directory,
+                                                   save_prefix=save_prefix,
                                                    best_epoch=best_epoch)
         plt.close(loss_fig)
 
         # plot metrics
         metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
                                                          save_directory=metrics_directory,
+                                                         save_prefix=save_prefix,
                                                          best_epoch=best_epoch)
         plt.close(metrics_fig)
 
@@ -174,6 +179,7 @@ def run_validate_test_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_best_pr_filename(best_epoch, split_name="validate"),
             conf_mat_file_name=MetricFiles.get_best_confmat_filename(best_epoch, split_name="validate"),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -188,6 +194,7 @@ def run_validate_test_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_best_pr_filename(best_epoch, split_name="test"),
             conf_mat_file_name=MetricFiles.get_best_confmat_filename(best_epoch, split_name="test"),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -220,6 +227,7 @@ def run_validate_test_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_final_pr_filename(final_epoch, split_name="validate"),
             conf_mat_file_name=MetricFiles.get_final_confmat_filename(final_epoch, split_name="validate"),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -234,6 +242,7 @@ def run_validate_test_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_final_pr_filename(final_epoch, split_name="test"),
             conf_mat_file_name=MetricFiles.get_final_confmat_filename(final_epoch, split_name="test"),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -244,6 +253,7 @@ def run_evaluation_on_model_directory(
         image_dir: str | Path | None = None,
         preprocessing: str = None,
         metrics_directory: str | Path = None,
+        save_prefix: str | None = None,
         final_model: bool = True,
         best_model: bool = True,
         plot_loss: bool = True,
@@ -277,13 +287,16 @@ def run_evaluation_on_model_directory(
         _, best_epoch = find_best_model_ckt(model_directory=model_directory)
         loss_fig, loss_ax = plot_loss_on_model_directory(model_directory=model_directory,
                                                          save_directory=metrics_directory,
+                                                         save_prefix=save_prefix,
                                                          best_epoch=best_epoch)
         plt.close(loss_fig)
 
     # plot metrics
     if plot_metrics:
+        _, best_epoch = find_best_model_ckt(model_directory=model_directory)
         metrics_fig, metrics_ax = plot_metrics_on_model_directory(model_directory=model_directory,
                                                                   save_directory=metrics_directory,
+                                                                  save_prefix=save_prefix,
                                                                   best_epoch=best_epoch)
         plt.close(metrics_fig)
 
@@ -324,6 +337,7 @@ def run_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_best_pr_filename(best_epoch),
             conf_mat_file_name=MetricFiles.get_best_confmat_filename(best_epoch),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -348,6 +362,7 @@ def run_evaluation_on_model_directory(
             pr_file_name=MetricFiles.get_final_pr_filename(final_epoch),
             conf_mat_file_name=MetricFiles.get_final_confmat_filename(final_epoch),
             save_directory=metrics_directory,
+            save_prefix=save_prefix,
             device=device,
         )
 
@@ -369,6 +384,7 @@ def get_training_configs_from_directory(
 def plot_loss_on_model_directory(
         model_directory: Path,
         save_directory: str | Path = None,
+        save_prefix: str | None = None,
         figsize: tuple[int, int] = (7, 7),
         best_epoch: int = None,
 ):
@@ -390,6 +406,7 @@ def plot_loss_on_model_directory(
     fig, ax = plot_loss_curves_from_csv(csv_path=loss_file,
                                         save_plot=True,
                                         save_directory=model_directory,
+                                        save_prefix=save_prefix,
                                         file_name=MetricFiles.get_final_loss_curve_filename(final_epoch),
                                         figsize=figsize,
                                         best_epoch=best_epoch)
@@ -399,6 +416,7 @@ def plot_loss_on_model_directory(
 def plot_metrics_on_model_directory(
         model_directory: Path,
         save_directory: str | Path = None,
+        save_prefix: str | None = None,
         figsize: tuple[int, int] = (7, 7),
         best_epoch: int = None,
 ):
@@ -421,6 +439,7 @@ def plot_metrics_on_model_directory(
                                         figsize=figsize,
                                         save_plot=True,
                                         save_directory=save_directory,
+                                        save_prefix=save_prefix,
                                         file_name=MetricFiles.get_final_metrics_plot_filename(final_epoch),
                                         best_epoch=best_epoch)
     return fig, ax

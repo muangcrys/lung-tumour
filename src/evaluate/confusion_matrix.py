@@ -41,6 +41,7 @@ def plot_confusion_matrix(confusion_matrix_tensor: torch.Tensor = None,
                           figsize: tuple[int, int] = (3,3),
                           save_plot: bool = True,
                           save_directory: str | Path = None,
+                          save_prefix: str = None,
                           file_name: str = None,):
     if confusion_matrix_dict is None and confusion_matrix_tensor is None:
         raise ValueError("Must supply at least a tensor or a dict that represents a confusion matrix")
@@ -52,6 +53,8 @@ def plot_confusion_matrix(confusion_matrix_tensor: torch.Tensor = None,
             raise ValueError("save_directory not specified")
         if file_name is None:
             file_name = "confusion_matrix.pdf"
+        if save_prefix is not None:
+            file_name = f"{save_prefix}_{file_name}"
         save_directory = Path(save_directory)
         save_directory.mkdir(parents=True, exist_ok=True)
 

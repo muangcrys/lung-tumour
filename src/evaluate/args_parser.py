@@ -5,6 +5,7 @@ def get_evaluate_base_parser():
     parser.add_argument('--image_dir', default=None, type=str, required=False)
     parser.add_argument('--preprocessing', default=None, type=str, required=False)
     parser.add_argument('--metrics-directory', default=None, type=str, required=False)
+    parser.add_argument('--save_prefix', default=None, type=str, required=False)
     parser.add_argument('--skip_plot_loss', action='store_true', required=False)
     parser.add_argument('--skip_plot_metrics', action='store_true', required=False)
     parser.add_argument('--skip_final_model', action='store_true', required=False)

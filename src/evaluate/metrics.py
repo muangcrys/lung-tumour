@@ -44,6 +44,7 @@ def run_metrics_pd(df: pd.DataFrame,
                    threshold: float = 0.5,
                    save_results: bool = True,
                    save_directory: str | Path | None = None,
+                   save_prefix: str = None,
                    file_name: str = None):
     if save_results:
         if save_directory is None:
@@ -53,6 +54,8 @@ def run_metrics_pd(df: pd.DataFrame,
             save_directory.mkdir(parents=True, exist_ok=True)
         if file_name is None:
             file_name = "metrics.json"
+        if save_prefix is not None:
+            file_name = f"{save_prefix}_{file_name}"
     y_prob = torch.tensor(df[ColumnNames.predictions].values, dtype=torch.float)
     y_true = torch.tensor(df[ColumnNames.labels].values, dtype=torch.int)
 
@@ -67,6 +70,7 @@ def run_metrics_csv(csv_path: str | Path,
                     threshold: float = 0.5,
                     save_results: bool = True,
                     save_directory: str | Path = None,
+                    save_prefix: str = None,
                     file_name: str = None):
     # make sure that we can load csv
     csv_path: Path = Path(csv_path)
@@ -83,4 +87,4 @@ def run_metrics_csv(csv_path: str | Path,
             save_directory.mkdir(parents=True, exist_ok=True)
 
     # run metrics
-    return run_metrics_pd(df, threshold=threshold, save_results=save_results, save_directory=save_directory, file_name=file_name)
+    return run_metrics_pd(df, threshold=threshold, save_results=save_results, save_directory=save_directory, save_prefix=save_prefix, file_name=file_name)
