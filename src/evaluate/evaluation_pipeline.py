@@ -5,10 +5,10 @@ from matplotlib import pyplot as plt
 import torch
 
 from evaluate.names import MetricFiles
-from plotting.metrics import plot_all_metrics_from_csv
-from training.names import FileNameResolver
+from plotting.metrics import plot_all_metrics_from_csv, plot_2_stage_metrics_from_csv
+from training.names import FileNameResolver, ClassifierOnlyFileNameResolver
 import json
-from plotting.loss import plot_loss_curves_from_csv
+from plotting.loss import plot_loss_curves_from_csv, plot_2_stage_loss_curves_from_csv
 from models.fresh_resnet3d import get_fresh_resnet3d
 from models.fresh_medicalnet import get_fresh_medicalnet
 from models.vivit import get_config, get_vivit
@@ -16,49 +16,52 @@ from evaluate.inference import run_inference_and_metrics
 from training.dataloader import get_validate_loader
 import seaborn as sns
 
+
 def run_validate_test_kfold_validation(
-    fold_directory: str | Path,
-    annotation_dir: str | Path,
-    test_annotation: str | Path = None,
-    image_dir: str | Path | None = None,
-    preprocessing: str = None,
-    final_model: bool = True,
-    best_model: bool = True,
-    threshold: float = 0.5,
-    model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
-    metrics_directory: str | Path = None,
-    depth: int = None,
-    channels: int = None,
-    batch_size: int = 8,
-    num_workers: int = 0,
-    device: str | torch.device = None,
-    **kwargs,
+        fold_directory: str | Path,
+        annotation_dir: str | Path,
+        test_annotation: str | Path = None,
+        image_dir: str | Path | None = None,
+        preprocessing: str = None,
+        final_model: bool = True,
+        best_model: bool = True,
+        threshold: float = 0.5,
+        model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
+        metrics_directory: str | Path = None,
+        depth: int = None,
+        channels: int = None,
+        batch_size: int = 8,
+        num_workers: int = 0,
+        plot_2_stage: bool = False,
+        device: str | torch.device = None,
+        **kwargs,
 ):
     # get all folds in the directory
     fold_directory: Path = Path(fold_directory)
-    
+
     # glob
     fold_paths = list(fold_directory.glob("fold_*"))
-    
+
     for fold_path in fold_paths:
         fold_number = int(fold_path.name.split("_")[1])
         validate_annotation = Path(annotation_dir) / f"fold_{fold_number}_validate.csv"
-        test_annotation = (Path(annotation_dir) / f"fold_{fold_number}_test.csv") if test_annotation is None else test_annotation
-        
+        test_annotation = (Path(
+            annotation_dir) / f"fold_{fold_number}_test.csv") if test_annotation is None else test_annotation
+
         print()
         print("=" * 20)
         print()
         print(f"Processing fold: {fold_number}, at {fold_path}")
         print(f"Validate annotation: {validate_annotation}")
         print(f"Test annotation: {test_annotation}")
-        
+
         run_validate_test_evaluation_on_model_directory(
             model_directory=fold_path,
             validate_annotation=validate_annotation,
             test_annotation=test_annotation,
             image_dir=image_dir,
             preprocessing=preprocessing,
-            metrics_directory = None,
+            metrics_directory=None,
             final_model=final_model,
             best_model=best_model,
             threshold=threshold,
@@ -67,51 +70,65 @@ def run_validate_test_kfold_validation(
             channels=channels,
             batch_size=batch_size,
             num_workers=num_workers,
+            plot_2_stage=plot_2_stage,
             device=device,
             **kwargs
         )
 
+
 def run_validate_test_evaluation_on_model_directory(
-    model_directory: str | Path,
-    validate_annotation: str | Path,
-    test_annotation: str | Path,
-    image_dir: str | Path | None = None,
-    preprocessing: str = None,
-    metrics_directory: str | Path = None,
-    final_model: bool = True,
-    best_model: bool = True,
-    threshold: float = 0.5,
-    model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
-    depth: int = None,
-    channels: int = None,
-    batch_size: int = 8,
-    num_workers: int = 0,
-    device: str | torch.device = None,
-    **kwargs,
+        model_directory: str | Path,
+        validate_annotation: str | Path,
+        test_annotation: str | Path,
+        image_dir: str | Path | None = None,
+        preprocessing: str = None,
+        metrics_directory: str | Path = None,
+        final_model: bool = True,
+        best_model: bool = True,
+        threshold: float = 0.5,
+        model_type: Literal["vivit", "medicalnet", "resnet3d"] = None,
+        depth: int = None,
+        channels: int = None,
+        batch_size: int = 8,
+        num_workers: int = 0,
+        plot_2_stage: bool = False,
+        device: str | torch.device = None,
+        **kwargs,
 ):
     model_directory: Path = Path(model_directory)
-    
+
     if metrics_directory is None:
         metrics_directory: Path = model_directory
     else:
         metrics_directory: Path = Path(metrics_directory)
         metrics_directory.mkdir(parents=True, exist_ok=True)
-        
+
     sns.set_style("darkgrid")
-    
-    #plot loss
+
+    # plot
     _, best_epoch = find_best_model_ckt(model_directory=model_directory)
-    loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
-                                                     save_directory=metrics_directory, 
-                                                     best_epoch=best_epoch)
-    plt.close(loss_fig)
-    
-    # plot metrics
-    metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
-                                                    save_directory=metrics_directory,
-                                                    best_epoch=best_epoch)
-    plt.close(metrics_fig)
-    
+
+    if plot_2_stage:
+        loss_fig, _ = plot_2_stage_loss_on_model_directory(model_directory=model_directory,
+                                                           save_directory=metrics_directory,
+                                                           best_epoch=best_epoch,)
+        plt.close(loss_fig)
+        metrics_fig, _ = plot_2_stage_metrics_on_model_directory(model_directory=model_directory,
+                                                                 save_directory=metrics_directory,
+                                                                 best_epoch=best_epoch,)
+        plt.close(metrics_fig)
+    else:
+        loss_fig, _ = plot_loss_on_model_directory(model_directory=model_directory,
+                                                   save_directory=metrics_directory,
+                                                   best_epoch=best_epoch)
+        plt.close(loss_fig)
+
+        # plot metrics
+        metrics_fig, _ = plot_metrics_on_model_directory(model_directory=model_directory,
+                                                         save_directory=metrics_directory,
+                                                         best_epoch=best_epoch)
+        plt.close(metrics_fig)
+
     # resolve model
     # get training configs
     training_configs = get_training_configs_from_directory(model_directory)
@@ -127,25 +144,25 @@ def run_validate_test_evaluation_on_model_directory(
         preprocessing = resolve_preprocessing_methods(training_configs)
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        
+
     if best_model:
         best_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
         best_ckt_path, best_epoch = find_best_model_ckt(model_directory=model_directory)
         load_model_from_ckt(best_m, best_ckt_path)
         best_validate_dataloader = get_validate_loader(model_type=preprocessing,
-                                             n_input_channels=channels,
-                                             image_dir=image_dir,
-                                             annotation=validate_annotation,
-                                             batch_size=batch_size,
-                                             num_workers=num_workers)
-        
+                                                       n_input_channels=channels,
+                                                       image_dir=image_dir,
+                                                       annotation=validate_annotation,
+                                                       batch_size=batch_size,
+                                                       num_workers=num_workers)
+
         best_test_dataloader = get_validate_loader(model_type=preprocessing,
-                                                n_input_channels=channels,
-                                                image_dir=image_dir,
-                                                annotation=test_annotation,
-                                                batch_size=batch_size,
-                                                num_workers=num_workers)
-        
+                                                   n_input_channels=channels,
+                                                   image_dir=image_dir,
+                                                   annotation=test_annotation,
+                                                   batch_size=batch_size,
+                                                   num_workers=num_workers)
+
         _ = run_inference_and_metrics(
             model=best_m,
             dataloader=best_validate_dataloader,
@@ -159,7 +176,7 @@ def run_validate_test_evaluation_on_model_directory(
             save_directory=metrics_directory,
             device=device,
         )
-        
+
         _ = run_inference_and_metrics(
             model=best_m,
             dataloader=best_test_dataloader,
@@ -173,25 +190,25 @@ def run_validate_test_evaluation_on_model_directory(
             save_directory=metrics_directory,
             device=device,
         )
-        
+
     if final_model:
         final_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
         final_ckt_path, final_epoch = find_final_model_ckt(model_directory=model_directory)
         load_model_from_ckt(final_m, final_ckt_path)
         final_validate_dataloader = get_validate_loader(model_type=preprocessing,
-                                             n_input_channels=channels,
-                                             image_dir=image_dir,
-                                             annotation=validate_annotation,
-                                             batch_size=batch_size,
-                                             num_workers=num_workers)
-        
+                                                        n_input_channels=channels,
+                                                        image_dir=image_dir,
+                                                        annotation=validate_annotation,
+                                                        batch_size=batch_size,
+                                                        num_workers=num_workers)
+
         final_test_dataloader = get_validate_loader(model_type=preprocessing,
-                                                n_input_channels=channels,
-                                                image_dir=image_dir,
-                                                annotation=test_annotation,
-                                                batch_size=batch_size,
-                                                num_workers=num_workers)
-        
+                                                    n_input_channels=channels,
+                                                    image_dir=image_dir,
+                                                    annotation=test_annotation,
+                                                    batch_size=batch_size,
+                                                    num_workers=num_workers)
+
         _ = run_inference_and_metrics(
             model=final_m,
             dataloader=final_validate_dataloader,
@@ -205,7 +222,7 @@ def run_validate_test_evaluation_on_model_directory(
             save_directory=metrics_directory,
             device=device,
         )
-        
+
         _ = run_inference_and_metrics(
             model=final_m,
             dataloader=final_test_dataloader,
@@ -257,9 +274,9 @@ def run_evaluation_on_model_directory(
     sns.set_style("darkgrid")
 
     if plot_loss:
-        _ , best_epoch = find_best_model_ckt(model_directory=model_directory)
+        _, best_epoch = find_best_model_ckt(model_directory=model_directory)
         loss_fig, loss_ax = plot_loss_on_model_directory(model_directory=model_directory,
-                                                         save_directory=metrics_directory, 
+                                                         save_directory=metrics_directory,
                                                          best_epoch=best_epoch)
         plt.close(loss_fig)
 
@@ -285,8 +302,6 @@ def run_evaluation_on_model_directory(
         preprocessing = resolve_preprocessing_methods(training_configs)
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-
 
     if best_model:
         best_m = get_model_for_evaluation(model_type=model_type, depth=depth, channels=channels)
@@ -336,6 +351,7 @@ def run_evaluation_on_model_directory(
             device=device,
         )
 
+
 def get_training_configs_from_directory(
         model_directory: str | Path,
 ):
@@ -379,6 +395,7 @@ def plot_loss_on_model_directory(
                                         best_epoch=best_epoch)
     return fig, ax
 
+
 def plot_metrics_on_model_directory(
         model_directory: Path,
         save_directory: str | Path = None,
@@ -407,6 +424,83 @@ def plot_metrics_on_model_directory(
                                         file_name=MetricFiles.get_final_metrics_plot_filename(final_epoch),
                                         best_epoch=best_epoch)
     return fig, ax
+
+def plot_2_stage_loss_on_model_directory(
+        model_directory: Path,
+        save_directory: str | Path = None,
+        figsize: tuple[int, int] = (7, 7),
+        best_epoch: int = None,
+):
+    model_directory: Path = Path(model_directory)
+    if save_directory is None:
+        save_directory: Path = model_directory
+    else:
+        save_directory: Path = Path(save_directory)
+        save_directory.mkdir(parents=True, exist_ok=True)
+
+    # find location of final metrics file
+    training_configs = get_training_configs_from_directory(model_directory)
+    epoch1 = training_configs["first_stage_epochs"]
+    epoch2 = training_configs["second_stage_epochs"]
+    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
+    metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
+    metrics_file1 = model_directory / metrics_file_name1
+    metrics_file2 = model_directory / metrics_file_name2
+
+    # find best model epoch from stage 1
+    _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+
+    # plot
+    fig, ax = plot_2_stage_loss_curves_from_csv(csv_path1=metrics_file1,
+                                                csv_path2=metrics_file2,
+                                                first_stage_stop=first_stage_stop,
+                                                figsize=figsize,
+                                                save_plot=True,
+                                                save_directory=save_directory,
+                                                file_name=MetricFiles.get_final_loss_curve_filename(epoch2),
+                                                best_epoch=best_epoch)
+
+    return fig, ax
+
+
+def plot_2_stage_metrics_on_model_directory(
+        model_directory: Path,
+        save_directory: str | Path = None,
+        figsize: tuple[int, int] = (7, 7),
+        best_epoch: int = None,
+):
+    model_directory: Path = Path(model_directory)
+    if save_directory is None:
+        save_directory: Path = model_directory
+    else:
+        save_directory: Path = Path(save_directory)
+        save_directory.mkdir(parents=True, exist_ok=True)
+
+    # find location of final metrics file
+    training_configs = get_training_configs_from_directory(model_directory)
+    epoch1 = training_configs["first_stage_epochs"]
+    epoch2 = training_configs["second_stage_epochs"]
+    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
+    metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
+    metrics_file1 = model_directory / metrics_file_name1
+    metrics_file2 = model_directory / metrics_file_name2
+
+    # find best model epoch from stage 1
+    _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+
+    # plot
+    fig, ax = plot_2_stage_metrics_from_csv(csv_path1=metrics_file1,
+                                            csv_path2=metrics_file2,
+                                            first_stage_stop=first_stage_stop,
+                                            figsize=figsize,
+                                            save_plot=True,
+                                            save_directory=save_directory,
+                                            file_name=MetricFiles.get_final_metrics_plot_filename(epoch2),
+                                            best_epoch=best_epoch
+                                            )
+
+    return fig, ax
+
 
 
 def resolve_model_type(training_configs: dict) -> str:
@@ -437,7 +531,7 @@ def resolve_channels(training_configs: dict) -> int:
         return 1
 
 
-def resolve_preprocessing_methods(training_configs: dict,) -> str:
+def resolve_preprocessing_methods(training_configs: dict, ) -> str:
     model_string = training_configs["model_type"].lower()
     if "fresh" in model_string:
         return "random_init"
@@ -482,11 +576,29 @@ def find_best_model_ckt(model_directory: Path | str, ):
         print(f"Picking the last file: {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
     else:
+        print(f"Found best ckt file at {best_ckt_files[-1]}")
         best_ckt_file = best_ckt_files[-1]
 
     best_epoch = get_epoch_number_from_file_name(best_ckt_file.stem)
     return best_ckt_file, best_epoch
 
+def find_classifer_only_best_model_ckt(model_directory: Path | str, ):
+    model_directory: Path = Path(model_directory)
+    best_file_name = ClassifierOnlyFileNameResolver.get_best_checkpoint_name("*")
+    best_ckt_files = list(model_directory.glob(best_file_name))
+    if len(best_ckt_files) == 0:
+        raise FileNotFoundError(f"Could not find best ckt file at {model_directory}/{best_file_name}")
+    elif len(best_ckt_files) > 1:
+        print(f"Found more than one best ckt file at {model_directory}/{best_file_name}")
+        print(best_ckt_files)
+        print(f"Picking the last file: {best_ckt_files[-1]}")
+        best_ckt_file = best_ckt_files[-1]
+    else:
+        print(f"Found best ckt file at {best_ckt_files[-1]}")
+        best_ckt_file = best_ckt_files[-1]
+
+    best_epoch = get_epoch_number_from_file_name(best_ckt_file.stem)
+    return best_ckt_file, best_epoch
 
 def find_final_model_ckt(model_directory: Path | str, ):
     model_directory: Path = Path(model_directory)
@@ -512,7 +624,6 @@ def get_epoch_number_from_file_name(file_name: str):
 
 def load_model_from_ckt(model: torch.nn.Module,
                         ckt_path: Path, ):
+    print(f"Loading model from checkpoint: {ckt_path}")
     ckt = torch.load(ckt_path)
     model.load_state_dict(ckt["model_state_dict"], strict=True)
-
-

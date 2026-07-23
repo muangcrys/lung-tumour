@@ -47,6 +47,7 @@ class PathList:
 
     # kfold metric
     k_fold_output_dir = output_dir / "k_fold_output.csv"
+    k_fold_2stage_output_dir = output_dir / "k_fold_2stage_output.csv"
 
     # luna16 paths
     luna16_data_dir = data_dir / "LUNA16"

@@ -61,7 +61,7 @@ def k_fold_2_stage_wrapper(
             validate_annotation=validate_annotation,
             seed=k_seed,
             k=k,
-            timestamp=run_timestamp,
+            time_stamp=run_timestamp,
             **kwargs
         )
 

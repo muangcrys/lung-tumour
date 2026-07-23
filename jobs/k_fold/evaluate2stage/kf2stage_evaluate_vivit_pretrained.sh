@@ -10,7 +10,7 @@ echo "#                                RUNNING EVALUATION                       
 echo "#################################################################################"
 
 echo "Finding latest model directory for $model ..."
-parent="/home/s2882278/Diss/lung-tumour/weights_kfold/$model"
+parent="/home/s2882278/Diss/lung-tumour/weights_kfold_2stage/$model-2stage"
 latest_dir=$(find "$parent" -mindepth 1 -maxdepth 1 -type d \
     -printf '%p\n' \
     | sort \
@@ -22,7 +22,7 @@ echo "Latest model directory: $latest_dir"
 echo "Copying files to scratch..."
 # generate unique id for this run
 UNIQUE_ID=$(date +%Y%m%d%H%M%S)
-WORKING_DIR="evalkf-$model-$UNIQUE_ID"
+WORKING_DIR="evalkf2stage-$model-$UNIQUE_ID"
 echo "Working directory for this run: $WORKING_DIR"
 bash scripts/copy_files_to_scratch.sh "$WORKING_DIR" > /dev/null
 
@@ -45,5 +45,6 @@ python -u src/k_fold_evaluate_model_dir.py \
     --channels 3 \
     --batch_size 8 \
     --num_workers 2 \
+    --plot_2_stage \
     --device "cuda"
 

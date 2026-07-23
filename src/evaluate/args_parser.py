@@ -15,6 +15,7 @@ def get_evaluate_base_parser():
     parser.add_argument('--channels', default=None, type=int, required=False)
     parser.add_argument('--batch_size', default=8, type=int, required=False)
     parser.add_argument('--num_workers', default=0, type=int, required=False)
+    parser.add_argument('--plot_2_stage', action='store_true', required=False, default=False)
     parser.add_argument('--device', default=None, type=str, required=False)
     return parser
 

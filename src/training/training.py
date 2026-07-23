@@ -376,7 +376,7 @@ def training_2_stage(model: torch.nn.Module,
         first_stage_optimizer = AdamW([
             {"params": model.classifier.parameters(), "lr": lr1},
             {"params": [model.vivit.embeddings.position_embeddings], "lr": lr2},
-        ], weight_decay=1e-4)
+        ], weight_decay=decay1)
     else:
         print(f"Unknown model type {model_type}, assuming it's resnet3d with classifier layer named fc")
         for param in model.fc.parameters():

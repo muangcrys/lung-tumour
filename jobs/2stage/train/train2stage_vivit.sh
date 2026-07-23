@@ -33,8 +33,8 @@ python -u src/train2stage_vivit.py \
     --second_stage_epochs 50 \
     --lr1 1e-4 \
     --lr2 5e-5 \
-    --decay1 1e-4 \
-    --decay2 1e-4 \
+    --decay1 1e-3 \
+    --decay2 1e-3 \
     --bce_weight1 2.0 \
     --bce_weight2 2.0 \
     --metric auroc \
