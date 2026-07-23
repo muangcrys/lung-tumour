@@ -28,12 +28,13 @@ def plot_pr_curve(y_prob: torch.Tensor,
     sns.lineplot(data=pr_df,
                  x='recall',
                  y='precision',
-                 ax=ax)
+                 ax=ax,
+                 estimator=None,
+                 errorbar=None)
 
     ax.set_xlabel('Recall')
     ax.set_ylabel('Precision')
     ax.set_title(f'Precision-Recall Curve (AP = {average_precision: .3f})')
-    ax.legend(loc='lower left')
     ax.set_xlim((-0.05, 1.05))
     ax.set_ylim((-0.05, 1.05))
     ax.grid(True, alpha=0.3)

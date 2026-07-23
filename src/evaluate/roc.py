@@ -30,7 +30,9 @@ def plot_roc(y_prob: torch.Tensor,
                  x='fpr',
                  y='tpr',
                  ax=ax,
-                 label='ROC')
+                 label='ROC',
+                 estimator=None,
+                 errorbar=None)
     sns.lineplot(x=[0, 1],
                  y=[0, 1],
                  linestyle='--',
