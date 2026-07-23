@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="luna16 evaluation (generalisation)" />
+    <list default="true" id="1f70a15f-d18c-425c-ab7b-1887a4ad62f8" name="Changes" comment="eval bug fixes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/annotation.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/annotation.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_1_train.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_1_train.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_1_validate.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_1_validate.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_2_train.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_2_train.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_2_validate.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_2_validate.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_3_train.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_3_train.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_3_validate.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_3_validate.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_4_train.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_4_train.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_4_validate.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/LUNA16/processed/k_fold_annotations/fold_4_validate.csv" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,61 +61,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0651709275499903" />
-      <entry key="MS500" value="1.7288772531421663" />
-      <entry key="S2" value="3.6051362435665975" />
-      <entry key="S5" value="5.162218385758036" />
-      <entry key="S10" value="5.970741007035882" />
-      <entry key="S30" value="6.701729347472505" />
-      <entry key="S60" value="7.564869348401709" />
-      <entry key="M2" value="10.447943280645648" />
-      <entry key="M5" value="26.46731020916055" />
-      <entry key="M10" value="51.32912846139009" />
-      <entry key="M15" value="66.9759976070626" />
-      <entry key="M30" value="89.19457888873083" />
-      <entry key="H1" value="103.66058822130942" />
-      <entry key="H2" value="111.93591809131719" />
-      <entry key="H4" value="116.36457330399992" />
-      <entry key="D1" value="120.21264335532356" />
-      <entry key="W1" value="120.88715268670119" />
+      <entry key="MS100" value="1.0023054563112053" />
+      <entry key="MS500" value="1.4949370139211828" />
+      <entry key="S2" value="2.8021164235152387" />
+      <entry key="S5" value="3.4319853520513313" />
+      <entry key="S10" value="3.7161096103388287" />
+      <entry key="S30" value="4.604162557087724" />
+      <entry key="S60" value="7.052488269626993" />
+      <entry key="M2" value="12.263831009378693" />
+      <entry key="M5" value="24.65174721574649" />
+      <entry key="M10" value="46.151911534490935" />
+      <entry key="M15" value="63.859405662496464" />
+      <entry key="M30" value="94.50696897653711" />
+      <entry key="H1" value="117.78842625835912" />
+      <entry key="H2" value="132.24290643557308" />
+      <entry key="H4" value="140.3107072711979" />
+      <entry key="D1" value="147.50652665916186" />
+      <entry key="W1" value="148.7855098421281" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.61233178772206E-310" />
-      <entry key="S2" value="5.627799893600848E-78" />
-      <entry key="S5" value="1.8992272021842587E-31" />
-      <entry key="S10" value="6.403298879823565E-16" />
-      <entry key="S30" value="2.4217600443034766E-5" />
-      <entry key="S60" value="0.01545528257747396" />
-      <entry key="M2" value="0.48364132959356165" />
-      <entry key="M5" value="4.60450303967554" />
-      <entry key="M10" value="10.317083015065574" />
-      <entry key="M15" value="13.609268450592607" />
-      <entry key="M30" value="18.031038877891735" />
-      <entry key="H1" value="20.790241895098905" />
-      <entry key="H2" value="22.334208092695835" />
-      <entry key="H4" value="23.15125841405853" />
-      <entry key="D1" value="23.856287731010514" />
-      <entry key="W1" value="23.97941371670676" />
+      <entry key="MS500" value="8.201450224348474E-104" />
+      <entry key="S2" value="2.697014642242328E-26" />
+      <entry key="S5" value="1.0929341628919507E-10" />
+      <entry key="S10" value="1.796808089725675E-5" />
+      <entry key="S30" value="0.05438929518904805" />
+      <entry key="S60" value="0.40386101181683126" />
+      <entry key="M2" value="1.1093945636341431" />
+      <entry key="M5" value="2.9333873170999207" />
+      <entry key="M10" value="7.078111290208566" />
+      <entry key="M15" value="10.594029569165825" />
+      <entry key="M30" value="16.604069470812224" />
+      <entry key="H1" value="21.0882634720423" />
+      <entry key="H2" value="23.83938742990786" />
+      <entry key="H4" value="25.364787236820924" />
+      <entry key="D1" value="26.719500344589747" />
+      <entry key="W1" value="26.95972900732262" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.0284364612269838" />
-      <entry key="MS500" value="1.6477927809607331" />
-      <entry key="S2" value="3.474391369416927" />
-      <entry key="S5" value="5.084152114489181" />
-      <entry key="S10" value="5.926048567471627" />
-      <entry key="S30" value="6.685077646171346" />
-      <entry key="S60" value="7.569747792094923" />
-      <entry key="M2" value="10.917358542055828" />
-      <entry key="M5" value="31.03908111348457" />
-      <entry key="M10" value="61.60957785100798" />
-      <entry key="M15" value="80.55259251096396" />
-      <entry key="M30" value="107.2035243155018" />
-      <entry key="H1" value="124.43793267764565" />
-      <entry key="H2" value="134.26315138151867" />
-      <entry key="H4" value="139.51220397835004" />
-      <entry key="D1" value="144.06830617762273" />
-      <entry key="W1" value="144.86647662327408" />
+      <entry key="MS100" value="0.9681934035427036" />
+      <entry key="MS500" value="1.48565215456241" />
+      <entry key="S2" value="2.797996182342528" />
+      <entry key="S5" value="3.4299554606542206" />
+      <entry key="S10" value="3.71405086304141" />
+      <entry key="S30" value="4.644622562876362" />
+      <entry key="S60" value="7.426341376637799" />
+      <entry key="M2" value="13.33484255286497" />
+      <entry key="M5" value="27.550346418292982" />
+      <entry key="M10" value="53.19615428928885" />
+      <entry key="M15" value="74.42180231485757" />
+      <entry key="M30" value="111.08741497135983" />
+      <entry key="H1" value="138.86192531063077" />
+      <entry key="H2" value="156.07399753476219" />
+      <entry key="H4" value="165.67109161228043" />
+      <entry key="D1" value="174.2252553574576" />
+      <entry key="W1" value="175.74512765419482" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -124,6 +135,8 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.downloads.executor": "Run",
     "Python.k_fold_split.executor": "Run",
+    "Python.luna16_process_annotation_tocsv.executor": "Run",
+    "Python.luna16_process_kfold_split.executor": "Run",
     "Python.medicalnet.executor": "Run",
     "Python.process_patients.executor": "Run",
     "Python.resnet3d (1).executor": "Run",
@@ -163,31 +176,7 @@
       <recent name="F:\UoEd\Diss\lung-tumour" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.k_fold_split">
-    <configuration name="downloads" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="lung-tumour" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/utility" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="false" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/utility/downloads.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.luna16_process_kfold_split">
     <configuration name="k_fold_split" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="lung-tumour" />
       <option name="ENV_FILES" value="" />
@@ -212,7 +201,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="medicalnet" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="luna16_process_annotation_tocsv" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="lung-tumour" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -221,13 +210,37 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/pretrains" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="DEBUG_JUST_MY_CODE" value="false" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/pretrains/medicalnet.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/luna16_process_annotation_tocsv.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="luna16_process_kfold_split" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="lung-tumour" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/luna16_process_kfold_split.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -286,11 +299,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.luna16_process_kfold_split" />
+        <item itemvalue="Python.luna16_process_annotation_tocsv" />
         <item itemvalue="Python.k_fold_split" />
         <item itemvalue="Python.vivit" />
         <item itemvalue="Python.resnet3d (1)" />
-        <item itemvalue="Python.medicalnet" />
-        <item itemvalue="Python.downloads" />
       </list>
     </recent_temporary>
   </component>
@@ -597,14 +610,21 @@
       <option name="project" value="LOCAL" />
       <updated>1784776707023</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="eval bug fixes">
+      <option name="closed" value="true" />
+      <created>1784777400076</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1784777400076</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="requirements.txt" />
     <MESSAGE value="slurm scripts" />
     <MESSAGE value="evaluation scripts" />
     <MESSAGE value="evaluate" />
@@ -629,7 +649,8 @@
     <MESSAGE value="additional reporting" />
     <MESSAGE value="kf 2 stage" />
     <MESSAGE value="luna16 evaluation (generalisation)" />
-    <option name="LAST_COMMIT_MESSAGE" value="luna16 evaluation (generalisation)" />
+    <MESSAGE value="eval bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="eval bug fixes" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
