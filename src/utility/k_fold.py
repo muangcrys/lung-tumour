@@ -20,12 +20,15 @@ def flatten_results(result_dict):
 def get_results_from_kfold(kfold_directory: Path = None,
                            save_file: bool = True,
                            save_target: str | Path = None,
+                           prefix: str | None = None,
                            source: str = "kfold"):
     if kfold_directory is None:
         if source == "kfold":
             kfold_directory = PathList.saved_kfold_weights_dir
         elif source == "kfold_2stage":
             kfold_directory = PathList.saved_kfold_2stage_weights_dir
+        elif source == "kfold_luna16":
+            kfold_directory = PathList.saved_kfold_luna16_weights_dir
         else:
             raise ValueError(f"Unknown source: {source}")
     else:
@@ -52,14 +55,18 @@ def get_results_from_kfold(kfold_directory: Path = None,
             fold_num = fold.stem.split("_")[-1]
 
             print(f"Processing fold {fold}")
-
+            validation_metric_pattern = "#BEST_*_validate_metrics.json"
+            test_metric_pattern = "#BEST_*_test_metrics.json"
+            if prefix is not None:
+                validation_metric_pattern = f"{prefix}_{validation_metric_pattern}"
+                test_metric_pattern = f"{prefix}_{test_metric_pattern}"
             # get validation metric and test metric
             validation_metric_glob = [
-                p for p in fold.glob("#BEST_*_validate_metrics.json")
+                p for p in fold.glob(validation_metric_pattern)
                 if p.is_file()
             ]
             test_metric_glob = [
-                p for p in fold.glob("#BEST_*_test_metrics.json")
+                p for p in fold.glob(test_metric_pattern)
                 if p.is_file()
             ]
 
@@ -117,9 +124,11 @@ def get_results_from_kfold(kfold_directory: Path = None,
     if save_file:
         if save_target is None:
             if source == "kfold":
-                save_target = PathList.k_fold_output_dir
+                save_target = PathList.k_fold_output_dir if prefix is None else PathList.k_fold_output_dir.parent / f"{prefix}_{PathList.k_fold_output_dir.name}"
             elif source == "kfold_2stage":
-                save_target = PathList.k_fold_2stage_output_dir
+                save_target = PathList.k_fold_2stage_output_dir if prefix is None else PathList.k_fold_2stage_output_dir.parent / f"{prefix}_{PathList.k_fold_2stage_output_dir.name}"
+            elif source == "kfold_luna16":
+                save_target = PathList.k_fold_luna16_output_dir if prefix is None else PathList.k_fold_luna16_output_dir.parent / f"{prefix}_{PathList.k_fold_luna16_output_dir.name}"
             else:
                 raise ValueError(f"Unknown source: {source}")
         else:
