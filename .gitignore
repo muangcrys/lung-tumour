@@ -190,6 +190,7 @@ slurm-*.out
 /weights_2stage/**
 /weights_kfold/**
 /weights_kfold_2stage/**
+/weights_kfold_luna16_double/**
 
 # ignore image and metadata files
 /data/**/*.npy

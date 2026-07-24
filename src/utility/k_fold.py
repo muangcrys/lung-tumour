@@ -91,8 +91,9 @@ def get_results_from_kfold(kfold_directory: Path = None,
                 test_metric_file = test_metric_glob[0]
 
             # get best epoch
-            validate_best_epoch = int(validation_metric_file.stem.split("_")[1])
-            test_best_epoch = int(test_metric_file.stem.split("_")[1])
+            epoch_location = 1 if prefix is None else 2
+            validate_best_epoch = int(validation_metric_file.stem.split("_")[epoch_location])
+            test_best_epoch = int(test_metric_file.stem.split("_")[epoch_location])
             if validate_best_epoch != test_best_epoch:
                 print(f"Mismatch between validation ({validate_best_epoch}) and test ({test_best_epoch}) epochs")
             best_epoch = test_best_epoch

@@ -824,8 +824,8 @@ def training_luna16_double(model: torch.nn.Module,
                            save_directory: str | Path = None,
                            device: torch.device | str = None, ):
     print(f"Model Name: {model.__class__.__module__} -> {model.__class__.__name__}")
-    print(f"# Training classifier (and positional embeddings for ViViT) only for {first_stage_epochs} epochs")
-    print(f"# Training entire model for {second_stage_epochs} epochs")
+    print(f"# Training on luna16 for {first_stage_epochs} epochs")
+    print(f"# Training on luna25 for {second_stage_epochs} epochs")
     print("Initializing training loop...")
 
     if device is None:
@@ -886,7 +886,7 @@ def training_luna16_double(model: torch.nn.Module,
 
     model.to(device)
 
-    for epoch in tqdm(range(first_stage_epochs), desc="First Stage Progress"):
+    for epoch in tqdm(range(first_stage_epochs), desc="LUNA16 Progress"):
         model.train()
         train_loss = 0.0
 
@@ -1052,7 +1052,7 @@ def training_luna16_double(model: torch.nn.Module,
         json.dump(final_json, f, indent=4)
 
     # done
-    print("First stage finished")
+    print("LUNA16 finished")
     print("=" * 40)
     print()
     print(("#" * 20) + "LUNA25 FINETUNING" + ("#" * 20))
@@ -1064,15 +1064,10 @@ def training_luna16_double(model: torch.nn.Module,
     print(f"Validation Loss: {luna16_best_val_loss}")
     print(f"Metrics ({metric}): {luna16_best_metrics}")
     print("=" * 40)
-    print("Initializing second stage finetuning...")
+    print("Initializing LUNA25 finetuning...")
 
-    print("Unfreezing model parameters...")
     # reverting model to best epoch
     model.load_state_dict(luna16_best_model_state_dict)
-
-    # unfreeze all params
-    for param in model.parameters():
-        param.requires_grad = True
 
     # optim
     luna25_optimizer = AdamW(model.parameters(),
@@ -1102,7 +1097,7 @@ def training_luna16_double(model: torch.nn.Module,
 
     model.to(device)
 
-    for epoch in tqdm(range(second_stage_epochs), desc="Second Stage Progress"):
+    for epoch in tqdm(range(second_stage_epochs), desc="LUNA25 Progress"):
         model.train()
         train_loss = 0.0
 

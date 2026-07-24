@@ -163,6 +163,8 @@ def train_luna16_pretrained(
         lr2=lr2,
         decay1=decay1,
         decay2=decay2,
+        first_stage_epochs=first_stage_epochs,
+        second_stage_epochs=second_stage_epochs,
         luna25_weight=luna25_weight,
         metric=metric,
         higher_is_better=higher_is_better,

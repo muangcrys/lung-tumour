@@ -31,9 +31,9 @@ python -u src/k_fold_luna16_training_vivit.py \
     --luna25_fold_annotation_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/processed/k_fold_annotations" \
     --luna25_train_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
     --luna25_validate_image_dir "/disk/scratch/s2882278/lung-tumour/$WORKING_DIR/data/LUNA/raw/image" \
-    --first_stage_epochs 30 \
+    --first_stage_epochs 60 \
     --second_stage_epochs 30 \
-    --lr1 5e-5 \
+    --lr1 1e-4 \
     --lr2 5e-5 \
     --decay1 1e-3 \
     --decay2 1e-3 \
