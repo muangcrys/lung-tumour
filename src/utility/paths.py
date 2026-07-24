@@ -39,8 +39,10 @@ class PathList:
     # trained checkpoints
     saved_weights_dir = project_root / "weights"
     saved_2stage_weights_dir = project_root / "weights_2stage"
+    saved_luna16_weights_dir = project_root / "weights_luna16_double"
     saved_kfold_weights_dir = project_root / "weights_kfold"
     saved_kfold_2stage_weights_dir = project_root / "weights_kfold_2stage"
+    saved_kfold_luna16_weights_dir = project_root / "weights_kfold_luna16_double"
 
     # outputs
     output_dir = project_root / "output"
@@ -61,6 +63,8 @@ class PathList:
     luna16_processed_data_dir = luna16_data_dir / "processed"
     luna16_annotation_csv = luna16_processed_data_dir / "annotation.csv"
     luna16_kfold_annotation_dir = luna16_processed_data_dir / "k_fold_annotations"
+
+
 
 
 

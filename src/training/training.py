@@ -5,14 +5,13 @@ from typing import Literal, Mapping, Any
 from pathlib import Path
 from datetime import datetime
 from evaluate.metrics import run_metrics
-from training.names import FileNameResolver, ClassifierOnlyFileNameResolver
+from training.names import FileNameResolver, ClassifierOnlyFileNameResolver, LUNA16FileNameResolver
 from utility.paths import PathList
 from utility.utils import get_timestamp_now
 from tqdm.auto import tqdm
 from copy import deepcopy
 import pandas as pd
 import json
-
 
 
 def get_vivit_forward_args():
@@ -43,9 +42,9 @@ def get_BCE_loss(pos_weight: float = 2.0):
 def resolve_save_directory(model: torch.nn.Module,
                            base_directory: str | Path = None,
                            model_string: str = None,
-                           training: Literal["normal", "2stage"] = "normal",
+                           training: Literal["normal", "2stage", "luna16_double"] = "normal",
                            time_stamp: str = None,
-                           k:int = -1):
+                           k: int = -1):
     if time_stamp is None:
         # time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         time_stamp = get_timestamp_now()
@@ -59,6 +58,8 @@ def resolve_save_directory(model: torch.nn.Module,
             base_directory = PathList.saved_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_weights_dir.resolve()
         elif training == "2stage":
             base_directory = PathList.saved_2stage_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_2stage_weights_dir.resolve()
+        elif training == "luna16_double":
+            base_directory = PathList.saved_luna16_weights_dir.resolve() if not is_k_fold else PathList.saved_kfold_luna16_weights_dir.resolve()
         else:
             raise NotImplementedError(f"Unknown training type: {training}")
     else:
@@ -409,7 +410,7 @@ def training_2_stage(model: torch.nn.Module,
     first_avg_train_loss = None
     first_avg_val_loss = None
     first_epoch_metrics = None
-    
+
     model.to(device)
 
     for epoch in tqdm(range(first_stage_epochs), desc="First Stage Progress"):
@@ -625,7 +626,7 @@ def training_2_stage(model: torch.nn.Module,
     second_avg_train_loss = None
     second_avg_val_loss = None
     second_epoch_metrics = None
-    
+
     model.to(device)
 
     for epoch in tqdm(range(second_stage_epochs), desc="Second Stage Progress"):
@@ -694,9 +695,9 @@ def training_2_stage(model: torch.nn.Module,
                                                                    second_epoch_metrics['accuracy'],
                                                                    second_epoch_metrics['precision'],
                                                                    second_epoch_metrics['recall'],
-                                                                 second_epoch_metrics['f1'],
-                                                                 second_epoch_metrics['auroc'],
-                                                                 second_epoch_metrics['average_precision']]
+                                                                   second_epoch_metrics['f1'],
+                                                                   second_epoch_metrics['auroc'],
+                                                                   second_epoch_metrics['average_precision']]
 
         if metric == "loss":
             this_epoch_metric = second_avg_val_loss
@@ -798,3 +799,476 @@ def training_2_stage(model: torch.nn.Module,
             second_best_metrics,
             second_best_epoch,
             second_stats_dataframe)
+
+
+def training_luna16_double(model: torch.nn.Module,
+                           luna16_train_loader: torch.utils.data.DataLoader,
+                           luna16_validate_loader: torch.utils.data.DataLoader,
+                           luna25_train_loader: torch.utils.data.DataLoader,
+                           luna25_validate_loader: torch.utils.data.DataLoader,
+                           model_type: Literal["resnet3d", "medicalnet", "vivit"] = "resnet3d",
+                           lr1: float = 5e-5,
+                           lr2: float = 5e-5,
+                           decay1: float = 1e-3,
+                           decay2: float = 1e-3,
+                           luna25_weight: float = 2.0,
+                           metric: Literal[
+                               "loss", "accuracy", "precision", "recall", "f1", "auroc", "average_precision"] = "f1",
+                           higher_is_better: bool = None,
+                           threshold: float = 0.5,
+                           forward_args: Mapping[str, Any] = None,
+                           frequency: int = 10,
+                           first_stage_epochs: int = 30,
+                           second_stage_epochs: int = 30,
+                           save_checkpoints: bool = True,
+                           save_directory: str | Path = None,
+                           device: torch.device | str = None, ):
+    print(f"Model Name: {model.__class__.__module__} -> {model.__class__.__name__}")
+    print(f"# Training classifier (and positional embeddings for ViViT) only for {first_stage_epochs} epochs")
+    print(f"# Training entire model for {second_stage_epochs} epochs")
+    print("Initializing training loop...")
+
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        device = torch.device(device)
+    print(f"Training will be run on {device}")
+
+    if save_checkpoints:
+        if save_directory is None:
+            save_directory: Path = resolve_save_directory(model, save_directory)
+        else:
+            save_directory: Path = Path(save_directory).resolve()
+        print(f"Saving weights and statistics to {save_directory} every {frequency} epochs")
+        if not save_directory.is_dir():
+            save_directory.mkdir(parents=True, exist_ok=True)
+
+    if forward_args is None:
+        forward_args = dict()
+
+    # model_type = model_type.lower()
+    vivit = "vivit" in model_type
+
+    print()
+    print(("#" * 20) + "LUNA16 TRAINING" + ("#" * 20))
+    print()
+
+    print("Initializing first stage training...")
+    luna16_criterion = nn.BCEWithLogitsLoss().to(device)
+    luna16_optimizer = AdamW(model.parameters(), lr=lr1, weight_decay=decay1)
+
+    luna16_best_model_state_dict = None
+    luna16_best_optimizer_state_dict = None
+    luna16_best_train_loss = float("inf")
+    luna16_best_val_loss = float("inf")
+    luna16_best_metrics = None
+
+    # resolve merics
+    if higher_is_better is None:
+        higher_is_better = metric != "loss"
+
+    if higher_is_better:
+        luna16_best_metric = float("-inf")
+    else:
+        # lower is better
+        luna16_best_metric = float("inf")
+    luna16_best_epoch = -1
+
+    # dataframe to track training loss, validation loss, metrics
+    luna16_stats_dataframe = pd.DataFrame(columns=["epoch", "train_loss", "val_loss",
+                                                  "accuracy", "precision", "recall", "f1", "auroc",
+                                                  "average_precision"])
+
+    # set average training and validation loss for ref
+    luna16_avg_train_loss = None
+    luna16_avg_val_loss = None
+    luna16_epoch_metrics = None
+
+    model.to(device)
+
+    for epoch in tqdm(range(first_stage_epochs), desc="First Stage Progress"):
+        model.train()
+        train_loss = 0.0
+
+        for inputs, labels in luna16_train_loader:
+            inputs = inputs.to(device)
+            labels = labels.to(device).float().unsqueeze(1)
+
+            luna16_optimizer.zero_grad()
+
+            y_pred = model(inputs, **forward_args)
+            if vivit:
+                y_pred = y_pred.logits
+
+            loss = luna16_criterion(y_pred, labels)
+            loss.backward()
+            luna16_optimizer.step()
+
+            train_loss += loss.item()
+
+        model.eval()
+        val_loss = 0.0
+        labels_tensor = torch.empty(0, dtype=torch.int).cpu()
+        predictions_tensor = torch.empty(0).cpu()
+
+        with torch.no_grad():
+            for inputs, labels in luna16_validate_loader:
+                inputs, labels = inputs.to(device), labels.to(device).float().unsqueeze(1)
+                y_pred = model(inputs, **forward_args)
+                if vivit:
+                    y_pred = y_pred.logits
+                loss = luna16_criterion(y_pred, labels)
+                val_loss += loss.item()
+
+                # append
+                y_prob = torch.sigmoid(y_pred).cpu().reshape(-1)
+                labels_tensor = torch.cat((labels_tensor, labels.cpu().int().reshape(-1)), 0)
+                predictions_tensor = torch.cat((predictions_tensor, y_prob), 0)
+
+        luna16_avg_train_loss = train_loss / len(luna16_train_loader)
+        luna16_avg_val_loss = val_loss / len(luna16_validate_loader)
+
+        luna16_epoch_metrics = run_metrics(y_prob=predictions_tensor,
+                                          y_true=labels_tensor,
+                                          threshold=threshold,
+                                          skip_confusion_matrix=True)
+
+        # report
+        print("=" * 20)
+        print(f"EPOCH: {epoch + 1}")
+        print(f"Train Loss: {luna16_avg_train_loss}")
+        print(f"Validation Loss: {luna16_avg_val_loss}")
+        print(f"Accuracy: {luna16_epoch_metrics['accuracy']}")
+        print(f"Precision: {luna16_epoch_metrics['precision']}")
+        print(f"Recall: {luna16_epoch_metrics['recall']}")
+        print(f"F1 Score: {luna16_epoch_metrics['f1']}")
+        print(f"AUROC: {luna16_epoch_metrics['auroc']}")
+        print(f"Average Precision: {luna16_epoch_metrics['average_precision']}")
+
+        # update pd
+        luna16_stats_dataframe.loc[len(luna16_stats_dataframe)] = [epoch + 1,
+                                                                 luna16_avg_train_loss,
+                                                                 luna16_avg_val_loss,
+                                                                 luna16_epoch_metrics['accuracy'],
+                                                                 luna16_epoch_metrics['precision'],
+                                                                 luna16_epoch_metrics['recall'],
+                                                                 luna16_epoch_metrics['f1'],
+                                                                 luna16_epoch_metrics['auroc'],
+                                                                 luna16_epoch_metrics['average_precision']]
+
+        if metric == "loss":
+            this_epoch_metric = luna16_avg_val_loss
+        else:
+            this_epoch_metric = luna16_epoch_metrics[metric]
+
+        if higher_is_better:
+            improvement = this_epoch_metric > luna16_best_metric
+        else:
+            # lower is better
+            improvement = this_epoch_metric < luna16_best_metric
+        if improvement:
+            print(
+                f"Model improved on validation metric: {metric}, saving best model state dict and optimizer state dict")
+            luna16_best_val_loss = luna16_avg_val_loss
+            luna16_best_model_state_dict = deepcopy(model.state_dict())
+            luna16_best_optimizer_state_dict = deepcopy(luna16_optimizer.state_dict())
+            luna16_best_train_loss = luna16_avg_train_loss
+            luna16_best_epoch = epoch
+            luna16_best_metric = this_epoch_metric
+            luna16_best_metrics = luna16_epoch_metrics
+
+        if save_checkpoints and (epoch + 1) % frequency == 0:
+            checkpoint_target = save_directory / LUNA16FileNameResolver.get_checkpoint_name(epoch + 1)
+            print(f"Saving checkpoint to {checkpoint_target}")
+            torch.save({
+                "epoch": epoch + 1,
+                "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": luna16_optimizer.state_dict(),
+                "train_loss": luna16_avg_train_loss,
+                "val_loss": luna16_avg_val_loss,
+            }, checkpoint_target)
+            statistics_target = save_directory / LUNA16FileNameResolver.get_stats_filename(epoch + 1)
+            print(f"Saving statistics to {statistics_target}")
+            luna16_stats_dataframe.to_csv(statistics_target, index=False)
+
+    # after loop
+    print("=" * 40)
+
+    # save best model
+    if luna16_best_model_state_dict is None or luna16_best_optimizer_state_dict is None:
+        print("No checkpoint found for best model!")
+        raise RuntimeError("No checkpoint found for best model!")
+    else:
+        best_checkpoint_target = save_directory / LUNA16FileNameResolver.get_best_checkpoint_name(
+            luna16_best_epoch + 1)
+        torch.save({
+            "epoch": luna16_best_epoch + 1,
+            "model_state_dict": luna16_best_model_state_dict,
+            "optimizer_state_dict": luna16_best_optimizer_state_dict,
+            "train_loss": luna16_best_train_loss,
+            "val_loss": luna16_best_val_loss,
+        }, best_checkpoint_target)
+
+        best_json_target = save_directory / LUNA16FileNameResolver.get_best_json_filename(luna16_best_epoch + 1)
+        with open(best_json_target, "w") as f:
+            best_json = {
+                "epoch": luna16_best_epoch + 1,
+                "train_loss": luna16_best_train_loss,
+                "val_loss": luna16_best_val_loss,
+                "metrics": luna16_best_metrics
+            }
+            json.dump(best_json, f, indent=4)
+
+    # save last checkpoint
+    final_checkpoint_target = save_directory / LUNA16FileNameResolver.get_final_checkpoint_name(
+        first_stage_epochs)
+    final_statistics_target = save_directory / LUNA16FileNameResolver.get_final_stats_filename(
+        first_stage_epochs)
+    if save_checkpoints and first_stage_epochs % frequency == 0:
+        # already saved in loop -> rename instead
+        epoch_checkpoint_target = save_directory / LUNA16FileNameResolver.get_checkpoint_name(
+            first_stage_epochs)
+        epoch_statistics_target = save_directory / LUNA16FileNameResolver.get_stats_filename(first_stage_epochs)
+        epoch_checkpoint_target.rename(final_checkpoint_target)
+        epoch_statistics_target.rename(final_statistics_target)
+    else:
+        torch.save({
+            "epoch": first_stage_epochs,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": luna16_optimizer.state_dict(),
+            "train_loss": luna16_avg_train_loss,
+            "val_loss": luna16_avg_val_loss,
+        }, final_checkpoint_target)
+        luna16_stats_dataframe.to_csv(final_statistics_target, index=False)
+    # json
+    final_json_target = save_directory / LUNA16FileNameResolver.get_final_json_filename(first_stage_epochs)
+    with open(final_json_target, "w") as f:
+        final_json = {
+            "epoch": first_stage_epochs,
+            "train_loss": luna16_avg_train_loss,
+            "val_loss": luna16_avg_val_loss,
+            "metrics": luna16_epoch_metrics
+        }
+        json.dump(final_json, f, indent=4)
+
+    # done
+    print("First stage finished")
+    print("=" * 40)
+    print()
+    print(("#" * 20) + "LUNA25 FINETUNING" + ("#" * 20))
+    print()
+    # reporting
+    print(f"Continuing from epoch: {luna16_best_epoch + 1}")
+    print("Statistics:")
+    print(f"Training Loss: {luna16_best_train_loss}")
+    print(f"Validation Loss: {luna16_best_val_loss}")
+    print(f"Metrics ({metric}): {luna16_best_metrics}")
+    print("=" * 40)
+    print("Initializing second stage finetuning...")
+
+    print("Unfreezing model parameters...")
+    # reverting model to best epoch
+    model.load_state_dict(luna16_best_model_state_dict)
+
+    # unfreeze all params
+    for param in model.parameters():
+        param.requires_grad = True
+
+    # optim
+    luna25_optimizer = AdamW(model.parameters(),
+                                   lr=lr2,
+                                   weight_decay=decay2)
+
+    # loss
+    luna25_criterion = get_BCE_loss(pos_weight=luna25_weight).to(device)
+
+    luna25_best_epoch = -1
+    luna25_best_train_loss = luna16_best_train_loss
+    luna25_best_val_loss = luna16_best_val_loss
+    luna25_best_metric = luna16_best_metric
+    luna25_best_metrics = luna16_best_metrics
+    luna25_best_model_state_dict = deepcopy(luna16_best_model_state_dict)
+    luna25_best_optimizer_state_dict = None
+
+    # dataframe to track training loss, validation loss, metrics
+    luna25_stats_dataframe = pd.DataFrame(columns=["epoch", "train_loss", "val_loss",
+                                                   "accuracy", "precision", "recall", "f1", "auroc",
+                                                   "average_precision"])
+
+    # set average training and validation loss for ref
+    luna25_avg_train_loss = None
+    luna25_avg_val_loss = None
+    luna25_epoch_metrics = None
+
+    model.to(device)
+
+    for epoch in tqdm(range(second_stage_epochs), desc="Second Stage Progress"):
+        model.train()
+        train_loss = 0.0
+
+        for inputs, labels in luna25_train_loader:
+            inputs = inputs.to(device)
+            labels = labels.to(device).float().unsqueeze(1)
+
+            luna25_optimizer.zero_grad()
+
+            y_pred = model(inputs, **forward_args)
+            if vivit:
+                y_pred = y_pred.logits
+
+            loss = luna25_criterion(y_pred, labels)
+            loss.backward()
+            luna25_optimizer.step()
+
+            train_loss += loss.item()
+
+        model.eval()
+        val_loss = 0.0
+        labels_tensor = torch.empty(0, dtype=torch.int).cpu()
+        predictions_tensor = torch.empty(0).cpu()
+
+        with torch.no_grad():
+            for inputs, labels in luna25_validate_loader:
+                inputs, labels = inputs.to(device), labels.to(device).float().unsqueeze(1)
+                y_pred = model(inputs, **forward_args)
+                if vivit:
+                    y_pred = y_pred.logits
+                loss = luna16_criterion(y_pred, labels)
+                val_loss += loss.item()
+
+                # append
+                y_prob = torch.sigmoid(y_pred).cpu().reshape(-1)
+                labels_tensor = torch.cat((labels_tensor, labels.cpu().int().reshape(-1)), 0)
+                predictions_tensor = torch.cat((predictions_tensor, y_prob), 0)
+
+        luna25_avg_train_loss = train_loss / len(luna25_train_loader)
+        luna25_avg_val_loss = val_loss / len(luna25_validate_loader)
+
+        luna25_epoch_metrics = run_metrics(y_prob=predictions_tensor,
+                                           y_true=labels_tensor,
+                                           threshold=threshold,
+                                           skip_confusion_matrix=True)
+
+        # report
+        print("=" * 20)
+        print(f"EPOCH: {epoch + 1}")
+        print(f"Train Loss: {luna25_avg_train_loss}")
+        print(f"Validation Loss: {luna25_avg_val_loss}")
+        print(f"Accuracy: {luna25_epoch_metrics['accuracy']}")
+        print(f"Precision: {luna25_epoch_metrics['precision']}")
+        print(f"Recall: {luna25_epoch_metrics['recall']}")
+        print(f"F1 Score: {luna25_epoch_metrics['f1']}")
+        print(f"AUROC: {luna25_epoch_metrics['auroc']}")
+        print(f"Average Precision: {luna25_epoch_metrics['average_precision']}")
+
+        # update pd
+        luna25_stats_dataframe.loc[len(luna25_stats_dataframe)] = [epoch + 1,
+                                                                   luna25_avg_train_loss,
+                                                                   luna25_avg_val_loss,
+                                                                   luna25_epoch_metrics['accuracy'],
+                                                                   luna25_epoch_metrics['precision'],
+                                                                   luna25_epoch_metrics['recall'],
+                                                                   luna25_epoch_metrics['f1'],
+                                                                   luna25_epoch_metrics['auroc'],
+                                                                   luna25_epoch_metrics['average_precision']]
+
+        if metric == "loss":
+            this_epoch_metric = luna25_avg_val_loss
+        else:
+            this_epoch_metric = luna25_epoch_metrics[metric]
+
+        if higher_is_better:
+            improvement = this_epoch_metric > luna25_best_metric
+        else:
+            # lower is better
+            improvement = this_epoch_metric < luna25_best_metric
+        if improvement:
+            print(
+                f"Model improved on validation metric: {metric}, saving best model state dict and optimizer state dict")
+            luna25_best_val_loss = luna25_avg_val_loss
+            luna25_best_model_state_dict = deepcopy(model.state_dict())
+            luna25_best_optimizer_state_dict = deepcopy(luna25_optimizer.state_dict())
+            luna25_best_train_loss = luna25_avg_train_loss
+            luna25_best_epoch = epoch
+            luna25_best_metric = this_epoch_metric
+            luna25_best_metrics = luna25_epoch_metrics
+
+        if save_checkpoints and (epoch + 1) % frequency == 0:
+            checkpoint_target = save_directory / FileNameResolver.get_checkpoint_name(epoch + 1)
+            print(f"Saving checkpoint to {checkpoint_target}")
+            torch.save({
+                "epoch": epoch + 1,
+                "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": luna25_optimizer.state_dict(),
+                "train_loss": luna25_avg_train_loss,
+                "val_loss": luna25_avg_val_loss,
+            }, checkpoint_target)
+            statistics_target = save_directory / FileNameResolver.get_stats_filename(epoch + 1)
+            print(f"Saving statistics to {statistics_target}")
+            luna25_stats_dataframe.to_csv(statistics_target, index=False)
+
+    # after loop
+    print("=" * 40)
+
+    # save best model
+    if luna25_best_model_state_dict is None or luna25_best_optimizer_state_dict is None:
+        print("No checkpoint found for best model!")
+    else:
+        best_checkpoint_target = save_directory / FileNameResolver.get_best_checkpoint_name(
+            luna25_best_epoch + 1)
+        torch.save({
+            "epoch": luna25_best_epoch + 1,
+            "model_state_dict": luna25_best_model_state_dict,
+            "optimizer_state_dict": luna25_best_optimizer_state_dict,
+            "train_loss": luna25_best_train_loss,
+            "val_loss": luna25_best_val_loss,
+        }, best_checkpoint_target)
+
+        best_json_target = save_directory / FileNameResolver.get_best_json_filename(luna25_best_epoch + 1)
+        with open(best_json_target, "w") as f:
+            best_json = {
+                "epoch": luna25_best_epoch + 1,
+                "train_loss": luna25_best_train_loss,
+                "val_loss": luna25_best_val_loss,
+                "metrics": luna25_best_metrics
+            }
+            json.dump(best_json, f, indent=4)
+
+    # save last checkpoint
+    final_checkpoint_target = save_directory / FileNameResolver.get_final_checkpoint_name(
+        second_stage_epochs)
+    final_statistics_target = save_directory / FileNameResolver.get_final_stats_filename(
+        second_stage_epochs)
+    if save_checkpoints and second_stage_epochs % frequency == 0:
+        # already saved in loop -> rename instead
+        epoch_checkpoint_target = save_directory / FileNameResolver.get_checkpoint_name(
+            second_stage_epochs)
+        epoch_statistics_target = save_directory / FileNameResolver.get_stats_filename(second_stage_epochs)
+        epoch_checkpoint_target.rename(final_checkpoint_target)
+        epoch_statistics_target.rename(final_statistics_target)
+    else:
+        torch.save({
+            "epoch": second_stage_epochs,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": luna25_optimizer.state_dict(),
+            "train_loss": luna25_avg_train_loss,
+            "val_loss": luna25_avg_val_loss,
+        }, final_checkpoint_target)
+        luna16_stats_dataframe.to_csv(final_statistics_target, index=False)
+    # json
+    final_json_target = save_directory / FileNameResolver.get_final_json_filename(second_stage_epochs)
+    with open(final_json_target, "w") as f:
+        final_json = {
+            "epoch": second_stage_epochs,
+            "train_loss": luna25_avg_train_loss,
+            "val_loss": luna25_avg_val_loss,
+            "metrics": luna25_epoch_metrics
+        }
+        json.dump(final_json, f, indent=4)
+
+    return (luna25_best_model_state_dict,
+            luna25_best_optimizer_state_dict,
+            luna25_best_train_loss,
+            luna25_best_metrics,
+            luna25_best_epoch,
+            luna25_stats_dataframe)

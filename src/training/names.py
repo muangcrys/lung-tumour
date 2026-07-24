@@ -101,3 +101,62 @@ class ClassifierOnlyFileNameResolver(FileNameResolver):
         return ClassifierOnlyFileNameResolver.add_prefix(
             FileNameResolver.get_2stage_training_configs_filename()
         )
+
+class LUNA16FileNameResolver(FileNameResolver):
+    @staticmethod
+    def add_prefix(filename: str) -> str:
+        return "~LUNA16~" + filename
+
+    @staticmethod
+    def get_checkpoint_name(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_checkpoint_name(epoch)
+        )
+
+    @staticmethod
+    def get_stats_filename(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_stats_filename(epoch)
+        )
+
+    @staticmethod
+    def get_best_checkpoint_name(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_best_checkpoint_name(epoch)
+        )
+
+    @staticmethod
+    def get_best_json_filename(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_best_json_filename(epoch)
+        )
+
+    @staticmethod
+    def get_final_checkpoint_name(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_final_checkpoint_name(epoch)
+        )
+
+    @staticmethod
+    def get_final_json_filename(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_final_json_filename(epoch)
+        )
+
+    @staticmethod
+    def get_final_stats_filename(epoch: int | str) -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_final_stats_filename(epoch)
+        )
+
+    @staticmethod
+    def get_training_configs_filename() -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_training_configs_filename()
+        )
+
+    @staticmethod
+    def get_2stage_training_configs_filename() -> str:
+        return LUNA16FileNameResolver.add_prefix(
+            FileNameResolver.get_2stage_training_configs_filename()
+        )

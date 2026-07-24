@@ -15,7 +15,8 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
                          num_workers: int = 0,
                          pos_weight: float = 2.0,
                          seed: int = 4242,
-                         deterministic: bool = True):
+                         deterministic: bool = True,
+                         use_sampler: bool = True,):
     generator = torch.Generator()
 
     if deterministic:
@@ -28,15 +29,23 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
             seed=seed,
             model=model_type,
         )
-        train_sampler = get_weighted_sampler_luna(train_dataset,
-                                                  pos_weight=pos_weight,
-                                                  generator=generator, )
-        train_loader = DataLoader(dataset=train_dataset,
-                                  batch_size=batch_size,
-                                  sampler=train_sampler,
-                                  num_workers=num_workers,
-                                  generator=generator,
-                                  worker_init_fn=seed_worker)
+        if use_sampler:
+            train_sampler = get_weighted_sampler_luna(train_dataset,
+                                                      pos_weight=pos_weight,
+                                                      generator=generator, )
+            train_loader = DataLoader(dataset=train_dataset,
+                                      batch_size=batch_size,
+                                      sampler=train_sampler,
+                                      num_workers=num_workers,
+                                      generator=generator,
+                                      worker_init_fn=seed_worker)
+        else:
+            train_loader = DataLoader(dataset=train_dataset,
+                                      batch_size=batch_size,
+                                      shuffle=True,
+                                      num_workers=num_workers,
+                                      generator = generator,
+                                      worker_init_fn=seed_worker)
     else:
         train_dataset = LunaDataset.get_dataset_with_transform(
             annotation_file=annotation,
@@ -45,14 +54,22 @@ def get_train_dataloader(model_type: Literal["video_pretrained", "medical_pretra
             model=model_type,
             n_input_channels=n_input_channels,
         )
-        train_sampler = get_weighted_sampler_luna(train_dataset,
-                                                  pos_weight=pos_weight, )
-        train_loader = DataLoader(dataset=train_dataset,
-                                  batch_size=batch_size,
-                                  sampler=train_sampler,
-                                  num_workers=num_workers,
-                                  worker_init_fn=seed_worker,
-                                  generator=generator)
+        if use_sampler:
+            train_sampler = get_weighted_sampler_luna(train_dataset,
+                                                      pos_weight=pos_weight, )
+            train_loader = DataLoader(dataset=train_dataset,
+                                      batch_size=batch_size,
+                                      sampler=train_sampler,
+                                      num_workers=num_workers,
+                                      worker_init_fn=seed_worker,
+                                      generator=generator)
+        else:
+            train_loader = DataLoader(dataset=train_dataset,
+                                      batch_size=batch_size,
+                                      shuffle=True,
+                                      num_workers=num_workers,
+                                      worker_init_fn=seed_worker,
+                                      generator=generator)
 
     return train_loader
 
@@ -87,7 +104,8 @@ def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretr
                           num_workers: int = 0,
                           pos_weight: float = 2.0,
                           seed: int = 4242,
-                          deterministic: bool = True
+                          deterministic: bool = True,
+                          use_sampler: bool = True,
                           ):
     train_loader = get_train_dataloader(model_type=model_type,
                                         n_input_channels=n_input_channels,
@@ -97,7 +115,8 @@ def get_train_val_loaders(model_type: Literal["video_pretrained", "medical_pretr
                                         num_workers=num_workers,
                                         pos_weight=pos_weight,
                                         seed=seed,
-                                        deterministic=deterministic)
+                                        deterministic=deterministic,
+                                        use_sampler=use_sampler)
 
     validate_loader = get_validate_loader(model_type=model_type,
                                           n_input_channels=n_input_channels,
