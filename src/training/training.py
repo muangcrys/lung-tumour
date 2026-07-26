@@ -1078,11 +1078,11 @@ def training_luna16_double(model: torch.nn.Module,
     luna25_criterion = get_BCE_loss(pos_weight=luna25_weight).to(device)
 
     luna25_best_epoch = -1
-    luna25_best_train_loss = luna16_best_train_loss
-    luna25_best_val_loss = luna16_best_val_loss
-    luna25_best_metric = luna16_best_metric
-    luna25_best_metrics = luna16_best_metrics
-    luna25_best_model_state_dict = deepcopy(luna16_best_model_state_dict)
+    luna25_best_train_loss = float("inf")
+    luna25_best_val_loss = float("inf")
+    luna25_best_metric = float("-inf") if higher_is_better else float("inf")
+    luna25_best_metrics = None
+    luna25_best_model_state_dict = None
     luna25_best_optimizer_state_dict = None
 
     # dataframe to track training loss, validation loss, metrics
@@ -1128,7 +1128,7 @@ def training_luna16_double(model: torch.nn.Module,
                 y_pred = model(inputs, **forward_args)
                 if vivit:
                     y_pred = y_pred.logits
-                loss = luna16_criterion(y_pred, labels)
+                loss = luna25_criterion(y_pred, labels)
                 val_loss += loss.item()
 
                 # append
