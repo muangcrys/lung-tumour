@@ -47,5 +47,7 @@ python -u src/k_fold_evaluate_model_dir.py \
     --channels 3 \
     --batch_size 8 \
     --num_workers 2 \
+    --plot_2_stage \
+    --plot_mode "luna16" \
     --device "cuda"
 

@@ -6,7 +6,7 @@ import torch
 
 from evaluate.names import MetricFiles
 from plotting.metrics import plot_all_metrics_from_csv, plot_2_stage_metrics_from_csv
-from training.names import FileNameResolver, ClassifierOnlyFileNameResolver
+from training.names import FileNameResolver, ClassifierOnlyFileNameResolver, LUNA16FileNameResolver
 import json
 from plotting.loss import plot_loss_curves_from_csv, plot_2_stage_loss_curves_from_csv
 from models.fresh_resnet3d import get_fresh_resnet3d
@@ -36,6 +36,7 @@ def run_validate_test_kfold_validation(
         batch_size: int = 8,
         num_workers: int = 0,
         plot_2_stage: bool = False,
+        plot_mode: Literal["2stage", "luna16"] = "2stage",
         device: str | torch.device = None,
         **kwargs,
 ):
@@ -77,6 +78,7 @@ def run_validate_test_kfold_validation(
             batch_size=batch_size,
             num_workers=num_workers,
             plot_2_stage=plot_2_stage,
+            plot_mode=plot_mode,
             device=device,
             **kwargs
         )
@@ -101,6 +103,7 @@ def run_validate_test_evaluation_on_model_directory(
         batch_size: int = 8,
         num_workers: int = 0,
         plot_2_stage: bool = False,
+        plot_mode: Literal["2stage", "luna16"] = "2stage",
         device: str | torch.device = None,
         **kwargs,
 ):
@@ -121,12 +124,14 @@ def run_validate_test_evaluation_on_model_directory(
         if plot_loss:
             loss_fig, _ = plot_2_stage_loss_on_model_directory(model_directory=model_directory,
                                                                save_directory=metrics_directory,
-                                                               best_epoch=best_epoch,)
+                                                               best_epoch=best_epoch,
+                                                               mode=plot_mode)
             plt.close(loss_fig)
         if plot_metrics:
             metrics_fig, _ = plot_2_stage_metrics_on_model_directory(model_directory=model_directory,
                                                                      save_directory=metrics_directory,
-                                                                     best_epoch=best_epoch,)
+                                                                     best_epoch=best_epoch,
+                                                                     mode=plot_mode)
             plt.close(metrics_fig)
     else:
         if plot_loss:
@@ -458,6 +463,7 @@ def plot_2_stage_loss_on_model_directory(
         save_directory: str | Path = None,
         figsize: tuple[int, int] = (7, 7),
         best_epoch: int = None,
+        mode: Literal["2stage", "luna16"] = "2stage",
 ):
     model_directory: Path = Path(model_directory)
     if save_directory is None:
@@ -470,13 +476,18 @@ def plot_2_stage_loss_on_model_directory(
     training_configs = get_training_configs_from_directory(model_directory)
     epoch1 = training_configs["first_stage_epochs"]
     epoch2 = training_configs["second_stage_epochs"]
-    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
+    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1) if mode == "2stage" else LUNA16FileNameResolver.get_final_stats_filename(epoch1)
     metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
     metrics_file1 = model_directory / metrics_file_name1
     metrics_file2 = model_directory / metrics_file_name2
 
     # find best model epoch from stage 1
-    _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+    if mode == "2stage":
+        _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+    elif mode == "luna16":
+        _, first_stage_stop = find_luna16_best_model_ckt(model_directory=model_directory)
+    else:
+        raise ValueError(f"Unsupported mode: {mode}")
 
     # plot
     fig, ax = plot_2_stage_loss_curves_from_csv(csv_path1=metrics_file1,
@@ -496,6 +507,7 @@ def plot_2_stage_metrics_on_model_directory(
         save_directory: str | Path = None,
         figsize: tuple[int, int] = (7, 7),
         best_epoch: int = None,
+        mode: Literal["2stage", "luna16"] = "2stage"
 ):
     model_directory: Path = Path(model_directory)
     if save_directory is None:
@@ -508,13 +520,18 @@ def plot_2_stage_metrics_on_model_directory(
     training_configs = get_training_configs_from_directory(model_directory)
     epoch1 = training_configs["first_stage_epochs"]
     epoch2 = training_configs["second_stage_epochs"]
-    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1)
+    metrics_file_name1 = ClassifierOnlyFileNameResolver.get_final_stats_filename(epoch1) if mode == "2stage" else LUNA16FileNameResolver.get_final_stats_filename(epoch1)
     metrics_file_name2 = FileNameResolver.get_final_stats_filename(epoch2)
     metrics_file1 = model_directory / metrics_file_name1
     metrics_file2 = model_directory / metrics_file_name2
 
     # find best model epoch from stage 1
-    _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+    if mode == "2stage":
+        _, first_stage_stop = find_classifer_only_best_model_ckt(model_directory=model_directory)
+    elif mode == "luna16":
+        _, first_stage_stop = find_luna16_best_model_ckt(model_directory=model_directory)
+    else:
+        raise ValueError(f"Unsupported mode: {mode}")
 
     # plot
     fig, ax = plot_2_stage_metrics_from_csv(csv_path1=metrics_file1,
@@ -613,6 +630,24 @@ def find_best_model_ckt(model_directory: Path | str, ):
 def find_classifer_only_best_model_ckt(model_directory: Path | str, ):
     model_directory: Path = Path(model_directory)
     best_file_name = ClassifierOnlyFileNameResolver.get_best_checkpoint_name("*")
+    best_ckt_files = list(model_directory.glob(best_file_name))
+    if len(best_ckt_files) == 0:
+        raise FileNotFoundError(f"Could not find best ckt file at {model_directory}/{best_file_name}")
+    elif len(best_ckt_files) > 1:
+        print(f"Found more than one best ckt file at {model_directory}/{best_file_name}")
+        print(best_ckt_files)
+        print(f"Picking the last file: {best_ckt_files[-1]}")
+        best_ckt_file = best_ckt_files[-1]
+    else:
+        print(f"Found best ckt file at {best_ckt_files[-1]}")
+        best_ckt_file = best_ckt_files[-1]
+
+    best_epoch = get_epoch_number_from_file_name(best_ckt_file.stem)
+    return best_ckt_file, best_epoch
+
+def find_luna16_best_model_ckt(model_directory: Path | str, ):
+    model_directory: Path = Path(model_directory)
+    best_file_name = LUNA16FileNameResolver.get_best_checkpoint_name("*")
     best_ckt_files = list(model_directory.glob(best_file_name))
     if len(best_ckt_files) == 0:
         raise FileNotFoundError(f"Could not find best ckt file at {model_directory}/{best_file_name}")

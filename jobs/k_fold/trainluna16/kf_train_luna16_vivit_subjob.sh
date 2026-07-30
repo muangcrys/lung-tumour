@@ -42,5 +42,6 @@ python -u src/k_fold_luna16_training_vivit.py \
     --epochs 50 \
     --batch_size 2 \
     --metric auroc \
-    --device "cuda"
+    --device "cuda" \
+    --time_stamp "$UNIQUE_ID" \
 
