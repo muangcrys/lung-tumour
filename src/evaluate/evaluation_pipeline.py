@@ -16,7 +16,6 @@ from evaluate.inference import run_inference_and_metrics
 from training.dataloader import get_validate_loader
 import seaborn as sns
 
-
 def run_validate_test_kfold_validation(
         fold_directory: str | Path,
         annotation_dir: str | Path,
@@ -116,6 +115,13 @@ def run_validate_test_evaluation_on_model_directory(
         metrics_directory.mkdir(parents=True, exist_ok=True)
 
     sns.set_style("darkgrid")
+    plt.rcParams.update({
+    "axes.titlesize": 20,
+    "axes.labelsize": 16,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 14,
+    })
 
     # plot
     _, best_epoch = find_best_model_ckt(model_directory=model_directory)
