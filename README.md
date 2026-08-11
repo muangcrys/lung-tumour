@@ -62,7 +62,7 @@ python -u src/luna16_process_images.py
 We used pretrained weights from ResNet3D and MedicalNet. All of these weights must be present to reproduce any experiments with the pretrained model.
 
 ### ResNet3D Weights
-Checkpoints for the ResNet3D models can be found in the [video-classification-3d-cnn-pytorch]([https://github.com/dongzhuoyao/3D-ResNets-PyTorch](https://github.com/kenshohara/video-classification-3d-cnn-pytorch)) repository. The checkpoints are stored in a [Google Drive](https://drive.google.com/drive/folders/1zvl89AgFAApbH0At-gMuZSeQB_LpNP-M). We used the following:
+Checkpoints for the ResNet3D models can be found in the [video-classification-3d-cnn-pytorch](https://github.com/kenshohara/video-classification-3d-cnn-pytorch) repository. The checkpoints are stored in a [Google Drive](https://drive.google.com/drive/folders/1zvl89AgFAApbH0At-gMuZSeQB_LpNP-M). We used the following:
 - `r3d18_KM_200ep.pth`: ResNet3D-18
 - `r3d34_KM_200ep.pth`: ResNet3D-34
 - `r3d50_KMS_200ep.pth`: ResNet3D-50
@@ -148,4 +148,6 @@ Different `--source` argument will extract results from different training strat
 ---
 
 ## Acknowledgement
-We use the code for the backbone mo
+We use the code for the backbone models from these repositories:
+- [video-classification-3d-cnn-pytorch](https://github.com/kenshohara/video-classification-3d-cnn-pytorch): ResNet3D
+- [MedicalNet](https://github.com/Tencent/MedicalNet): MedicalNet
