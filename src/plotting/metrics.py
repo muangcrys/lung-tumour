@@ -23,7 +23,7 @@ def plot_metric_from_df(df: pd.DataFrame,
 
     if best_epoch is not None:
         # plot a vertical line at the best epoch
-        ax.axvline(x=best_epoch, color="red", linestyle="--")
+        ax.axvline(x=best_epoch, color="red", linestyle="--", label="Best Epoch")
 
     # capitalize
     title_name = column.capitalize()
@@ -63,7 +63,7 @@ def plot_all_metrics_from_df(df: pd.DataFrame,
     )
 
     if best_epoch is not None:
-        ax.axvline(x=best_epoch, color="red", linestyle="--")
+        ax.axvline(x=best_epoch, color="red", linestyle="--", label="Best Epoch")
 
     ax.set_xlabel("Epoch")
     ax.set_ylim(y_min, y_max)
