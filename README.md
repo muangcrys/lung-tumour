@@ -2,7 +2,7 @@
 
 *Jetanat Sihanatkathakul*
 
-[Dissertation](https://github.com/muangcrys/lung-tumour/releases/tag/draft)
+[Dissertation](https://github.com/muangcrys/lung-tumour/releases/download/final/Dissertation.pdf)
 
 ---
 
