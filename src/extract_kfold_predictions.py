@@ -1,0 +1,19 @@
+from utility.k_fold import get_predictions_from_kfold
+import argparse
+
+def get_extract_kfold_predictions_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--kfold_directory', type=str, required=False, default=None,)
+    parser.add_argument('--save_target', type=str, required=False, default=None,)
+    parser.add_argument('--source', type=str, required=False, default="kfold", choices=["kfold", "kfold_2stage", "kfold_luna16"], help="Source of the k-fold results. Can be 'kfold', 'kfold_2stage', or 'kfold_luna16'.")
+    parser.add_argument('--prefix', type=str, required=False, default=None,)
+    return parser
+
+
+def main():
+    parser = get_extract_kfold_predictions_parser()
+    args = parser.parse_args()
+    get_predictions_from_kfold(**vars(args))
+
+if __name__ == "__main__":
+    main()

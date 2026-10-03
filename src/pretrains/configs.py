@@ -10,7 +10,8 @@ class R3d18Config:
     ckt = _r3d_dir / "r3d18_KM_200ep.pth"
 
 class R3d50Config:
-    pretrained_classes = 1139  # Kinetics, Motions, STAIR
+    # pretrained_classes = 1139  # Kinetics, Motions, STAIR
+    pretrained_classes = 1039               # Kinetics + Motions
     shortcut = 'B'
     ckt = _r3d_dir / "r3d50_KMS_200ep.pth"
 

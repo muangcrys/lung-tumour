@@ -52,6 +52,12 @@ class PathList:
     k_fold_2stage_output_dir = output_dir / "k_fold_2stage_output.csv"
     k_fold_luna16_output_dir = output_dir / "k_fold_luna16db_output.csv"
 
+    # kfold predictions
+    predictions_dir = project_root / "predictions"
+    k_fold_predictions_dir = predictions_dir / "k_fold_predictions"
+    k_fold_2stage_predictions_dir = predictions_dir / "k_fold_2stage_predictions"
+    k_fold_luna16_predictions_dir = predictions_dir / "k_fold_luna16db_predictions"
+
     # luna16 paths
     luna16_data_dir = data_dir / "LUNA16"
     luna16_niigz_dir = luna16_data_dir / "niigz"

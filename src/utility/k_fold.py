@@ -139,9 +139,100 @@ def get_results_from_kfold(kfold_directory: Path = None,
 
     return df
 
+def get_predictions_from_kfold(kfold_directory: Path = None,
+                           save_file: bool = True,
+                           save_target: str | Path = None,
+                           prefix: str | None = None,
+                           source: str = "kfold"):
+    if kfold_directory is None:
+        if source == "kfold":
+            kfold_directory = PathList.saved_kfold_weights_dir
+        elif source == "kfold_2stage":
+            kfold_directory = PathList.saved_kfold_2stage_weights_dir
+        elif source == "kfold_luna16":
+            kfold_directory = PathList.saved_kfold_luna16_weights_dir
+        else:
+            raise ValueError(f"Unknown source: {source}")
+    else:
+        kfold_directory = Path(kfold_directory)
+
+    dir_glob = kfold_directory.glob("*")
+    dirs = sorted([p for p in dir_glob if p.is_dir()], key=lambda p: p.stem)  # sort by model name
+
+    for model in dirs:
+        model_name = model.stem
+        print("=" * 40)
+        print(f"Processing {model_name}")
+        # find latest fold directory
+        latest_dir = max(
+            (p for p in model.iterdir() if p.is_dir()),
+            key=lambda p: p.name,
+        )
+        print(f"Using latest fold directory: {latest_dir}")
+        
+        folds_glob = latest_dir.glob("fold_*")
+        folds = sorted([p for p in folds_glob if p.is_dir()], key=lambda p: int(p.stem.split("_")[-1]))
+
+        model_predictions_pd = []
+
+        for fold in folds:
+            fold_num = fold.stem.split("_")[-1]
+            
+            print(f"Processing fold {fold}")
+            # get test prediction
+            test_prediction_pattern = "#BEST_*_test_predictions.csv"
+        
+            if prefix is not None:
+                test_prediction_pattern = f"{prefix}_{test_prediction_pattern}"
+
+            # get prediction file
+            test_prediction_glob = [
+                p for p in fold.glob(test_prediction_pattern)
+                if p.is_file()
+            ]
+
+            if len(test_prediction_glob) > 1:
+                print(f"Warning: More than one test prediction file found for model {model_name} fold {fold_num}. Using the first one.")
+                print(test_prediction_glob)
+                test_prediction_file = test_prediction_glob[0]
+            elif len(test_prediction_glob) == 0:
+                print(f"Warning: No test prediction file found for model {model_name} fold {fold_num}.")
+                raise FileNotFoundError
+            else:
+                test_prediction_file = test_prediction_glob[0]
+
+            # get best epoch
+            epoch_location = 1 if prefix is None else 2
+            test_best_epoch = int(test_prediction_file.stem.split("_")[epoch_location])
+            best_epoch = test_best_epoch
+
+            # read the prediction
+            fold_pd = pd.read_csv(test_prediction_file)
+
+            model_predictions_pd.append(fold_pd.add_prefix(f"fold_{fold_num}_"))
+        
+        model_combined_pd = pd.concat(model_predictions_pd, axis=1)
+        output_file_name = f"{model_name}_predictions.csv" if prefix is None else f"{prefix}_{model_name}_predictions.csv"
+
+        if save_target is None:
+            if source == "kfold":
+                save_to = PathList.k_fold_predictions_dir / output_file_name
+            elif source == "kfold_2stage":
+                save_to = PathList.k_fold_2stage_predictions_dir / output_file_name
+            elif source == "kfold_luna16":
+                save_to = PathList.k_fold_luna16_predictions_dir / output_file_name
+            else:
+                raise ValueError(f"Unknown source: {source}")
+        else:
+            save_to = Path(save_target) / output_file_name
+
+        print(f"Saving combined predictions to: {save_to}")
+        save_to.parent.mkdir(exist_ok=True, parents=True)
+        model_combined_pd.to_csv(save_to, index=False)
+
 
 def main():
-    get_results_from_kfold()
+    get_predictions_from_kfold()
 
 if __name__ == "__main__":
     main()
